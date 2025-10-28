@@ -6,17 +6,44 @@ public static class Utils
     /// <summary>  
     /// The CastRayFromUI method is responsible for casting a ray from the UI to the game world.  
     /// This method is almost used to cast a ray from the player's crosshair to the game world.  
+    /// For Meta Quest 3, this casts a ray from the center eye camera.
     /// </summary>  
     /// <param name="uiElement">The uiElement where the ray will be casted.</param>  
     /// <returns>A Ray object representing the ray cast from the UI element to the game world.</returns>  
     public static Ray CastRayFromUI(RectTransform uiElement)
     {
+        // Get the OVRCameraRig tagged with "MainCamera"
+        GameObject mainCameraObject = GameObject.FindWithTag("MainCamera");
+        Camera mainCamera = null;
+
+        if (mainCameraObject != null)
+        {
+            // Try to get Camera component directly from the object
+            mainCamera = mainCameraObject.GetComponent<Camera>();
+            
+            // If not found, search for Camera in children (OVRCameraRig structure)
+            if (mainCamera == null)
+            {
+                mainCamera = mainCameraObject.GetComponentInChildren<Camera>();
+            }
+        }
+        else
+        {
+            mainCamera = Camera.main;
+        }
+
+        if (mainCamera == null)
+        {
+            Debug.LogError("Main camera not found! Ensure OVRCameraRig is tagged with 'MainCamera' or a camera exists in the scene.");
+            return new Ray();
+        }
+
         Vector2 uiElementScreenPos = RectTransformUtility.WorldToScreenPoint(
-            null,
+            mainCamera,
             uiElement.position
         );
 
-        return Camera.main.ScreenPointToRay(uiElementScreenPos);
+        return mainCamera.ScreenPointToRay(uiElementScreenPos);
     }
 
     /// <summary>
