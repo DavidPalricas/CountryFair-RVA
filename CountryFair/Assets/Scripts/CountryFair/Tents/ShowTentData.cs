@@ -1,5 +1,7 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Displays tent information and mini-game objects based on raycast detection from the crosshair.
@@ -22,7 +24,10 @@ public class ShowTentData : MonoBehaviour
     /// <summary>Name of the game/tent to display in the UI.</summary>
     [SerializeField]
     // Ignore spelling warning for "gameName", becuase if its changed to readonly, it will not be editable in the inspector
-    private  string gameName = string.Empty;
+    private string gameName = string.Empty;
+    
+    [SerializeField]
+    private string textToShow = string.Empty;
 
     /// <summary>Instantiated mini-game object in the scene.</summary>
     private GameObject miniGameObject;
@@ -34,7 +39,7 @@ public class ShowTentData : MonoBehaviour
     {
         textBox.SetActive(false);
 
-        textBox.GetComponentInChildren<TextMeshProUGUI>().text = gameName;
+        textBox.GetComponentInChildren<TextMeshProUGUI>().text = textToShow;
 
         if (miniGameObjectPrefab != null)
         {
@@ -56,10 +61,15 @@ public class ShowTentData : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
         {
             bool isToShowData = hitInfo.collider == gameObject.GetComponent<Collider>();
-            
+
             textBox.SetActive(isToShowData);
 
             miniGameObject?.SetActive(isToShowData);
+
+            if (Input.GetInstance().GetInput(Input.InputType.SIMPLE_TOUCH) && isToShowData)
+            {
+                GoToMiniGame();
+            }
         }
     }
 
@@ -71,5 +81,16 @@ public class ShowTentData : MonoBehaviour
         miniGameObject = Instantiate(miniGameObjectPrefab, placeHolderTransform.position + placeHolderTransform.up * 0.1f, miniGameObjectPrefab.transform.rotation);
 
         miniGameObject.SetActive(false);
+    }
+
+    private void GoToMiniGame()
+    {
+        if (SceneManager.GetSceneByName(gameName) == null)
+        {
+            Debug.LogError("Scene " + gameName + " not found. Make sure the scene is added to the build settings.");
+            return;
+        }
+
+        SceneManager.LoadScene(gameName); 
     }
 }
