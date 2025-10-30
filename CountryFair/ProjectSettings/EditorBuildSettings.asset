@@ -8,6 +8,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CountryFair.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/MiniGames/ArcheryGame.unity
+    guid: 079de9ac42b86db47909299282147408
+  - enabled: 1
+    path: Assets/Scenes/MiniGames/FrisbeeGame.unity
+    guid: b547565e32871d04581679a2081d7649
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 2933a5c51dffc6846820e61bc337d07f, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 2d0875dbb12936249a06e8a7944efac6, type: 2}
   m_UseUCBPForAssetBundles: 0
