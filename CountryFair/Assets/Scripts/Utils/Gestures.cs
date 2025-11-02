@@ -1,6 +1,5 @@
 using UnityEngine;
 using Oculus.Interaction;
-using System.Collections.Generic;
 
 /// <summary>
 /// Gesture input system that detects ray-based interactions from the Meta Quest 3 using the Oculus Interaction SDK.
