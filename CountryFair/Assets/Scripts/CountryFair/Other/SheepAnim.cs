@@ -41,8 +41,6 @@ public class SheepAnimation : MonoBehaviour
     private void StartBounceAnimation()
     {
         bounceSequence = DOTween.Sequence();
-
-        Ease easeType = Ease.InOutSine;
         
         bounceSequence.Append(transform.DOMoveY(transform.position.y + bounceHeight, bounceDuration / 2)
             .SetEase(Ease.OutQuad));

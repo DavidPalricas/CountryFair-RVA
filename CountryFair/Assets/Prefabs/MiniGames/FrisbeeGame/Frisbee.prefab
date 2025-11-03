@@ -77,6 +77,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1835573657729006064}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3937106827223553782}
   m_SourcePrefab: {fileID: 100100000, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
 --- !u!1 &8228645437902401985 stripped
 GameObject:
@@ -134,9 +137,6 @@ MonoBehaviour:
   cd0: 0.08
   cDa: 2.72
   alpha0: -4
-  showTrajectory: 1
-  trajectoryPoints: 50
-  trajectoryTimeStep: 0.1
 --- !u!65 &1835573657729006064
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -158,3 +158,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.066800706, y: 0.06680072, z: 0.04021205}
   m_Center: {x: 0, y: 0, z: 0.0016635734}
+--- !u!114 &3937106827223553782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8228645437902401985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3410f8c1092b5f241857687e373c1976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FrisbeeTrajectory
+  trajectoryPoints: 100
+  trajectoryColor: {r: 0, g: 1, b: 0, a: 0.8}
+  trajectoryWidth: 0.5

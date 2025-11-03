@@ -4,13 +4,13 @@ using UnityEngine;
 /// Simulates realistic frisbee physics including aerodynamic forces, spin dynamics, and trajectory visualization.
 /// 
 /// This class implements aerodynamic equations based on frisbee physics research to accurately simulate
-/// lift, drag, and gravity forces acting on a thrown frisbee. It provides real-time trajectory prediction
-/// using Euler's method for numerical integration.
+/// lift, drag, and gravity forces acting on a thrown frisbee and enables its flight trajectory to be visualized
 /// 
 /// Physics Reference: https://web.mit.edu/womens-ult/www/smite/frisbee_physics.pdf
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(FrisbeeTrajectory))]
 public class ThrowFrisbee : MonoBehaviour
 {
     /// <summary>Throw Settings - Controls initial velocity and spin properties</summary>
@@ -70,17 +70,6 @@ public class ThrowFrisbee : MonoBehaviour
     [SerializeField]
     private float alpha0 = -4f;
 
-    /// <summary>Trajectory Visualization - Settings for the trajectory line renderer</summary>
-    
-    /// <summary>Whether to display the predicted trajectory line in real-time.</summary>
-    [Header("Trajectory Visualization")]
-    [SerializeField]
-    private bool showTrajectory = true;
-    
-    /// <summary>Number of points to calculate for the trajectory preview.</summary>
-    [SerializeField]
-    private int trajectoryPoints = 100;
-    
     /// <summary>Whether the frisbee has been thrown and is currently in motion.</summary>
     private bool _wasThrown = false;
     
@@ -92,17 +81,17 @@ public class ThrowFrisbee : MonoBehaviour
     
     /// <summary>Initial rotation of the frisbee before being thrown (for reset functionality).</summary>
     private Quaternion _initialRotation;
-    
-    /// <summary>Line renderer component that displays the predicted trajectory.</summary>
-    private LineRenderer _trajectoryLine;
-    
+        
     /// <summary>Current angle of attack in radians - updated during flight based on disc orientation.</summary>
     private float _currentAlpha;
-    
+
     /// <summary>Original parent transform to reattach the frisbee after reset.</summary>
     private Transform _originalParent;
 
-
+    /// <summary>Reference to the trajectory visualization component.</summary>
+    private FrisbeeTrajectory _trajectoryLine;
+    
+    /// <summary>Reference to the collider component for enabling/disabling collisions.</summary>
     private Collider _collider;
 
     /// <summary>
@@ -112,33 +101,17 @@ public class ThrowFrisbee : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
+        _trajectoryLine = GetComponent<FrisbeeTrajectory>();
+
         _rigidbody.mass = mass;
         _initialPosition = transform.position;
         _initialRotation = transform.rotation;
 
         _originalParent = transform.parent;
 
-        SetupTrajectoryLine();
         PlayerHoldingFrisbee();
     }
 
-    /// <summary>
-    /// Creates and configures the LineRenderer component for displaying the trajectory visualization.
-    /// </summary>
-    private void SetupTrajectoryLine()
-    {
-        // Create a separate GameObject for the trajectory line
-        GameObject trajectoryObj = new("TrajectoryLine");
-        _trajectoryLine = trajectoryObj.AddComponent<LineRenderer>();
-        _trajectoryLine.material = new Material(Shader.Find("Sprites/Default"));
-        _trajectoryLine.startColor = new Color(0f, 1f, 0f, 0.8f);
-        _trajectoryLine.endColor = new Color(1f, 1f, 0f, 0.3f);
-        _trajectoryLine.startWidth = 0.05f;
-        _trajectoryLine.endWidth = 0.05f;
-        _trajectoryLine.positionCount = 0;
-        _trajectoryLine.enabled = false;
-        _trajectoryLine.useWorldSpace = true; 
-    }
 
     /// <summary>
     /// Updates the trajectory visualization or handles throw input each frame.
@@ -149,12 +122,6 @@ public class ThrowFrisbee : MonoBehaviour
         if (!_wasThrown && OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
         {
             Throw();
-            return;
-        }
-
-        if (_wasThrown && showTrajectory)
-        {
-            DrawTrajectory();
         }
     }
 
@@ -202,7 +169,7 @@ public class ThrowFrisbee : MonoBehaviour
         // Apply spin around the world up axis (vertical spin)
         _rigidbody.angularVelocity = Vector3.up * spinSpeed;
 
-        _trajectoryLine.enabled = true;
+        _trajectoryLine.enabled = true;   
     }
 
     /// <summary>
@@ -291,48 +258,9 @@ public class ThrowFrisbee : MonoBehaviour
         _rigidbody.linearVelocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
 
-         _collider.enabled = false;
-
-        _trajectoryLine.enabled = false;
-        _trajectoryLine.positionCount = 0;  
+        _collider.enabled = false;
     }
 
-    /// <summary>
-    /// Updates the trajectory visualization line each frame by shifting previous positions backward
-    /// and adding the current frisbee position at the front of the line.
-    /// 
-    /// This creates a trailing effect that shows the frisbee's recent flight path. The line starts
-    /// from behind the frisbee and extends backward, displaying where the disc has been.
-    /// 
-    /// On the first call, initializes all trajectory points to the current position.
-    /// On subsequent calls, shifts all existing points back by one index and updates the front point.
-    /// </summary>
-    private void DrawTrajectory()
-    {
-        for (int i = trajectoryPoints - 1; i > 0; i--)
-        {
-            if (_trajectoryLine.positionCount > i)
-            {
-                _trajectoryLine.SetPosition(i, _trajectoryLine.GetPosition(i - 1));
-            }
-        }
-        
-        // Add current position at the front (index 0)
-        if (_trajectoryLine.positionCount == 0)
-        {
-            _trajectoryLine.positionCount = trajectoryPoints;
-            // Initialize all points to current position
-            for (int i = 0; i < trajectoryPoints; i++)
-            {
-                _trajectoryLine.SetPosition(i, transform.position);
-            }
-
-            return;
-        }
-       
-        _trajectoryLine.SetPosition(0, transform.position);
-    }
-    
     /// <summary>
     /// Handles the logic when the frisbee has stopped moving after being thrown.
     /// Resets the frisbee's transform and sets it to the held state.
@@ -342,6 +270,8 @@ public class ThrowFrisbee : MonoBehaviour
         _wasThrown = false;
 
         ResetTransform();
+
+        _trajectoryLine.enabled = false;
 
         PlayerHoldingFrisbee();
     }
