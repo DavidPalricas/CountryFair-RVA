@@ -371,23 +371,6 @@ public class ThrowFrisbee : MonoBehaviour
         _trajectoryLine.SetPositions(points);
     }
     
-    /*
-    /// <summary>
-    /// Handles collision with objects or ground. Resets the frisbee to its initial state when it lands.
-    /// </summary>
-    /// <param name="collision">The collision information from the physics engine.</param>
-    private void OnCollisionEnter(Collision collision)
-    {
-        _wasThrown = false;
-
-        ResetTransform();
-     
-        Debug.Log("Frisbee collided with " + collision.gameObject.name + ", resetting position.");
-
-        PlayerHoldingFrisbee();
-    }
-    */
-
     /// <summary>
     /// Handles the logic when the frisbee has stopped moving after being thrown.
     /// Resets the frisbee's transform and sets it to the held state.
