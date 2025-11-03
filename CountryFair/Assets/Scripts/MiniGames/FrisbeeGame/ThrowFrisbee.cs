@@ -10,6 +10,7 @@ using UnityEngine;
 /// Physics Reference: https://web.mit.edu/womens-ult/www/smite/frisbee_physics.pdf
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 public class ThrowFrisbee : MonoBehaviour
 {
     /// <summary>Throw Settings - Controls initial velocity and spin properties</summary>
@@ -101,6 +102,12 @@ public class ThrowFrisbee : MonoBehaviour
     
     /// <summary>Current angle of attack in radians - updated during flight based on disc orientation.</summary>
     private float _currentAlpha;
+    
+    /// <summary>Original parent transform to reattach the frisbee after reset.</summary>
+    private Transform _originalParent;
+
+
+    private Collider _collider;
 
     /// <summary>
     /// Initializes the frisbee by setting up the rigidbody, initial position, and trajectory line renderer.
@@ -108,9 +115,12 @@ public class ThrowFrisbee : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
         _rigidbody.mass = mass;
         _initialPosition = transform.position;
         _initialRotation = transform.rotation;
+
+        _originalParent = transform.parent;
 
         SetupTrajectoryLine();
         PlayerHoldingFrisbee();
@@ -171,9 +181,15 @@ public class ThrowFrisbee : MonoBehaviour
     private void Throw()
     {
         _wasThrown = true;
+
+        // Detach the frisbee from its hand placeholder to allow it not move when the hand moves
+        transform.parent = null;
+
         _rigidbody.isKinematic = false;
         // Gravity will be applied manually via aerodynamic forces
         _rigidbody.useGravity = false; 
+
+        _collider.enabled = true;
 
         // Set initial angle of attack
         _currentAlpha = angleOfAttack * Mathf.Deg2Rad;
@@ -202,10 +218,12 @@ public class ThrowFrisbee : MonoBehaviour
         Vector3 velocity = _rigidbody.linearVelocity;
         float vMagnitude = velocity.magnitude;
 
-        const float VELOCITY_MAGNITUDE_THRESHOLD = 0.1f;
+        const float STOP_THRESHOLD = 0.1f;
 
-        if (vMagnitude < VELOCITY_MAGNITUDE_THRESHOLD)
-        {
+        if (vMagnitude < STOP_THRESHOLD)
+        {   
+            FrisbeeStopped();
+    
             return;
         }
 
@@ -277,8 +295,10 @@ public class ThrowFrisbee : MonoBehaviour
         _rigidbody.linearVelocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
 
+         _collider.enabled = false;
+
         _trajectoryLine.enabled = false;
-        _trajectoryLine.positionCount = 0;
+        _trajectoryLine.positionCount = 0;  
     }
 
     /// <summary>
@@ -304,7 +324,7 @@ public class ThrowFrisbee : MonoBehaviour
             const float VELOCITY_MAGNITUDE_THRESHOLD = 0.1f;
 
             if (vMagnitude < VELOCITY_MAGNITUDE_THRESHOLD){
-                    break;
+                break;
             } 
 
             // Calculate coefficients
@@ -350,7 +370,8 @@ public class ThrowFrisbee : MonoBehaviour
         _trajectoryLine.positionCount = trajectoryPoints;
         _trajectoryLine.SetPositions(points);
     }
-
+    
+    /*
     /// <summary>
     /// Handles collision with objects or ground. Resets the frisbee to its initial state when it lands.
     /// </summary>
@@ -358,7 +379,34 @@ public class ThrowFrisbee : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         _wasThrown = false;
-        transform.SetPositionAndRotation(_initialPosition, _initialRotation);
+
+        ResetTransform();
+     
+        Debug.Log("Frisbee collided with " + collision.gameObject.name + ", resetting position.");
+
         PlayerHoldingFrisbee();
+    }
+    */
+
+    /// <summary>
+    /// Handles the logic when the frisbee has stopped moving after being thrown.
+    /// Resets the frisbee's transform and sets it to the held state.
+    /// </summary>
+    private void FrisbeeStopped()
+    {
+        _wasThrown = false;
+
+        ResetTransform();
+
+        PlayerHoldingFrisbee();
+    }
+
+    /// <summary>
+    /// Resets the frisbee's transform to its original parent, position, and rotation.
+    /// </summary>
+    private void ResetTransform()
+    {
+        transform.parent = _originalParent;
+        transform.SetPositionAndRotation(_initialPosition, _initialRotation);
     }
 }

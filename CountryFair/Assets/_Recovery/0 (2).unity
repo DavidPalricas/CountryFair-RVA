@@ -132,30 +132,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1311750681}
     m_Modifications:
-    - target: {fileID: 1835573657729006064, guid: 376c468406c412148b0cadf0c6ab358d, type: 3}
-      propertyPath: m_Size.x
-      value: 0.05680069
-      objectReference: {fileID: 0}
-    - target: {fileID: 1835573657729006064, guid: 376c468406c412148b0cadf0c6ab358d, type: 3}
-      propertyPath: m_Size.y
-      value: 0.046800736
-      objectReference: {fileID: 0}
-    - target: {fileID: 1835573657729006064, guid: 376c468406c412148b0cadf0c6ab358d, type: 3}
-      propertyPath: m_Size.z
-      value: 0.010212051
-      objectReference: {fileID: 0}
-    - target: {fileID: 1835573657729006064, guid: 376c468406c412148b0cadf0c6ab358d, type: 3}
-      propertyPath: m_Center.x
-      value: 0.000000019073488
-      objectReference: {fileID: 0}
-    - target: {fileID: 1835573657729006064, guid: 376c468406c412148b0cadf0c6ab358d, type: 3}
-      propertyPath: m_Center.y
-      value: 0.00000001192093
-      objectReference: {fileID: 0}
-    - target: {fileID: 1835573657729006064, guid: 376c468406c412148b0cadf0c6ab358d, type: 3}
-      propertyPath: m_Center.z
-      value: 0.0016635738
-      objectReference: {fileID: 0}
     - target: {fileID: 6672901579281679469, guid: 376c468406c412148b0cadf0c6ab358d, type: 3}
       propertyPath: spinSpeed
       value: 50
@@ -387,18 +363,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: GrassFloor
       objectReference: {fileID: 0}
-    - target: {fileID: 5529149332517669167, guid: 0e7df4d72702850438fbe2ef4d2a582a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6867531385979961904, guid: 0e7df4d72702850438fbe2ef4d2a582a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.56913906
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6689073080974302182, guid: 0e7df4d72702850438fbe2ef4d2a582a, type: 3}
-    m_RemovedGameObjects:
-    - {fileID: 2405227014107168159, guid: 0e7df4d72702850438fbe2ef4d2a582a, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5529149332517669167, guid: 0e7df4d72702850438fbe2ef4d2a582a, type: 3}
@@ -556,7 +523,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.788379, y: 0.3, z: 1.5485078}
+  m_Size: {x: 1.7883791, y: 1, z: 1.5485078}
   m_Center: {x: -0.00000027340297, y: 0, z: 0.00000044837032}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

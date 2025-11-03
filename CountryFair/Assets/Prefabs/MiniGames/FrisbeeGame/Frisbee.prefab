@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -113,9 +125,15 @@ MonoBehaviour:
   throwForce: 10
   upwardBias: 0.2
   spinSpeed: 20
-  liftCoefficient: 2
-  dragCoefficient: 0.3
-  discArea: 0.05
+  angleOfAttack: 10
+  mass: 0.175
+  area: 0.0568
+  airDensity: 1.23
+  cl0: 0.1
+  cLa: 1.4
+  cd0: 0.08
+  cDa: 2.72
+  alpha0: -4
   showTrajectory: 1
   trajectoryPoints: 50
   trajectoryTimeStep: 0.1
