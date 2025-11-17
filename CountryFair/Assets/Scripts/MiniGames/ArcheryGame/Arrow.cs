@@ -5,7 +5,10 @@ public class Arrow : MonoBehaviour
     Rigidbody rb;
     bool launched = false;
 
-    void Awake() => rb = GetComponent<Rigidbody>();
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     public void Launch(Vector3 direction, float force)
     {
@@ -14,12 +17,27 @@ public class Arrow : MonoBehaviour
         rb.AddForce(direction * force, ForceMode.Impulse);
     }
 
-    void OnCollisionEnter(Collision col)
+    private void OnTriggerEnter(Collider col)
     {
-        if (launched)
+        if (!launched) return; // evita bugs enquanto ainda está no arco
+
+        // --- SE BATER NO BALÃO ---
+        if (col.gameObject.CompareTag("Balloon"))
         {
-            rb.isKinematic = true;
-            transform.parent = col.transform; // fixa no alvo
+            Destroy(gameObject); 
+            return;
         }
+
+        // --- SE BATER NO CHÃO ---
+        if (col.gameObject.CompareTag("Ground"))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // --- SE BATER NOUTRO OBJETO (ALVO, MADEIRA, ETC.) ---
+        rb.isKinematic = true;
+        rb.useGravity = false;
+        transform.parent = col.transform; // seta fica presa
     }
 }

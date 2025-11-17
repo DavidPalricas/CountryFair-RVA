@@ -3,97 +3,78 @@ using Oculus.Interaction.Input;
 
 public class BowHandTracking : MonoBehaviour
 {
-    [Header("References")]
-    public OVRHand leftHand;
     public OVRHand rightHand;
-    public Transform stringStart;
-    public Transform stringEnd;
-    public LineRenderer bowString;
     public Transform arrowSpawn;
     public GameObject arrowPrefab;
 
-    [Header("Settings")]
-    public float maxForce = 25f;
-    public float maxDrawDistance = 0.5f;
-
     private GameObject currentArrow;
-    private bool isDrawing = false;
-    private Vector3 initialStringPos;
+    private bool arrowReady = false;
 
-    void Start()
-    {
-        initialStringPos = stringEnd.localPosition;
-        bowString.positionCount = 2;
-    }
+    // Thresholds baseados nos teus valores reais
+    private float indexClose = 0.15f;
+    private float middleClose = 0.30f;
+    private float ringClose = 0.20f;
+
+    private float openThreshold = 0.10f;
 
     void Update()
     {
-        // Posição do arco segue a mão esquerda
-        transform.position = leftHand.transform.position;
-        transform.rotation = leftHand.transform.rotation;
+        float index = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
+        float middle = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Middle);
+        float ring = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Ring);
 
-        // Verifica se a mão direita está a fazer punho (fechada)
-        bool rightHandClosed = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Index) > 0.8f &&
-                               rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Middle) > 0.8f &&
-                               rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Ring) > 0.8f;
+        Debug.Log($"Index: {index:F2} | Middle: {middle:F2} | Ring: {ring:F2}");
 
-        if (rightHandClosed && !isDrawing)
-        {
-            StartDrawing();
-        }
+        bool handClosed = IsHandClosed();
+        bool handOpen = IsHandOpen();
 
-        if (isDrawing)
-        {
-            UpdateDraw();
+        // PREPARA A SETA
+        if (handClosed && !arrowReady)
+            PrepareArrow();
 
-            // Larga a corda (quando abre a mão)
-            if (!rightHandClosed)
-            {
-                ReleaseArrow();
-            }
-        }
+        // DISPARA A SETA
+        if (arrowReady && handOpen)
+            FireArrow();
     }
 
-    void StartDrawing()
+    void PrepareArrow()
     {
-        isDrawing = true;
-        currentArrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.rotation);
+        arrowReady = true;
+currentArrow = Instantiate(arrowPrefab, arrowSpawn.position, arrowSpawn.rotation, arrowSpawn);
     }
 
-    void UpdateDraw()
+    void FireArrow()
     {
-        Vector3 pullDir = (rightHand.transform.position - stringStart.position);
-        float drawDist = Mathf.Min(pullDir.magnitude, maxDrawDistance);
-
-        // Atualiza posição da corda
-        stringEnd.position = stringStart.position + pullDir.normalized * drawDist;
-
-        bowString.SetPosition(0, stringStart.position);
-        bowString.SetPosition(1, stringEnd.position);
-
-        // Atualiza posição da flecha (segue o ponto de corda)
         if (currentArrow)
         {
-            currentArrow.transform.position = arrowSpawn.position;
-            currentArrow.transform.rotation = transform.rotation;
-        }
-    }
+            Rigidbody rb = currentArrow.GetComponentInChildren<Rigidbody>();
+            rb.isKinematic = false;
 
-    void ReleaseArrow()
-    {
-        isDrawing = false;
-        bowString.SetPosition(0, stringStart.position);
-        bowString.SetPosition(1, stringStart.position);
+            rb.AddForce(arrowSpawn.forward * 20f, ForceMode.VelocityChange);
 
-        if (currentArrow)
-        {
-            Vector3 direction = transform.forward;
-            float drawForce = Vector3.Distance(stringStart.position, stringEnd.position) / maxDrawDistance;
-            currentArrow.GetComponent<Arrow>().Launch(direction, drawForce * maxForce);
             currentArrow = null;
         }
 
-        // Reset à corda
-        stringEnd.localPosition = initialStringPos;
+        arrowReady = false;
+    }
+
+    bool IsHandClosed()
+    {
+        float index = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
+        float middle = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Middle);
+        float ring = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Ring);
+
+        // mão fechada = qualquer dedo ultrapassa o limiar de fechar
+        return index > indexClose || middle > middleClose || ring > ringClose;
+    }
+
+    bool IsHandOpen()
+    {
+        float index = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
+        float middle = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Middle);
+        float ring = rightHand.GetFingerPinchStrength(OVRHand.HandFinger.Ring);
+
+        // mão aberta = todos os dedos abaixo do threshold
+        return index < openThreshold && middle < openThreshold && ring < openThreshold;
     }
 }
