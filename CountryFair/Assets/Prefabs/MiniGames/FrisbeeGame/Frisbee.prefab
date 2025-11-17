@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalScale.x
-      value: 80
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalScale.y
-      value: 80
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalPosition.x
@@ -26,27 +26,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.015612602
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.015609741
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.45451948
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.45451948
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.54167527
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.54167527
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f81e0fd38f68b60488e1cfd82e582424, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -129,9 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a89196e6ceadaa346822ed020c1187cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThrowFrisbee
-  throwForce: 10
-  upwardBias: 0.2
-  spinSpeed: 20
+  throwForce: 50
+  upwardBias: 10
+  spinSpeed: 50
   angleOfAttack: 10
   mass: 0.175
   area: 0.0568
@@ -160,8 +160,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.066800706, y: 0.06680072, z: 0.04021205}
-  m_Center: {x: 0, y: 0, z: 0.0016635734}
+  m_Size: {x: 0.05680069, y: 0.046800736, z: 0.010212051}
+  m_Center: {x: 0.000000019073488, y: 0.00000001192093, z: 0.0016635738}
 --- !u!114 &3937106827223553782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,6 +174,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3410f8c1092b5f241857687e373c1976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FrisbeeTrajectory
-  trajectoryPoints: 100
   trajectoryColor: {r: 0, g: 1, b: 0, a: 0.8}
   trajectoryWidth: 0.5
