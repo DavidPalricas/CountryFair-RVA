@@ -3,11 +3,15 @@ using UnityEngine.Events;
 /// <summary>
 /// State representing the frisbee after it has landed and stopped on the ground.
 /// Handles the landing event invocation and disabling of trajectory visualization.
-/// Waits for the dog to retrieve the frisbee before transitioning to the OnPlayerHand state.
+/// Waits for the dog to retrieve the frisbee before transitioning to the <see cref="OnPlayerHand"/> state.
 /// </summary>
 public class Landed: FrisbeeState
 {   
-    /// <summary>Event invoked when the frisbee has successfully landed on the ground.</summary>
+    /// <summary>Event invoked when the frisbee has successfully landed on the ground.
+    /// </summary>
+    /// <remarks>
+    /// This event is triggered in the <see cref="DogIdle.FrisbeeLanded"/> to trigger the dog to catch the frisbee.
+    /// </remarks>
     public UnityEvent frisbeeLanded;
 
     /// <summary>
@@ -48,11 +52,11 @@ public class Landed: FrisbeeState
     }
 
     /// <summary>
-    /// Called by the dog when it retrieves the frisbee.
-    /// Transitions to the GivenByDog state to handle the return process.
+    /// Called by the event <see cref="GiveFrisbeeToPlayer.frisbeeGivenToPlayer"/> when the dog gives the frisbee back to the player.
+    /// Triggers the transition "RetrievedByDog" to the <see cref="OnPlayerHand"/> state.
     /// </summary>
     public void FrisbeeGivenByDog()
     {   
-        fSM.ChangeState("GivenByDog");
+        fSM.ChangeState("RetrievedByDog");
     }
 }

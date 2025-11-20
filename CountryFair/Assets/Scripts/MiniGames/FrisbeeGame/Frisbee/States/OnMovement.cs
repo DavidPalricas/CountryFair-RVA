@@ -54,7 +54,12 @@ public class OnMovement : FrisbeeState
     /// <summary>Whether the frisbee is currently within the score area trigger zone.</summary>
     private bool _isOnScoreArea = false;
 
-    /// <summary>Event invoked when the player successfully scores by landing the frisbee in the score area.</summary>
+    /// <summary>Event invoked when the player successfully scores by landing the frisbee in the score area.
+    /// </summary>
+    /// <remarks>
+    /// This event is trigger in the <see cref="GiveFrisbeeToPlayer"/> state to alert the dog that the player has scored,
+    /// and it must choose a new position accordingly.
+    /// </remarks>
     public UnityEvent playerScored;
 
     /// <summary>
@@ -95,7 +100,8 @@ public class OnMovement : FrisbeeState
     /// <summary>
     /// Applies aerodynamic forces (lift, drag) and gravity to the frisbee during flight.
     /// Called every physics frame to update the frisbee's velocity based on aerodynamic equations.
-    /// When velocity drops below threshold and frisbee has touched ground, transitions to StoppedOnGround state.
+    /// When velocity drops below threshold and frisbee has touched ground (frisbee landed), triggers
+    /// the transition "StoppedOnGround" to the <see cref="Landed"/> state.
     /// Invokes playerScored event if the frisbee stopped within the score area.
     /// </summary>
     private void ApplyAerodynamicForces()

@@ -121,7 +121,7 @@ public class GoToNewTarget : DogState{
     /// </summary>
     /// <remarks>
     /// Continuously rotates the dog to face the target while moving.
-    /// When the dog reaches the target position, triggers a state transition to "PositionReached".
+    /// When the dog reaches the target position, triggers the transition "PositionReached" to the <see cref="DogIdle"/> state.
     /// </remarks>
     public override void Execute()
     {

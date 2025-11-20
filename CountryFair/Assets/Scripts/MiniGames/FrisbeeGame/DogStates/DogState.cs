@@ -7,11 +7,11 @@ using UnityEngine.AI;
 /// </summary>
 /// <remarks>
 /// This class requires a NavMeshAgent component for AI navigation.
-/// All dog states share common references to the player, game manager, and navigation agent.
+/// All dog states share common references to the player transform, game manager, and navigation agent.
 /// Derived classes should override state lifecycle methods (Enter, Execute, Exit) to implement specific behaviors.
 /// </remarks>
 [RequireComponent(typeof(NavMeshAgent))]
- public class DogState: State
+ public abstract class DogState: State
 {   
     /// <summary>
     /// Speed at which the dog rotates to face its target.

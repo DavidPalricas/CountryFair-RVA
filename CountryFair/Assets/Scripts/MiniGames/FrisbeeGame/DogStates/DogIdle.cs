@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// Represents the idle state of the dog in the Frisbee game.
-/// Activates the catch area and transitions to catch state when the frisbee lands.
+/// Activates the catch area and transitions to the <see cref="CatchFrisbee"/> state when the frisbee lands.
 /// </summary>
 
 public class DogIdle : DogState
@@ -24,6 +24,9 @@ public class DogIdle : DogState
         scoreArea.SetActive(false);
     }
 
+    /// <summary>
+    /// Initializes references to the player Transform and game manager by calling the base LateStart method.
+    /// </summary>
     public override void LateStart()
     {
         base.LateStart();
@@ -48,7 +51,7 @@ public class DogIdle : DogState
     }
 
     /// <summary>
-    /// Monitors the catch area for a landed frisbee and transitions to catch state when detected.
+    /// Turns the dog to face the player while idle.
     /// </summary>
     public override void Execute()
     {
@@ -57,6 +60,9 @@ public class DogIdle : DogState
         RotateDogTowardsTarget(_playerTransform);
     }
 
+    /// <summary>
+    /// Triggers the transition to the "FrisbeeLanded" state when the frisbee has landed  to the <see cref="CatchFrisbee"/> state.
+    /// </summary>
     public void FrisbeeLanded()
     {
         fSM.ChangeState("FrisbeeLanded");

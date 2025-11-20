@@ -124,8 +124,8 @@ public class OnPlayerHand : FrisbeeState
 
     /// <summary>
     /// Called every frame while in the OnPlayerHand state.
-    /// Detects when the player triggers the throw input (PrimaryIndexTrigger) and initiates the throw,
-    /// transitioning to the FrisbeeThrown state.
+    /// Detects when the player triggers the throw input (PrimaryIndexTrigger) and initiates the throw
+    /// and triggers the transition "FrisbeeThrown" to the <see cref="OnMovement"/> state.
     /// </summary>
     public override void Execute()
     {

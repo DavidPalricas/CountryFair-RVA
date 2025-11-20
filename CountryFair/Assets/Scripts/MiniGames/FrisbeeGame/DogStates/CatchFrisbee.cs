@@ -6,7 +6,8 @@ using UnityEngine;
 /// </summary>
 /// <remarks>
 /// This state is triggered when the frisbee is thrown and the dog needs to retrieve it.
-/// Upon successfully reaching the frisbee, this state deactivates the frisbee GameObject and transitions to "FrisbeeCaught".
+/// Upon successfully reaching the frisbee, this state deactivates the frisbee GameObject and  triggers the transition "FrisbeeCaught", 
+/// to the <see cref="GiveFrisbeeToPlayer"/> state.
 /// </remarks>
 public class CatchFrisbee : DogState
 {  
@@ -75,7 +76,7 @@ public class CatchFrisbee : DogState
     /// When the dog stops at the frisbee's location:
     /// <list type="number">
     /// <item><description>Deactivates the frisbee GameObject (simulating the catch)</description></item>
-    /// <item><description>Triggers a state transition to "FrisbeeCaught"</description></item>
+    /// <item><description>Triggers the transition "FrisbeeCaught" to the <see cref="GiveFrisbeeToPlayer"/> state</description></item>
     /// </list>
     /// </para>
     /// </remarks>

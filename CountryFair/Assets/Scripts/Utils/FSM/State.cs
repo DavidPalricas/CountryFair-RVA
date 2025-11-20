@@ -54,12 +54,11 @@ public abstract class State : MonoBehaviour
     /// <summary>
     /// Called once for each state during FSM initialization, before the first state's Enter method.
     /// Override this method to perform state-specific initialization that needs to happen before any state becomes active.
-    /// These can't be done in the Start method from unity because there is no wat to guarantee the order of execution of Start methods across different components.
-    /// And in the FSM its need the Start method to execute the first state, so this method is provided to do these initializations in the FSM start.
     /// </summary>
     /// <remarks>
-    /// This is useful for caching references, initializing variables, or performing setup that should occur
-    /// once for all states before the FSM begins operation.
+    /// This method exists because Unity's Start() execution order across components is unpredictable.
+    /// Since the FSM requires its Start() to run first to activate the initial state, this method
+    /// provides a guaranteed initialization point that runs during the FSM's startup sequence.
     /// </remarks>
     public virtual void LateStart(){}
     

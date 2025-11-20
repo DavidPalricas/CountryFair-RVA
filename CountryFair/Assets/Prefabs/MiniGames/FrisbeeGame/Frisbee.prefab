@@ -188,7 +188,7 @@ MonoBehaviour:
   - name: StoppedOnGround
     from: {fileID: 7583395616964681383}
     to: {fileID: 39831662938070147}
-  - name: GivenByDog
+  - name: RetrievedByDog
     from: {fileID: 39831662938070147}
     to: {fileID: 8873461253355230166}
 --- !u!114 &8873461253355230166

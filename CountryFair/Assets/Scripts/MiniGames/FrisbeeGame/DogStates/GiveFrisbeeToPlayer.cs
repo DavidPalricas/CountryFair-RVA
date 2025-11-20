@@ -8,7 +8,8 @@ using UnityEngine.Events;
 /// <remarks>
 /// This state activates a visual representation of the frisbee in the dog's mouth.
 /// When the dog reaches the player, it invokes the <see cref="frisbeeGivenToPlayer"/> event
-/// and transitions to either "PlayerScored" or "PlayerMissed" based on game state.
+/// and triggers the transition "PlayerScored" to the <see cref="GoToNewTarget"/> state  or the transition "PlayerMissed"  to the <see cref="GoToPreviousTarget"/> state
+/// based on the <see cref="_playerScored"/> flag.
 /// </remarks>
 public class GiveFrisbeeToPlayer : DogState
 {  
@@ -27,7 +28,7 @@ public class GiveFrisbeeToPlayer : DogState
 
     /// <summary>
     /// Event invoked when the dog successfully returns the frisbee to the player.
-    /// Can be used to trigger UI updates, sound effects, or other game logic.
+    /// This event is used to trigger the <see cref="Landed.FrisbeeGivenByDog"/> method to notify that the frisbee has been given back.
     /// </summary>
     public UnityEvent frisbeeGivenToPlayer;
    

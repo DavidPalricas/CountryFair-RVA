@@ -69,7 +69,7 @@ public class GoToPreviousTarget : DogState{
     /// </summary>
     /// <remarks>
     /// Continuously rotates the dog to face the previous target while moving.
-    /// When the dog reaches the previous target position, triggers a state transition to "PositionReached".
+    /// When the dog reaches the previous target position, triggers the transition "PositionReached" to the <see cref="DogIdle"/> state.
     /// </remarks>
     public override void Execute()
     {
