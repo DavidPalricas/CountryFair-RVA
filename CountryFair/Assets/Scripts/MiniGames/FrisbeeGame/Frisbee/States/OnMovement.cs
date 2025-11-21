@@ -51,17 +51,6 @@ public class OnMovement : FrisbeeState
     /// <summary>Whether the frisbee has touched the ground during flight.</summary>
     private bool _touchedGround = false;
 
-    /// <summary>Whether the frisbee is currently within the score area trigger zone.</summary>
-    private bool _isOnScoreArea = false;
-
-    /// <summary>Event invoked when the player successfully scores by landing the frisbee in the score area.
-    /// </summary>
-    /// <remarks>
-    /// This event is trigger in the <see cref="GiveFrisbeeToPlayer"/> state to alert the dog that the player has scored,
-    /// and it must choose a new position accordingly.
-    /// </remarks>
-    public UnityEvent playerScored;
-
     /// <summary>
     /// Initializes the state by setting up physics component references.
     /// </summary>
@@ -111,15 +100,12 @@ public class OnMovement : FrisbeeState
 
         const float STOP_THRESHOLD = 0.1f;
 
+        Debug.Log("Frisbee Velocity Magnitude: " + vMagnitude);
+
         if (vMagnitude < STOP_THRESHOLD)
         {   
             if (_touchedGround)
             {   
-                if (_isOnScoreArea)
-                {
-                    playerScored.Invoke();
-                }
-
                 fSM.ChangeState("StoppedOnGround");
             }
 
@@ -206,32 +192,6 @@ public class OnMovement : FrisbeeState
          if (other.gameObject.CompareTag("Ground")) 
         {
            _touchedGround = false;
-        }
-    }
-
-    /// <summary>
-    /// Detects when the frisbee enters the score area trigger zone.
-    /// Sets the _isOnScoreArea flag to track potential scoring.
-    /// </summary>
-    /// <param name="other">The collider that this object has entered.</param>
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("ScoreArea")) 
-        {
-            _isOnScoreArea = true;
-        }
-    }
-
-    /// <summary>
-    /// Detects when the frisbee exits the score area trigger zone.
-    /// Clears the _isOnScoreArea flag if the frisbee leaves the scoring zone.
-    /// </summary>
-    /// <param name="other">The collider that this object has exited.</param>
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("ScoreArea")) 
-        {
-           _isOnScoreArea = false;
         }
     }
 }
