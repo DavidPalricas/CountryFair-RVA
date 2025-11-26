@@ -22,6 +22,7 @@ using UnityEngine;
 /// </para>
 /// </remarks>
 [RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(TrackFrisbeeThrow))]
 public class OnPlayerFront : FrisbeeState
 {   
     /// <summary>
@@ -94,6 +95,8 @@ public class OnPlayerFront : FrisbeeState
     /// </summary>
     private Material[] materials;
 
+    private TrackFrisbeeThrow _trackFrisbeeThrow;
+
     /// <summary>
     /// Initializes the OnPlayerHand state by storing initial transform values and configuring material transparency.
     /// </summary>
@@ -109,63 +112,82 @@ public class OnPlayerFront : FrisbeeState
 
         _initialPosition = transform.position;
         _initialRotation = transform.rotation;
+
+        _trackFrisbeeThrow = GetComponent<TrackFrisbeeThrow>();
         SetUpMaterialsTransparency();
     }
 
-    /// <summary>
-    /// Initiates the frisbee throw by configuring physics and applying initial forces.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// The throw sequence:
-    /// <list type="number">
-    /// <item><description>Disables further throwing until the dog is ready again</description></item>
-    /// <item><description>Detaches the frisbee from the player's hand (sets parent to null)</description></item>
-    /// <item><description>Enables physics simulation (non-kinematic, custom gravity via aerodynamics)</description></item>
-    /// <item><description>Enables the collider for interaction with the environment</description></item>
-    /// <item><description>Sets the initial angle of attack for aerodynamic calculations</description></item>
-    /// <item><description>Calculates throw direction (horizontal forward with upward bias)</description></item>
-    /// <item><description>Applies linear velocity in the throw direction</description></item>
-    /// <item><description>Applies angular velocity (spin around vertical axis)</description></item>
-    /// <item><description>Enables trajectory visualization line</description></item>
-    /// </list>
-    /// </para>
-    /// <para>
-    /// Note: The frisbee's forward direction is its local X-axis (transform.right).
-    /// Gravity is disabled because aerodynamic forces will be applied manually in the flight state.
-    /// </para>
-    /// </remarks>
-    private void ThrowFrisbee()
-    {   
-        // Because the dog will go catch the frisbee.
-        _dogInTarget = false;
+/// <summary>
+/// Initiates the frisbee throw by configuring physics and applying initial forces.
+/// Uses the tracked hand movement vector from TrackFrisbeeThrow component.
+/// </summary>
+/// <remarks>
+/// <para>
+/// The throw sequence:
+/// <list type="number">
+/// <item><description>Disables further throwing until the dog is ready again</description></item>
+/// <item><description>Detaches the frisbee from the player's hand (sets parent to null)</description></item>
+/// <item><description>Enables physics simulation (non-kinematic, custom gravity via aerodynamics)</description></item>
+/// <item><description>Enables the collider for interaction with the environment</description></item>
+/// <item><description>Sets the initial angle of attack for aerodynamic calculations</description></item>
+/// <item><description>Calculates throw direction from hand tracking data (velocity + rotation)</description></item>
+/// <item><description>Applies linear velocity in the tracked throw direction</description></item>
+/// <item><description>Applies angular velocity (spin around vertical axis)</description></item>
+/// <item><description>Enables trajectory visualization line</description></item>
+/// </list>
+/// </para>
+/// </remarks>
+private void ThrowFrisbee()
+{   
+    // Because the dog will go catch the frisbee.
+    _dogInTarget = false;
    
-        // Detach the frisbee from its hand placeholder to allow it not move when the hand moves
-        transform.parent = null;
+    // Detach the frisbee from its hand placeholder to allow it not move when the hand moves
+    transform.parent = null;
 
-        _rigidbody.isKinematic = false;
-        // Gravity will be applied manually via aerodynamic forces
-        _rigidbody.useGravity = false; 
+    _rigidbody.isKinematic = false;
+    // Gravity will be applied manually via aerodynamic forces
+    _rigidbody.useGravity = false; 
 
-        _collider.enabled = true;
+    _collider.isTrigger = false;
 
-        // Set initial angle of attack
-        _currentAlpha = angleOfAttack * Mathf.Deg2Rad;
+    // Set initial angle of attack
+    _currentAlpha = angleOfAttack * Mathf.Deg2Rad;
 
-        // The frisbee's forward direction is its local X-axis (red arrow)
-        // which corresponds to transform.right
-        Vector3 throwDirection = transform.right;
-        throwDirection.y = 0; // Remove vertical component
-        throwDirection = throwDirection.normalized;
-
-        // Apply throw force directly in the throw direction
-        _rigidbody.linearVelocity = throwDirection * throwForce + Vector3.up * upwardBias;
-
-        // Apply spin around the world up axis (vertical spin)
-        _rigidbody.angularVelocity = Vector3.up * spinSpeed;
-
-        _trajectoryLine.enabled = true; 
+    // Get throw direction from tracking component based on which hand threw
+    // The tracking component calculates this from hand velocity and rotation
+    Vector3 throwDirection;
+    float throwSpeed;
+    
+    if (_trackFrisbeeThrow.RightThrowSpeed > _trackFrisbeeThrow.LeftThrowSpeed)
+    {
+        // Right hand throw
+        throwDirection = _trackFrisbeeThrow.RightThrowVector;
+        throwSpeed = _trackFrisbeeThrow.RightThrowSpeed;
     }
+    else
+    {
+        // Left hand throw
+        throwDirection = _trackFrisbeeThrow.LeftThrowVector;
+        throwSpeed = _trackFrisbeeThrow.LeftThrowSpeed;
+    }
+
+    // Ensure the throw direction is normalized
+    throwDirection = throwDirection.normalized;
+
+    // Apply throw force using the tracked direction and speed
+    // Use the tracked speed as a multiplier for more realistic throws
+    float finalThrowForce = throwForce * Mathf.Clamp(throwSpeed / 3f, 0.5f, 2f); // Scale based on hand speed
+    _rigidbody.linearVelocity = throwDirection * finalThrowForce + Vector3.up * upwardBias;
+
+
+    Debug.Log($"Throw Direction: {throwDirection}, Throw Speed: {finalThrowForce} m/s");
+
+    // Apply spin around the world up axis (vertical spin)
+    _rigidbody.angularVelocity = Vector3.up * spinSpeed;
+
+    _trajectoryLine.enabled = true; 
+}
 
     
     /// <summary>
@@ -196,7 +218,7 @@ public class OnPlayerFront : FrisbeeState
         _rigidbody.linearVelocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
 
-        _collider.enabled = false;
+        _collider.isTrigger = true;
     }
 
     /// <summary>
@@ -321,6 +343,8 @@ public class OnPlayerFront : FrisbeeState
    {
         base.Enter();
 
+        _trackFrisbeeThrow.StartTracking();
+
         ChangeMaterialsOpacity();
 
         PlayerHoldingFrisbee();
@@ -375,11 +399,17 @@ public class OnPlayerFront : FrisbeeState
     }
 
     public void ThrowGestureTriggered()
-    {
-        if (_dogInTarget)
-        {
-            ThrowFrisbee();
+    {   
+        if (fSM.CurrentState == this)
+        {   
+            _trackFrisbeeThrow.CalculateLeftThrow();
+            _trackFrisbeeThrow.CalculateRightThrow();
+            
+            ThrowFrisbee();  
+            _trackFrisbeeThrow.StopTracking();
             fSM.ChangeState("FrisbeeThrown");
+
+            return;
         }
     }
 }

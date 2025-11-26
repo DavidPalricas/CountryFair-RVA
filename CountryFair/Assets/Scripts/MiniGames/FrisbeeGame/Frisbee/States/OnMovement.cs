@@ -51,6 +51,9 @@ public class OnMovement : FrisbeeState
     /// <summary>Whether the frisbee has touched the ground during flight.</summary>
     private bool _touchedGround = false;
 
+
+    public UnityEvent frisbeeThrown;
+
     /// <summary>
     /// Initializes the state by setting up physics component references.
     /// </summary>
@@ -65,6 +68,8 @@ public class OnMovement : FrisbeeState
     public override void Enter()
    {
         base.Enter();
+
+        frisbeeThrown.Invoke();
    }
 
     /// <summary>
