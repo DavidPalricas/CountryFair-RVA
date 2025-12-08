@@ -10,6 +10,7 @@ public class BalloonScript : MonoBehaviour
     private Renderer balloonRenderer;
     private Color balloonColor;
 
+
     private void Awake()
     {
         // Apanha o renderer do balão
@@ -54,6 +55,8 @@ public class BalloonScript : MonoBehaviour
                 main.startColor = balloonColor;    // define a cor no particle system
             }
         }
+
+        ArcheryGameManager.Instance.SetScore(1);
 
         Destroy(gameObject);
     }
