@@ -9,6 +9,7 @@ public class BalloonScript : MonoBehaviour
 
     private Renderer balloonRenderer;
     private Color balloonColor;
+    [SerializeField] int scoreToAdd;
 
 
     private void Awake()
@@ -56,7 +57,7 @@ public class BalloonScript : MonoBehaviour
             }
         }
 
-        ArcheryGameManager.Instance.SetScore(1);
+        ArcheryGameManager.Instance.SetScore(scoreToAdd);
 
         Destroy(gameObject);
     }
