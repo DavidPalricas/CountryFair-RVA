@@ -81,7 +81,7 @@ public class DogIdle : DogState
             return;
         }
 
-        // _gameManager.currentTargetPos = transform.position;
+        _gameManager.currentTargetPos = transform.position;
 
         scoreArea.SetActive(true);
 

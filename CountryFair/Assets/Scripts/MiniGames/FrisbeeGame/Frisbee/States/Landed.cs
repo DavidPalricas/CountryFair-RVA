@@ -43,7 +43,7 @@ public class Landed: FrisbeeState
    {
         base.Enter();
 
-        // Debug.Log("Frisbee Landed in poistion " + transform.position);
+         Debug.Log("Frisbee Landed in poistion " + transform.position);
 
         if (FrisbeeOnScoreArea())
         {

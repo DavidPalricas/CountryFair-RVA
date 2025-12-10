@@ -114,7 +114,8 @@ public class OnMovement : FrisbeeState
 
             return;
         }
-
+       
+        /*
         // Calculate lift coefficient: CL = CL0 + CLa * α
         float cl = cl0 + cLa * _currentAlpha;
 
@@ -170,6 +171,7 @@ public class OnMovement : FrisbeeState
             // Formula: alpha = 90° - angle, then convert to radians
             _currentAlpha = (90f - angle) * Mathf.Deg2Rad;
         }
+        */
     }
 
     /// <summary>
