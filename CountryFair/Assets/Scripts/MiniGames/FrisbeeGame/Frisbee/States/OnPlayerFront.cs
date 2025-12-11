@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -21,59 +22,25 @@ using UnityEngine;
 /// This provides clear visual feedback to the player about the game state.
 /// </para>
 /// </remarks>
-[RequireComponent(typeof(Renderer))]
-public class OnPlayerHand : FrisbeeState
+public class OnPlayerFront : FrisbeeState
 {   
-    /// <summary>
-    /// Initial horizontal throw velocity in meters per second.
-    /// Standard frisbee throws typically range from 10-20 m/s.
-    /// </summary>
-    [Header("Throw Settings")]
-    [SerializeField]
-    private float throwForce = 14f;
-    
-    /// <summary>
-    /// Initial vertical velocity component in meters per second.
-    /// Adds upward bias to the throw trajectory, affecting the arc height.
-    /// </summary>
-    [SerializeField]
-    private float upwardBias = 3f;
-    
-    /// <summary>
-    /// Angular velocity of the frisbee spin in radians per second.
-    /// Spin stabilizes the frisbee in flight and affects lift generation.
-    /// </summary>
-    [SerializeField]
-    private float spinSpeed = 50f;
-    
-    /// <summary>
-    /// Initial angle of attack in degrees.
-    /// Determines the frisbee's pitch relative to the velocity vector, affecting lift and drag characteristics.
-    /// Positive values pitch the nose up, negative values pitch it down.
-    /// </summary>
-    [SerializeField]
-    private float angleOfAttack = 10f;
-
-
-    /// <summary>
+  /// <summary>
     /// Alpha (opacity) value for the frisbee materials when the player cannot throw.
     /// Lower values make the frisbee more transparent, providing visual feedback that throwing is disabled.
     /// </summary>
     [Header("Can't Throw Frisbee Settings")]
-    [SerializeField]
+   
     private float cannotThrowAlpha = 0.5f;
 
+
+   [SerializeField]
+   private Renderer frisbeeRenderer;
+    
     /// <summary>
     /// Original parent transform of the frisbee (typically the player's hand).
     /// Used to reattach the frisbee when resetting to the held position.
     /// </summary>
     private Transform _originalParent;
-
-    /// <summary>
-    /// Initial local position of the frisbee relative to the player's hand.
-    /// Stored for reset functionality when the frisbee is returned.
-    /// </summary>
-    private Vector3 _initialPosition;
 
     /// <summary>
     /// Initial local rotation of the frisbee relative to the player's hand.
@@ -82,10 +49,11 @@ public class OnPlayerHand : FrisbeeState
     private Quaternion  _initialRotation;
 
     /// <summary>
-    /// Flag indicating whether the player is allowed to throw the frisbee.
+    /// Flag indicating whether the dog has reached its target position.
     /// Set to true when the dog reaches its target position via <see cref="DogReachedTarget"/>.
+    /// Its set to true becuase the dog starts in the target position at game start.
     /// </summary>
-    private bool _canThrow = false;
+    private bool _dogInTarget = true;
 
     /// <summary>
     /// Array of materials from the frisbee's Renderer component.
@@ -106,64 +74,66 @@ public class OnPlayerHand : FrisbeeState
         base.Awake();
         _originalParent = transform.parent;
 
-        _initialPosition = transform.position;
         _initialRotation = transform.rotation;
+
+
+        if (frisbeeRenderer == null)
+        {
+            Debug.LogError("Component Renderer is not assigned in OnPlayerFront script.");
+
+            return;
+        }
+
         SetUpMaterialsTransparency();
     }
 
-    /// <summary>
-    /// Initiates the frisbee throw by configuring physics and applying initial forces.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// The throw sequence:
-    /// <list type="number">
-    /// <item><description>Disables further throwing until the dog is ready again</description></item>
-    /// <item><description>Detaches the frisbee from the player's hand (sets parent to null)</description></item>
-    /// <item><description>Enables physics simulation (non-kinematic, custom gravity via aerodynamics)</description></item>
-    /// <item><description>Enables the collider for interaction with the environment</description></item>
-    /// <item><description>Sets the initial angle of attack for aerodynamic calculations</description></item>
-    /// <item><description>Calculates throw direction (horizontal forward with upward bias)</description></item>
-    /// <item><description>Applies linear velocity in the throw direction</description></item>
-    /// <item><description>Applies angular velocity (spin around vertical axis)</description></item>
-    /// <item><description>Enables trajectory visualization line</description></item>
-    /// </list>
-    /// </para>
-    /// <para>
-    /// Note: The frisbee's forward direction is its local X-axis (transform.right).
-    /// Gravity is disabled because aerodynamic forces will be applied manually in the flight state.
-    /// </para>
-    /// </remarks>
-    private void ThrowFrisbee()
-    {
-        _canThrow = false;
-   
+
+/// <summary>
+/// Initiates the frisbee throw by configuring physics and applying initial forces.
+/// Uses the tracked hand movement vector from TrackFrisbeeThrow component.
+/// // Physics Reference: https://web.mit.edu/womens-ult/www/smite/frisbee_physics.pdf
+/// </summary>
+/// <remarks>
+/// <para>
+/// The throw sequence:
+/// <list type="number">
+/// <item><description>Disables further throwing until the dog is ready again</description></item>
+/// <item><description>Detaches the frisbee from the player's hand (sets parent to null)</description></item>
+/// <item><description>Enables physics simulation (non-kinematic, custom gravity via aerodynamics)</description></item>
+/// <item><description>Enables the collider for interaction with the environment</description></item>
+/// <item><description>Sets the initial angle of attack for aerodynamic calculations</description></item>
+/// <item><description>Calculates throw direction from hand tracking data (velocity + rotation)</description></item>
+/// <item><description>Applies linear velocity in the tracked throw direction</description></item>
+/// <item><description>Applies angular velocity (spin around vertical axis)</description></item>
+/// <item><description>Enables trajectory visualization line</description></item>
+/// </list>
+/// </para>
+/// </remarks>
+public void ThrowFrisbee()
+{   
+    if (_dogInTarget){
+        // Because the dog will go catch the frisbee.
+        _dogInTarget = false;
+    
         // Detach the frisbee from its hand placeholder to allow it not move when the hand moves
         transform.parent = null;
 
         _rigidbody.isKinematic = false;
+
         // Gravity will be applied manually via aerodynamic forces
-        _rigidbody.useGravity = false; 
+        _rigidbody.useGravity = true; 
 
-        _collider.enabled = true;
+        _collider.isTrigger = false;
 
-        // Set initial angle of attack
-        _currentAlpha = angleOfAttack * Mathf.Deg2Rad;
-
-        // The frisbee's forward direction is its local X-axis (red arrow)
-        // which corresponds to transform.right
-        Vector3 throwDirection = transform.right;
-        throwDirection.y = 0; // Remove vertical component
-        throwDirection = throwDirection.normalized;
-
-        // Apply throw force directly in the throw direction
-        _rigidbody.linearVelocity = throwDirection * throwForce + Vector3.up * upwardBias;
-
-        // Apply spin around the world up axis (vertical spin)
-        _rigidbody.angularVelocity = Vector3.up * spinSpeed;
+        // Get throw direction from tracking component based on which hand threw
+        // The tracking component calculates this from hand velocity and rotation
 
         _trajectoryLine.enabled = true; 
+
+        fSM.ChangeState("FrisbeeThrown");
     }
+}
+
 
     
     /// <summary>
@@ -189,12 +159,12 @@ public class OnPlayerHand : FrisbeeState
         // In the dog state to catch the frisbee, the frisbee visibility is turned off, so we need to enable it here
         gameObject.SetActive(true);
 
-        _rigidbody.isKinematic = true;
         _rigidbody.useGravity = false;
         _rigidbody.linearVelocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
+        _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
-        _collider.enabled = false;
+        _collider.isTrigger = true;
     }
 
     /// <summary>
@@ -202,7 +172,7 @@ public class OnPlayerHand : FrisbeeState
     /// </summary>
     /// <remarks>
     /// <para>
-    /// When <see cref="_canThrow"/> is true:
+    /// When <see cref="_dogInTarget"/> is true:
     /// <list type="bullet">
     /// <item><description>Alpha is set to 1.0 (fully opaque)</description></item>
     /// <item><description>Render queue is set to 2000 (opaque rendering)</description></item>
@@ -210,7 +180,7 @@ public class OnPlayerHand : FrisbeeState
     /// </list>
     /// </para>
     /// <para>
-    /// When <see cref="_canThrow"/> is false:
+    /// When <see cref="_dogInTarget"/> is false:
     /// <list type="bullet">
     /// <item><description>Alpha is set to <see cref="cannotThrowAlpha"/> (semi-transparent)</description></item>
     /// <item><description>Render queue is set to 3000 (transparent rendering)</description></item>
@@ -226,7 +196,7 @@ public class OnPlayerHand : FrisbeeState
         float alphaToChange;
 
         int renderQueue, zWriteValue;
-        if (_canThrow)
+        if (_dogInTarget)
         {   
             const float MAX_ALPHA = 1f;
 
@@ -269,8 +239,7 @@ public class OnPlayerHand : FrisbeeState
     /// </remarks>
     private void SetUpMaterialsTransparency()
     {   
-        materials = GetComponent<Renderer>().materials;  
-
+        materials = frisbeeRenderer.materials;
         
         foreach (Material mat in materials)
         {
@@ -303,7 +272,10 @@ public class OnPlayerHand : FrisbeeState
     private void ResetTransform()
     {
         transform.parent = _originalParent;
-        transform.SetPositionAndRotation(_initialPosition, _initialRotation);
+
+        transform.localPosition = Vector3.zero;
+
+        transform.rotation = _initialRotation;
     }
 
     /// <summary>
@@ -311,7 +283,7 @@ public class OnPlayerHand : FrisbeeState
     /// Resets the frisbee to its held position and configures it for being held.
     /// </summary>
     /// <remarks>
-    /// Updates the material opacity based on <see cref="_canThrow"/> status and calls
+    /// Updates the material opacity based on <see cref="_dogInTarget"/> status and calls
     /// <see cref="PlayerHoldingFrisbee"/> to reset physics and transform.
     /// This state is entered when the dog returns the frisbee to the player or at game start.
     /// </remarks>
@@ -331,7 +303,7 @@ public class OnPlayerHand : FrisbeeState
     /// <remarks>
     /// <para>
     /// Detects when the player presses the PrimaryIndexTrigger (VR controller trigger).
-    /// If <see cref="_canThrow"/> is true, initiates the throw by:
+    /// If <see cref="_dogInTarget"/> is true, initiates the throw by:
     /// <list type="number">
     /// <item><description>Calling <see cref="ThrowFrisbee"/> to apply physics</description></item>
     /// <item><description>Triggering the "FrisbeeThrown" transition to the <see cref="OnMovement"/> state</description></item>
@@ -344,12 +316,6 @@ public class OnPlayerHand : FrisbeeState
     public override void Execute()
     {
          base.Execute();
-
-         if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) && _canThrow)
-        {
-            ThrowFrisbee();
-            fSM.ChangeState("FrisbeeThrown");
-        }
     }
 
     /// <summary>
@@ -369,12 +335,32 @@ public class OnPlayerHand : FrisbeeState
     /// </summary>
     /// <remarks>
     /// This method should be called by the dog's idle state (via UnityEvent) to signal that
-    /// the game is ready for the next throw. Sets <see cref="_canThrow"/> to true and updates
+    /// the game is ready for the next throw. Sets <see cref="_dogInTarget"/> to true and updates
     /// material opacity to full visibility, indicating to the player that throwing is now allowed.
     /// </remarks>
     public void DogReachedTarget()
     {
-        _canThrow = true;
+        _dogInTarget = true;
         ChangeMaterialsOpacity();
+    }
+
+   /*
+    public void ThrowGestureTriggered()
+    {   
+        if (fSM.CurrentState == this && _dogInTarget)
+        {   
+            ThrowFrisbee();  
+            fSM.ChangeState("FrisbeeThrown");
+
+            return;
+        }
+    }
+    */
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 0.5f);
     }
 }

@@ -56,6 +56,9 @@ public class GoToPreviousTarget : DogState{
     public override void Enter()
    {
         base.Enter();
+
+
+        Debug.Log("Going to previous target at position: " + _gameManager.currentTargetPos);
        
         _previousTargetTransform =  new GameObject("PreviousTarget").transform;
         _previousTargetTransform.position = _gameManager.currentTargetPos;

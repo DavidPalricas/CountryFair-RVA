@@ -72,7 +72,7 @@ public abstract class State : MonoBehaviour
     /// The base implementation logs the state entry to the console.
     /// </remarks>
     public virtual void Enter() {
-      // Debug.Log($"Entering {StateName} State");
+      Debug.Log($"Entering {StateName} State");
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ public abstract class State : MonoBehaviour
     /// The base implementation logs the state execution to the console each frame.
     /// </remarks>
     public virtual void Execute() { 
-     // Debug.Log($"Executing {StateName} State");
+     Debug.Log($"Executing {StateName} State");
     }
 
     /// <summary>

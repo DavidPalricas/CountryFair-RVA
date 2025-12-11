@@ -4,11 +4,15 @@ using UnityEngine.Events;
 /// <summary>
 /// State representing the frisbee after it has landed and stopped on the ground.
 /// Handles the landing event invocation and disabling of trajectory visualization.
-/// Waits for the dog to retrieve the frisbee before transitioning to the <see cref="OnPlayerHand"/> state.
+/// Waits for the dog to retrieve the frisbee before transitioning to the <see cref="OnPlayerFront"/> state.
 /// </summary>
-[RequireComponent(typeof(MeshRenderer))]
 public class Landed: FrisbeeState
-{   
+{    
+
+
+    [SerializeField]
+    private MeshRenderer frisbeeMeshRenderer;
+
     /// <summary>Event invoked when the frisbee has successfully landed on the ground.
     /// </summary>
     /// <remarks>
@@ -33,6 +37,11 @@ public class Landed: FrisbeeState
     protected override void Awake()
     {  
         base.Awake();
+
+        if (frisbeeMeshRenderer == null)
+        {
+            Debug.LogError("MeshRenderer component is not assigned in Landed script.");
+        }
     }
 
     /// <summary>
@@ -43,7 +52,7 @@ public class Landed: FrisbeeState
    {
         base.Enter();
 
-        // Debug.Log("Frisbee Landed in poistion " + transform.position);
+         Debug.Log("Frisbee Landed in poistion " + transform.position);
 
         if (FrisbeeOnScoreArea())
         {
@@ -77,7 +86,7 @@ public class Landed: FrisbeeState
 
     /// <summary>
     /// Called by the event <see cref="GiveFrisbeeToPlayer.frisbeeGivenToPlayer"/> when the dog gives the frisbee back to the player.
-    /// Triggers the transition "RetrievedByDog" to the <see cref="OnPlayerHand"/> state.
+    /// Triggers the transition "RetrievedByDog" to the <see cref="OnPlayerFront"/> state.
     /// </summary>
     public void FrisbeeGivenByDog()
     {   
@@ -86,7 +95,7 @@ public class Landed: FrisbeeState
 
     private bool FrisbeeOnScoreArea()
     {   
-        float frisbeeRadius = GetComponent<MeshRenderer>().bounds.extents.magnitude;
+        float frisbeeRadius = frisbeeMeshRenderer.bounds.extents.magnitude;
 
         Collider[] overlapResults = new Collider[10];
 
@@ -101,35 +110,5 @@ public class Landed: FrisbeeState
         }
 
         return false;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (!Application.isPlaying)
-        {
-            return;
-        }
-        
-        float frisbeeRadius = GetComponent<MeshRenderer>().bounds.extents.magnitude;
-        Collider[] overlapResults = new Collider[10];
-        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, frisbeeRadius, overlapResults);
-        
-        bool isOnScoreArea = false;
-        foreach (Collider collider in overlapResults)
-        {
-            if (collider != null && collider.gameObject.CompareTag("ScoreArea")) 
-            {
-                isOnScoreArea = true;
-                break;
-            }
-        }
-        
-        // Verde se estiver na área de pontuação, vermelho caso contrário
-        Gizmos.color = isOnScoreArea ? Color.green : Color.red;
-        Gizmos.DrawWireSphere(transform.position, frisbeeRadius);
-        
-        // Opcional: desenhar uma esfera sólida semi-transparente
-        Gizmos.color = isOnScoreArea ? new Color(0, 1, 0, 0.3f) : new Color(1, 0, 0, 0.3f);
-        Gizmos.DrawSphere(transform.position, frisbeeRadius);
     }
 }

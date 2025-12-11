@@ -87,4 +87,22 @@ public static class Utils
 
         return UnityEngine.Random.Range(min, max);
     }
+
+
+     /// <summary>
+    /// The GetChildren method is responsible for retrieving the children of a game object.
+    /// </summary>
+    /// <param name="parent">The transform component of the game object whose children are to be retrieved.</param>
+    /// <returns>The children of the specified game object.</returns>
+    public static GameObject[] GetChildren(Transform parent)
+    {
+        GameObject[] children = new GameObject[parent.childCount];
+
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            children[i] = parent.GetChild(i).gameObject;
+        }
+
+        return children;
+    }
 }

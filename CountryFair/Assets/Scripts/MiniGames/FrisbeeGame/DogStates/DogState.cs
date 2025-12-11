@@ -121,7 +121,7 @@ using UnityEngine.AI;
         if (directionToTarget != Vector3.zero)
         {   
             // The direction is inverted to make the dog face the target correctly
-            Quaternion targetRotation = Quaternion.LookRotation(-directionToTarget);
+            Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }

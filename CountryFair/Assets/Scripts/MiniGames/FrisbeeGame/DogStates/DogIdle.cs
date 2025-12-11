@@ -25,7 +25,7 @@ public class DogIdle : DogState
 
     /// <summary>
     /// Event invoked when the dog reaches its target position and enters the idle state.
-    /// Its used to notify the player that the dog is ready for catching the frisbee see <see cref="OnPlayerHand.DogReachedTarget/>.
+    /// Its used to notify the player that the dog is ready for catching the frisbee see <see cref="OnPlayerFront.DogReachedTarget/>.
     /// </summary>
     public UnityEvent positionReached;
 
