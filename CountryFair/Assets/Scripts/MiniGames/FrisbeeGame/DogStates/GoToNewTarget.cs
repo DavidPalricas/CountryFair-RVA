@@ -62,6 +62,8 @@ public class GoToNewTarget : DogState{
     private Vector3 ChooseNewTargetPos()
     {
         float dogDistance = _gameManager.AdaptiveParameters["DogDistance"];
+
+        Debug.Log("Choosing new target position at distance: " + dogDistance);
         
         const float MIN_ANGLE = -90f * Mathf.Deg2Rad;
         const float MAX_ANGLE = 90f * Mathf.Deg2Rad;

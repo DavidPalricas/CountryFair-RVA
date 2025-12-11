@@ -124,7 +124,10 @@ public class OnMovement : FrisbeeState
         {
             _touchedGround = true;
             _rigidbody.angularDamping = 10.0f; // Trava o spin no chão
+            _rigidbody.freezeRotation.
         }
+
+        Debug.Log("Frisbee collided with: " + other.gameObject.name);
     }
 
     private void OnCollisionExit(Collision other)
