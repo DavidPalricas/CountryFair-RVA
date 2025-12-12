@@ -64,7 +64,6 @@ public class Landed: FrisbeeState
         }
        
         frisbeeLanded.Invoke();
-        _trajectoryLine.enabled = false;
     }
 
     /// <summary>

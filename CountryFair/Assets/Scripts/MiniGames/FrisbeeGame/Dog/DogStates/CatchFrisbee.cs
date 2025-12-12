@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// State where the dog navigates to and catches the thrown frisbee.
@@ -10,7 +11,9 @@ using UnityEngine;
 /// to the <see cref="GiveFrisbeeToPlayer"/> state.
 /// </remarks>
 public class CatchFrisbee : DogState
-{  
+{   
+    public UnityEvent catchFrisbee;
+
     /// <summary>
     /// Initializes the CatchFrisbee state by calling the base DogState initialization.
     /// </summary>
@@ -51,6 +54,8 @@ public class CatchFrisbee : DogState
         Vector3 frisbeePos = _frisbeeTransform.position;
 
         _agent.SetDestination(frisbeePos);
+
+        catchFrisbee.Invoke();
    }
 
     /// <summary>
