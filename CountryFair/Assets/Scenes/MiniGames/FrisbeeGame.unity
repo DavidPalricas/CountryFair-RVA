@@ -222,7 +222,7 @@ Transform:
   m_GameObject: {fileID: 8401101}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: -0.000000059604645, w: -0.25881848}
-  m_LocalPosition: {x: -2.223, y: 0.9, z: -2.062}
+  m_LocalPosition: {x: -2.22, y: 1.32, z: -2.06}
   m_LocalScale: {x: 0.9349603, y: 0.07452757, z: 0.88462514}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -789,7 +789,7 @@ Transform:
   m_GameObject: {fileID: 205684291}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: -0.000000059604645, w: -0.25881848}
-  m_LocalPosition: {x: -0.029, y: 0.9, z: 0.16}
+  m_LocalPosition: {x: -0.03, y: 1.32, z: 0.16}
   m_LocalScale: {x: 0.9349603, y: 0.07452757, z: 0.88462514}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1056,7 +1056,7 @@ Transform:
   m_GameObject: {fileID: 269428425}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: -0.000000059604645, w: -0.25881848}
-  m_LocalPosition: {x: 1.236, y: 0.9, z: -1.307}
+  m_LocalPosition: {x: 1.24, y: 1.32, z: -1.31}
   m_LocalScale: {x: 0.9349603, y: 0.07452757, z: 0.88462514}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1685,7 +1685,7 @@ MonoBehaviour:
     from: {fileID: 453551355}
     to: {fileID: 453551357}
   - name: ForcedPoint
-    from: {fileID: 0}
+    from: {fileID: 453551357}
     to: {fileID: 453551355}
 --- !u!114 &453551359
 MonoBehaviour:
@@ -4849,7 +4849,7 @@ Transform:
   m_GameObject: {fileID: 1483204207}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: -0.000000059604645, w: -0.25881848}
-  m_LocalPosition: {x: -2.168, y: 0.9, z: -0.832}
+  m_LocalPosition: {x: -2.17, y: 1.32, z: -0.83}
   m_LocalScale: {x: 0.9349603, y: 0.07452757, z: 0.88462514}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5632,7 +5632,7 @@ Transform:
   m_GameObject: {fileID: 1679829737}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: -0.000000059604645, w: -0.25881848}
-  m_LocalPosition: {x: -1.149, y: 0.9, z: -2.683}
+  m_LocalPosition: {x: -1.15, y: 1.32, z: -2.69}
   m_LocalScale: {x: 0.9349603, y: 0.07452757, z: 0.88462514}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5716,7 +5716,7 @@ Transform:
   m_GameObject: {fileID: 1717130968}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: -0.000000059604645, w: -0.25881848}
-  m_LocalPosition: {x: -0.032, y: 0.9, z: -3.044}
+  m_LocalPosition: {x: -0.03, y: 1.32, z: -3.05}
   m_LocalScale: {x: 0.9349603, y: 0.07452757, z: 0.88462514}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5932,7 +5932,7 @@ Transform:
   m_GameObject: {fileID: 1766877760}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: -0.000000059604645, w: -0.25881848}
-  m_LocalPosition: {x: -1.32, y: 0.9, z: 0.16}
+  m_LocalPosition: {x: -1.32, y: 1.32, z: 0.16}
   m_LocalScale: {x: 0.9349603, y: 0.07452757, z: 0.88462514}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -6273,7 +6273,7 @@ Transform:
   m_GameObject: {fileID: 1810999756}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: -0.000000059604645, w: -0.25881848}
-  m_LocalPosition: {x: 0.927, y: 0.9, z: -0.28}
+  m_LocalPosition: {x: 0.93, y: 1.32, z: -0.28}
   m_LocalScale: {x: 0.9349603, y: 0.07452757, z: 0.88462514}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -7203,7 +7203,7 @@ Transform:
   m_GameObject: {fileID: 2046204982}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: -0.000000059604645, w: -0.25881848}
-  m_LocalPosition: {x: 0.989, y: 0.9, z: -2.528}
+  m_LocalPosition: {x: 0.99, y: 1.32, z: -2.53}
   m_LocalScale: {x: 0.9349603, y: 0.07452757, z: 0.88462514}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -7647,15 +7647,15 @@ PrefabInstance:
     - target: {fileID: 1202934027489607966, guid: ed3a1a51081ad2546ae98829a89dc632, type: 3}
       propertyPath: redBalloonPrefab
       value: 
-      objectReference: {fileID: 3396820265375727783, guid: 6bc1fa59f754e43eca1ede6a24d1fe8c, type: 3}
+      objectReference: {fileID: 3396820265375727783, guid: 2fea604df3fdc13458361852d27e2e12, type: 3}
     - target: {fileID: 1202934027489607966, guid: ed3a1a51081ad2546ae98829a89dc632, type: 3}
       propertyPath: blueBalloonPrefab
       value: 
-      objectReference: {fileID: 3396820265375727783, guid: 8e9d91feadc8e4e9d816ee298dae3e26, type: 3}
+      objectReference: {fileID: 3396820265375727783, guid: 543bbd44f60af49468ed4badde237551, type: 3}
     - target: {fileID: 1202934027489607966, guid: ed3a1a51081ad2546ae98829a89dc632, type: 3}
       propertyPath: yellowBalloonPrefab
       value: 
-      objectReference: {fileID: 3396820265375727783, guid: 2f216f7780c07414e8283e089d6d69b3, type: 3}
+      objectReference: {fileID: 3396820265375727783, guid: 5a9573db5608ed84eae2be47c6632bdd, type: 3}
     - target: {fileID: 1202934027489607966, guid: ed3a1a51081ad2546ae98829a89dc632, type: 3}
       propertyPath: balloonsPlaceHoldersGroup
       value: 

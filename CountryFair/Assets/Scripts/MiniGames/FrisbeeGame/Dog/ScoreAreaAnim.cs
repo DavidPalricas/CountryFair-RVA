@@ -51,39 +51,70 @@ public class ScoreAreaAnim : MonoBehaviour
 
 
     [Header("Score Animation Settings")]
+    /// <summary>
+    /// Prefab for the blue balloon used in the score animation.
+    /// </summary>
     [SerializeField]
     private GameObject blueBalloonPrefab = null;
 
-
-    [SerializeField]
-    private Transform balloonsPlaceHoldersGroup = null;
-   
+    /// <summary>
+    /// Prefab for the red balloon used in the score animation.
+    /// </summary>
    [SerializeField]
     private GameObject redBalloonPrefab = null;
 
+    /// <summary>
+    /// Prefab for the yellow balloon used in the score animation.
+    /// </summary>
     [SerializeField] 
     private GameObject yellowBalloonPrefab = null;
 
+    /// <summary>
+    /// Minimum number of balloons to spawn during a score animation.
+    /// </summary>
     [SerializeField]
     private int minBaloons = 3;
 
+    /// <summary>
+    /// Minimum height (in units) that balloons will rise before exploding.
+    /// </summary>
    [SerializeField]
     private float minHeightToBalloonExplode = 3f;
     
+    /// <summary>
+    /// Maximum height (in units) that balloons will rise before exploding.
+    /// </summary>
     [SerializeField]
     private float maxHeightToBalloonExplode = 5f;
 
-
+    /// <summary>
+    /// Minimum duration (in seconds) for balloons to fly upward before exploding.
+    /// </summary>
     [SerializeField]
     private float minflyDuration = 1f;
 
+    /// <summary>
+    /// Maximum duration (in seconds) for balloons to fly upward before exploding.
+    /// </summary>
     [SerializeField]
     private float maxflyDuration = 2f;
 
-
+    /// <summary>
+    /// Visual effect prefab instantiated when a balloon pops.
+    /// </summary>
     [SerializeField]
     private GameObject popBalloonEffect = null;
 
+    /// <summary>
+    /// Transform containing child GameObjects that serve as spawn positions for balloons.
+    /// </summary>
+    [SerializeField]
+    private Transform balloonsPlaceHoldersGroup = null;
+
+    /// <summary>
+    /// Cached array of placeholder GameObjects used as spawn positions for balloons.
+    /// Populated during Awake from the children of balloonsPlaceHoldersGroup.
+    /// </summary>
     private GameObject[] _balloonsPlaceHolders = null;
 
     /// <summary>
@@ -160,32 +191,41 @@ public class ScoreAreaAnim : MonoBehaviour
         _animSequence?.Kill();
     }
 
+    /// <summary>
+    /// Triggers the score animation by spawning and animating balloons.
+    /// Randomly spawns between minBaloons and maxBaloons, ensuring balanced distribution of colors.
+    /// Each balloon flies upward and pops at a random height.
+    /// </summary>
     public void ScoreAnim()
     {    
         int maxBaloons = _balloonsPlaceHolders.Length;
 
-        // 1. Determinar quantos balões spawnar
-        int baloonsNumber = (int)Utils.RandomValueInRange(minBaloons, maxBaloons);
+        int baloonsNumber = Utils.RandomValueInRange(minBaloons, maxBaloons);
 
         List<GameObject> avaiblePlaceholders = _balloonsPlaceHolders.ToList();
 
+        Dictionary<GameObject, int> balloonTypesCount = new()
+        {
+            { blueBalloonPrefab, 0 },
+            { redBalloonPrefab, 0 },
+            { yellowBalloonPrefab, 0 }
+        };
+
         for (int i = 0; i < baloonsNumber; i++)
         {
-            // 2. Escolher a cor (Lógica mantida...)
-            GameObject balloonType = GetBalloonType();
+            GameObject balloonType = GetBalloonType(balloonTypesCount);
+
+            balloonTypesCount[balloonType]++;
 
             Vector3 spawnPosition = GetBalloonSpawnPosition(avaiblePlaceholders);
             
             GameObject balloon = Instantiate(balloonType, spawnPosition, Quaternion.identity);
 
-            // 5. Calcular a altura e definir a velocidade de subida
-            // NOTA: Certifique-se que minflyDuration e maxflyDuration estão declarados no script
-            float moveDuration = Utils.RandomValueInRange(minflyDuration, maxflyDuration); // Coloquei valores fixos caso não tenha as variáveis, ajuste conforme necessário
+            float moveDuration = Utils.RandomValueInRange(minflyDuration, maxflyDuration); 
 
             float addedHeight = Utils.RandomValueInRange(minHeightToBalloonExplode, maxHeightToBalloonExplode);
             float targetY = spawnPosition.y + addedHeight;
 
-            // 6. Animar com DOTween
             balloon.transform.DOMoveY(targetY, moveDuration)
                 .SetEase(Ease.InSine)
                 .OnComplete(() => 
@@ -195,33 +235,43 @@ public class ScoreAreaAnim : MonoBehaviour
         }
     }
 
-    private GameObject GetBalloonType()
-    {
-        float randomValue = Random.Range(0f, 1f);
+    /// <summary>
+    /// Selects a balloon type (color) using a balanced distribution algorithm.
+    /// Prioritizes balloon types that have been spawned the least to maintain color balance.
+    /// </summary>
+    /// <param name="balloonTypesCount">Dictionary tracking the count of each balloon type spawned.</param>
+    /// <returns>A GameObject reference to the selected balloon prefab.</returns>
+    private GameObject GetBalloonType(Dictionary<GameObject, int> balloonTypesCount)
+    {   
+        int minCount = balloonTypesCount.Min(typeCount => typeCount.Value);
 
-        Debug.Log($"Random value for balloon type: {randomValue}");
+        GameObject[] candidates = balloonTypesCount
+            .Where(typeCount => typeCount.Value == minCount)
+            .Select(typeCount => typeCount.Key)
+            .ToArray();
 
-        if (randomValue < 0.33f)
-        {
-            return blueBalloonPrefab;
-        }
-
-        if (randomValue < 0.66f)
-        {
-            return redBalloonPrefab;
-        }
-            
-        return yellowBalloonPrefab;
+        return candidates[Utils.RandomValueInRange(0, candidates.Length)];
     }
 
+    /// <summary>
+    /// Selects a random spawn position from the available placeholders and removes it from the list.
+    /// Ensures each balloon spawns at a unique position during a single score animation.
+    /// </summary>
+    /// <param name="avaiblePlaceholders">List of available placeholder GameObjects for balloon spawning.</param>
+    /// <returns>The world position of the selected placeholder.</returns>
     private Vector3 GetBalloonSpawnPosition(List<GameObject> avaiblePlaceholders)
     {
-        GameObject placeholder = avaiblePlaceholders[Random.Range(0, avaiblePlaceholders.Count)];
+        GameObject placeholder = avaiblePlaceholders[Utils.RandomValueInRange(0, avaiblePlaceholders.Count)];
         avaiblePlaceholders.Remove(placeholder);
 
         return placeholder.transform.position;
     }
 
+    /// <summary>
+    /// Instantiates a pop effect at the balloon's position and destroys both the effect and balloon.
+    /// The pop effect is automatically cleaned up after a fixed duration.
+    /// </summary>
+    /// <param name="balloon">The balloon GameObject to be popped and destroyed.</param>
     private void PopBalloon(GameObject balloon)
     {
         GameObject effect = Instantiate(popBalloonEffect, balloon.transform.position, Quaternion.identity);
