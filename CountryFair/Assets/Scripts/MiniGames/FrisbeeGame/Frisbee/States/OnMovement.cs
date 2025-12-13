@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class OnMovement : FrisbeeState
 {
@@ -18,7 +17,6 @@ public class OnMovement : FrisbeeState
 
     // Variáveis para controlar a aterragem
     private bool _touchedGround = false;
-    public UnityEvent frisbeeThrown;
 
     // Guardar valores originais do Rigidbody
     private float _defaultAngularDrag;
@@ -32,8 +30,7 @@ public class OnMovement : FrisbeeState
     public override void Enter()
     {
         base.Enter();
-        frisbeeThrown.Invoke();
-        
+ 
         // Garante que o disco roda livremente no ar
         _rigidbody.angularDamping = 0.1f; 
     }
@@ -49,6 +46,8 @@ public class OnMovement : FrisbeeState
         base.Exit();
         // Restaura o atrito original
         _rigidbody.angularDamping = _defaultAngularDrag;
+
+        _trajectoryLine.enabled = false;
     }
 
     private void ApplySimpleAerodynamics()
@@ -139,23 +138,30 @@ public class OnMovement : FrisbeeState
     // Lógica de aterragem (Mata a rotação quando toca no chão)
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground") && fSM.CurrentState == this)
         {
             _touchedGround = true;
-            _rigidbody.angularDamping = 10.0f; // Trava o spin no chão
+            _rigidbody.angularDamping = 10.0f; 
         }
-
-        Debug.Log("Frisbee collided with: " + other.gameObject.name);
 
         _rigidbody.constraints = RigidbodyConstraints.None;
     }
 
     private void OnCollisionExit(Collision other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground") && fSM.CurrentState == this)
         {
             _touchedGround = false;
             _rigidbody.angularDamping = 0.1f; // Volta a voar
+        }
+    }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+          if (other.gameObject.CompareTag("OutOfBounds") && fSM.CurrentState == this)
+        {
+            fSM.ChangeState("FrisbeeOutOfBounds");
         }
     }
 }

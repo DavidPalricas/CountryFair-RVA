@@ -57,7 +57,7 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _FrenelColor: {r: 0.78113204, g: 0.23240471, b: 0.004421438, a: 1}
+    - _FrenelColor: {r: 0.7735849, g: 0.27562737, b: 0.0693307, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &4135810476147421231

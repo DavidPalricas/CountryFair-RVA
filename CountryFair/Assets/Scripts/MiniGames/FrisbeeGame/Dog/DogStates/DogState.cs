@@ -38,6 +38,12 @@ using UnityEngine.AI;
     /// </summary>
     protected FrisbeeGameManager _gameManager;
 
+     /// <summary>
+    /// Reference to the frisbee's transform component.
+    /// Found in the scene during <see cref="LateStart"/> using the "Frisbee" tag.
+    /// </summary>
+    protected Transform _frisbeeTransform;
+
     /// <summary>
     /// Initializes the dog state by setting up state properties and configuring the NavMeshAgent.
     /// </summary>
@@ -72,6 +78,17 @@ using UnityEngine.AI;
         if (_playerTransform == null)
         {
             Debug.LogError("Player GameObject not found in the scene.");
+
+            return;
+        }
+
+        _frisbeeTransform = GameObject.FindGameObjectWithTag("Frisbee").transform;
+
+        if (_frisbeeTransform == null)
+        {
+            Debug.LogError("Frisbee GameObject not found in the scene.");
+
+            return;
         }
 
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<FrisbeeGameManager>();

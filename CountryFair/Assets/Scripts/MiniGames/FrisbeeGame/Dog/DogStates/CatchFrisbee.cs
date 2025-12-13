@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// State where the dog navigates to and catches the thrown frisbee.
@@ -10,12 +11,8 @@ using UnityEngine;
 /// to the <see cref="GiveFrisbeeToPlayer"/> state.
 /// </remarks>
 public class CatchFrisbee : DogState
-{  
-    /// <summary>
-    /// Reference to the frisbee's transform component.
-    /// Found in the scene during <see cref="LateStart"/> using the "Frisbee" tag.
-    /// </summary>
-    private Transform _frisbeeTransform;
+{   
+    public UnityEvent catchFrisbee;
 
     /// <summary>
     /// Initializes the CatchFrisbee state by calling the base DogState initialization.
@@ -39,12 +36,7 @@ public class CatchFrisbee : DogState
     /// </remarks>
     public override void LateStart()
     {
-        _frisbeeTransform = GameObject.FindGameObjectWithTag("Frisbee").transform;
-
-        if (_frisbeeTransform == null)
-        {
-            Debug.LogError("Frisbee GameObject not found in the scene.");
-        }
+        base.LateStart();
     }
 
     /// <summary>
@@ -62,6 +54,8 @@ public class CatchFrisbee : DogState
         Vector3 frisbeePos = _frisbeeTransform.position;
 
         _agent.SetDestination(frisbeePos);
+
+        catchFrisbee.Invoke();
    }
 
     /// <summary>
