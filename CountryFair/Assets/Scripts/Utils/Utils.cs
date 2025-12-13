@@ -89,7 +89,7 @@ public static class Utils
     }
 
 
-     /// <summary>
+    /// <summary>
     /// The GetChildren method is responsible for retrieving the children of a game object.
     /// </summary>
     /// <param name="parent">The transform component of the game object whose children are to be retrieved.</param>
