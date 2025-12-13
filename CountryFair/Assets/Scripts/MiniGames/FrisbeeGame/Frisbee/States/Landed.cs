@@ -54,6 +54,8 @@ public class Landed: FrisbeeState
 
          Debug.Log("Frisbee Landed in poistion " + transform.position);
 
+        _rigidbody.linearVelocity = Vector3.zero;
+
         if (FrisbeeOnScoreArea())
         {
             playerScored.Invoke();
