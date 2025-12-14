@@ -20,7 +20,7 @@ public class ArcheryGameManager : MonoBehaviour
     public int GetScore() => score;
     public void SetScore(int score){
         this.score += score;
-        scoreSystem.PlayerScored();
+        scoreSystem.PlayerScored(score);
     }
 
 
