@@ -101,34 +101,29 @@ public class OnPlayerFront : FrisbeeState
 
     /// <summary>
     /// Initiates the frisbee throw by configuring physics and applying initial forces.
-    /// Uses the tracked hand movement vector from TrackFrisbeeThrow component.
-    /// // Physics Reference: https://web.mit.edu/womens-ult/www/smite/frisbee_physics.pdf
     /// </summary>
     /// <remarks>
     /// <para>
     /// The throw sequence:
     /// <list type="number">
-    /// <item><description>Disables further throwing until the dog is ready again</description></item>
     /// <item><description>Detaches the frisbee from the player's hand (sets parent to null)</description></item>
-    /// <item><description>Enables physics simulation (non-kinematic, custom gravity via aerodynamics)</description></item>
-    /// <item><description>Enables the collider for interaction with the environment</description></item>
-    /// <item><description>Sets the initial angle of attack for aerodynamic calculations</description></item>
-    /// <item><description>Calculates throw direction from hand tracking data (velocity + rotation)</description></item>
-    /// <item><description>Applies linear velocity in the tracked throw direction</description></item>
-    /// <item><description>Applies angular velocity (spin around vertical axis)</description></item>
+    /// <item><description>Enables physics simulation (non-kinematic, with gravity)</description></item>
+    /// <item><description>Disables trigger mode on collider for physical interactions</description></item>
     /// <item><description>Enables trajectory visualization line</description></item>
+    /// <item><description>Transitions to "FrisbeeThrown" state</description></item>
     /// </list>
+    /// </para>
+    /// <para>
+    /// Physics Reference: https://web.mit.edu/womens-ult/www/smite/frisbee_physics.pdf
     /// </para>
     /// </remarks>
     public void ThrowFrisbee()
     {   
-        // Detach the frisbee from its hand placeholder to allow it not move when the hand moves
         transform.parent = null;
 
         _rigidbody.isKinematic = false;
 
-        // Gravity will be applied manually via aerodynamic forces
-        _rigidbody.useGravity = true; 
+        _rigidbody.useGravity = true;
 
         _collider.isTrigger = false;
 
@@ -160,7 +155,6 @@ public class OnPlayerFront : FrisbeeState
     {    
         ResetTransform();
         
-        // In the dog state to catch the frisbee, the frisbee visibility is turned off, so we need to enable it here
         gameObject.SetActive(true);
 
         _rigidbody.useGravity = false;
@@ -249,20 +243,16 @@ public class OnPlayerFront : FrisbeeState
         
         foreach (Material mat in materials)
         {
-            // URP/Lit shader properties
-            mat.SetFloat("_Surface", 1); // 0 = Opaque, 1 = Transparent
-            mat.SetFloat("_Blend", 0); // 0 = Alpha, 1 = Premultiply, 2 = Additive, 3 = Multiply
+            mat.SetFloat("_Surface", 1);
+            mat.SetFloat("_Blend", 0);
             
-            // Configurações de renderização
             mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             mat.SetInt("_ZWrite", 0);
             mat.SetInt("_AlphaClip", 0);
             
-            // Render queue para transparent
             mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
             
-            // Keywords do URP
             mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
             mat.EnableKeyword("_ALPHAPREMULTIPLY_OFF");
         }
@@ -350,9 +340,17 @@ public class OnPlayerFront : FrisbeeState
         ChangeMaterialsOpacity();
     }
 
+    /// <summary>
+    /// Called externally when the dog is moving towards the frisbee to catch it.
+    /// Disables throwing by updating the visual feedback, making the frisbee semi-transparent.
+    /// </summary>
+    /// <remarks>
+    /// This method should be called by the dog's catching state (via UnityEvent) to signal that
+    /// the dog is actively pursuing the frisbee. Sets <see cref="_dogInTarget"/> to false,
+    /// preventing the player from throwing again until the dog returns to its ready position.
+    /// </remarks>
     public void DogWillCatchFrsibee()
     {
         _dogInTarget = false;
-
     }
 }
