@@ -33,6 +33,9 @@ public class WanderingPerson: MonoBehaviour
         }
 
         _agent = GetComponent<NavMeshAgent>();
+
+        const int AVOIDANCE_PRIORITY_MAX_VALUE = 99;
+        _agent.avoidancePriority = Random.Range(0, AVOIDANCE_PRIORITY_MAX_VALUE);
     }
 
     private void Start()
@@ -42,7 +45,7 @@ public class WanderingPerson: MonoBehaviour
 
     private void Update()
     {  
-        if (DestinationReached() || IsStuck())
+        if (DestinationReached())
         {   
             ChooseRandomDestination();
         }
@@ -60,23 +63,5 @@ public class WanderingPerson: MonoBehaviour
         NavMesh.SamplePosition(randomDirection, out NavMeshHit navHit, walkRadius, NavMesh.AllAreas);
         _agent.SetDestination(navHit.position);
         stuckTimer = Time.time + stuckThreshold;
-    }
-
-
-    private bool IsStuck()
-    {
-        if (Time.time > stuckTimer)
-        {   
-            Vector3 currentPosition = transform.position;
-            
-            if (previousPosition != Vector3.zero || previousPosition == currentPosition)
-            {
-                return true;
-            }
-
-            previousPosition = currentPosition;
-        }
-
-        return false;
     }
 }

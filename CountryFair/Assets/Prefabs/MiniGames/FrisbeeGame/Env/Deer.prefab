@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 8877622317175251246}
   - component: {fileID: 9178171286587767482}
   - component: {fileID: 6304525652060174921}
-  - component: {fileID: 7004475659775643963}
   m_Layer: 0
   m_Name: Deer
   m_TagString: Untagged
@@ -174,29 +173,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e35348aafc967d341ac5834a0c19dbfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalUtility
---- !u!136 &7004475659775643963
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 360765379235001642}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.9919977
-  m_Height: 2.0386028
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.7468476, z: 0.049071312}
 --- !u!1001 &6054666499966067088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223,7 +199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 44fd04413b629b0419123c8bdc9e8312, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 44fd04413b629b0419123c8bdc9e8312, type: 3}
       propertyPath: m_LocalPosition.z

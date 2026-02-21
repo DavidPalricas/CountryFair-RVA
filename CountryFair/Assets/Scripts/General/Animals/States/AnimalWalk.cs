@@ -11,15 +11,24 @@ public class AnimalWalk: AnimalState
     
     private NavMeshAgent _agent;
 
+
+    private int _agentDefaultPriority;
+
     protected override void Awake()
     {   
         base.Awake();
         _agent = GetComponent<NavMeshAgent>();
+        
+        const int AVOIDANCE_PRIORITY_MIN_VALUE = 1;
+        const int AVOIDANCE_PRIORITY_MAX_VALUE = 99;
+        _agentDefaultPriority = Random.Range(AVOIDANCE_PRIORITY_MIN_VALUE , AVOIDANCE_PRIORITY_MAX_VALUE);
     }
 
     public override void Enter()
     {
         base.Enter();
+
+        _agent.avoidancePriority = _agentDefaultPriority;
 
         _agent.isStopped = false;
 
@@ -28,7 +37,6 @@ public class AnimalWalk: AnimalState
         _boredomStat = Mathf.Max(_boredomStat - boredomRecoveryRate, 0f);
 
         UpdateStats();
-
     }
 
     public override void Execute()
@@ -40,6 +48,16 @@ public class AnimalWalk: AnimalState
             string transitionName = _animalUtility.DecideNextAction();
             fSM.ChangeState(transitionName);
         }
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+
+         _agent.isStopped = true;
+          
+        // When is stopped has max prioty to avoid being pushed by other agents, but when is walking it has a random priority to avoid all agents having the same priority and getting stuck.
+         _agent.avoidancePriority = 0;
     }
 
 
