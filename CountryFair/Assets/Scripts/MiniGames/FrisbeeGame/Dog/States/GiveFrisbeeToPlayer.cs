@@ -31,8 +31,6 @@ public class GiveFrisbeeToPlayer : DogState
     [SerializeField]
     private UnityEvent<AudioManager.GameSoundEffects, GameObject> happyWhine;
 
-
-
     private readonly AudioManager.GameSoundEffects _happyWhineSoundEffect = AudioManager.GameSoundEffects.DOG_HAPPY_WHINE;
 
     /// <summary>
@@ -82,10 +80,6 @@ public class GiveFrisbeeToPlayer : DogState
         base.Enter();
 
         frisbeeInDogMouth.SetActive(true);
-
-        _frisbeeTransform.parent = frisbeeInDogMouth.transform;
-
-        _frisbeeTransform.localPosition = Vector3.zero;
 
         _agent.SetDestination(_playerTransform.position);
    }
