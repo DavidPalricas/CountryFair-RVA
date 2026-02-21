@@ -18,10 +18,7 @@ public class AnimalWalk: AnimalState
     {   
         base.Awake();
         _agent = GetComponent<NavMeshAgent>();
-        
-        const int AVOIDANCE_PRIORITY_MIN_VALUE = 1;
-        const int AVOIDANCE_PRIORITY_MAX_VALUE = 99;
-        _agentDefaultPriority = Random.Range(AVOIDANCE_PRIORITY_MIN_VALUE , AVOIDANCE_PRIORITY_MAX_VALUE);
+        _agentDefaultPriority = _agent.avoidancePriority;   
     }
 
     public override void Enter()
