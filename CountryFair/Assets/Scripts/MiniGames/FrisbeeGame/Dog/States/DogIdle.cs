@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -144,7 +143,7 @@ public class DogIdle : DogState
     /// Initiates the transition to the "FrisbeeLanded" state, which will eventually lead to the
     /// <see cref="CatchFrisbee"/> state where the dog navigates to retrieve the frisbee.
     /// </remarks>
-    public void FrisbeeLanded()
+    public void PlayerScored()
     {   scoreArea.SetActive(false);
 
         animator.SetBool("StopAnim", true);

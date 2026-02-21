@@ -224,13 +224,6 @@ public class OnMovement : FrisbeeState
 
                 return;
             }
-
-            if (other.gameObject.CompareTag("OutOfBounds") && !_touchedGround)
-            {   
-                playerMissed.Invoke();
-            
-                fSM.ChangeState("FrisbeeOutOfBounds");
-            }
         }
     }
 
