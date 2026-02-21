@@ -43,7 +43,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6442569606691477175}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.5
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 25
@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Walk
   walkRadius: 10
+  stuckThreshold: 5
   animator: {fileID: 3327886029541993553}
 --- !u!1001 &4334191495945747488
 PrefabInstance:

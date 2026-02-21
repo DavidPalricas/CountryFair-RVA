@@ -1,12 +1,19 @@
 using UnityEngine;
 
-public class AnimalEat: State
-{
+public class AnimalEat: AnimalState
+{   
+    [Header("Recovery Stats Rates")]
+    [SerializeField]
+    [Range(0f, 1f)]
+    private float hungerRecoveryRate = 0.1f;
+    
+    [Header("Eating Time Settings")]
     [SerializeField]
     private float minTimeToEat = 30f;
 
     [SerializeField]
     private float maxTimeToEat = 60f;
+
 
     private float _timeToEat;
 
@@ -15,6 +22,10 @@ public class AnimalEat: State
         base.Enter();
 
         _timeToEat = Utils.RandomValueInRange(minTimeToEat, maxTimeToEat) + Time.time;
+
+        _hungerStat = Mathf.Max(_hungerStat - hungerRecoveryRate, 0f);
+
+        UpdateStats();
     }
 
 
@@ -24,7 +35,8 @@ public class AnimalEat: State
 
         if (Time.time >= _timeToEat)
         {
-            fSM.ChangeState("FinishedEating");
+            string transitionName = _animalUtility.DecideNextAction();
+            fSM.ChangeState(transitionName);
         }
     }
 
