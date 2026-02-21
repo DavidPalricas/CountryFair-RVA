@@ -15,15 +15,7 @@ public class Landed: FrisbeeState
 
     [Header("Landed Events")]
 
-    /// <summary>Event invoked when the frisbee has successfully landed on the ground.
-    /// </summary>
-    /// <remarks>
-    /// This event is triggered in the <see cref="DogIdle.FrisbeeLanded"/> to trigger the dog to catch the frisbee.
-    /// </remarks>
-    [SerializeField]
-    private UnityEvent frisbeeLanded;
-
-        /// <summary>Event invoked when the player successfully scores by landing the frisbee in the score area.
+    /// <summary>Event invoked when the player successfully scores by landing the frisbee in the score area.
     /// </summary>
     /// <remarks>
     /// This event is trigger in the <see cref="GiveFrisbeeToPlayer"/> state to alert the dog that the player has scored,
@@ -71,26 +63,23 @@ public class Landed: FrisbeeState
 
         _rigidbody.linearVelocity = Vector3.zero;
 
-        bool frisbeeOnScoreArea = FrisbeeOnScoreArea();
-
-        if (!TutorialActive)
+        if (FrisbeeOnScoreArea())
         {
-            if (frisbeeOnScoreArea)
-            {   
-                // This is event must be ivoked after the tutorial
-                playerScored.Invoke(_scorePoints);
-            }
-            else
-            {     
-            playerMissed.Invoke();
+            if (TutorialActive)
+            {
+                fSM.ChangeState("ReturnToPlayer");
+
+                return;
             }
 
-            frisbeeLanded.Invoke();
+            playerScored.Invoke(_scorePoints);
 
             return;
         }
 
-        fSM.ChangeState("TutorialActive");
+        playerMissed.Invoke();
+
+        fSM.ChangeState("ReturnToPlayer");
     }
 
     /// <summary>
@@ -101,22 +90,7 @@ public class Landed: FrisbeeState
     {
          base.Execute();
     }
-
-
-    private void LateUpdate()
-    {  
-        /* This transition is handled here instead of in the Enter method to allow the physics engine to update properly.
-           Processing it immediately in Enter could cause multiple state transitions (OnMovement -> Landed -> OnPlayerFront)
-           to occur within a single frame, potentially bypassing necessary logic.
-        */  
-
-        if (fSM.CurrentState == this && TutorialActive)
-        {
-            fSM.ChangeState("TutorialActive");
-            return;
-        }
-    }
-
+    
     /// <summary>
     /// Called when exiting the Landed state (when dog retrieves the frisbee).
     /// </summary>
