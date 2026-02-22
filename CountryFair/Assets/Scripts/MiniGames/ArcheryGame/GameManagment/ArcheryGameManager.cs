@@ -78,12 +78,18 @@ public class ArcheryGameManager : MiniGameManager
             { yellowBalloonPrefab, 0 }
         };
 
+          if (!GameManager.GetInstance().ArcheryTutorialCompleted)
+        {
+            PlayerPrefs.DeleteKey("ArcheryDifficultyLevel");
+        }
+
         SetBalloonColorToScore();
     }
 
     public override void TutorialCompleted()
     {   
         base.TutorialCompleted();
+        difficultyLevel = PlayerPrefs.GetInt("ArcheryDifficultyLevel", 0);
         ApplyDifficultySettings();
     }
 
@@ -95,7 +101,7 @@ public class ArcheryGameManager : MiniGameManager
     }
 
     protected override void ApplyDifficultySettings()
-    {
+    {    
         _currentDesiredCount = Mathf.RoundToInt(targetsCount + (difficultyLevel * targetsPerLevel));
 
         float saturationFactor = difficultyLevel / (difficultyLevel + 4f); 
@@ -103,6 +109,8 @@ public class ArcheryGameManager : MiniGameManager
         _currentTransparencyRatio = transparencyRatioCurve.Evaluate(saturationFactor);
 
         _currentMoveDuration = Mathf.Lerp(slowMoveDuration, fastMoveDuration, saturationFactor);
+
+        PlayerPrefs.SetInt("ArcheryDifficultyLevel", difficultyLevel);
         
         Debug.Log($"[Archery Stats] Total Balloons: {_currentDesiredCount} | Movimento Ratio: {_currentMovingRatio:P0} | Move Duration: {_currentMoveDuration:F1}s");
         

@@ -41,8 +41,6 @@ public class DogIdle : DogState
     [SerializeField]
     private UnityEvent positionReached;
 
-    private bool _firstTimeInIdle = true;
-
 
     private float _impatientTimer = 0f;
 
@@ -96,21 +94,14 @@ public class DogIdle : DogState
 
         RestImpatientTimer();
 
-        _currentTargetPos = transform.position;
-
         scoreArea.SetActive(true);
 
         positionReached.Invoke();
 
         animator.SetFloat("Speed", 0f);
 
-        if (!_firstTimeInIdle)
-        {
-            reSpawnScoreAreas.Invoke();
-            return;
-        }
-
-        _firstTimeInIdle = false;
+       
+        reSpawnScoreAreas.Invoke();
     }
 
     /// <summary>

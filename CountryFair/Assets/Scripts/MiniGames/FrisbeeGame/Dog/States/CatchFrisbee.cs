@@ -14,6 +14,8 @@ public class CatchFrisbee : DogState
 {   
     [SerializeField]
     private UnityEvent catchFrisbee;
+
+    private Transform _frisbeeTransform;
     
     /// <summary>
     /// Reference to the frisbee's transform component.
@@ -43,6 +45,15 @@ public class CatchFrisbee : DogState
     public override void LateStart()
     {
         base.LateStart();
+
+        _frisbeeTransform = GameObject.FindGameObjectWithTag("Frisbee").transform;
+
+        if (_frisbeeTransform == null)
+        {
+            Debug.LogError("Frisbee GameObject not found in the scene.");
+
+            return;
+        }
     }
 
     /// <summary>

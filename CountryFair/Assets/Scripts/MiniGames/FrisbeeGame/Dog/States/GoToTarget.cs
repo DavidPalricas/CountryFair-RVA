@@ -50,6 +50,8 @@ public class GoToTarget : DogState{
     public override void LateStart()
     {
        base.LateStart();
+
+        _currentTargetPos = ChooseNewTargetPos();
     }
 
     /// <summary>
@@ -135,10 +137,13 @@ public class GoToTarget : DogState{
     /// <returns>A valid Vector3 position on the NavMesh within the semicircular area.</returns>
     private Vector3 ChooseNewTargetPos()
     {
-        float dogDistance = PlayerPrefs.GetFloat("DogDistance", 5f);
+        float dogDistance = PlayerPrefs.GetFloat("DogDistance", float.MaxValue);
 
-        Debug.Log("Choosing new target position at distance: " + dogDistance);
-        
+        if (dogDistance == float.MaxValue)
+        {
+            return transform.position;
+        }
+     
         const float MIN_ANGLE = -90f * Mathf.Deg2Rad;
         const float MAX_ANGLE = 90f * Mathf.Deg2Rad;
 

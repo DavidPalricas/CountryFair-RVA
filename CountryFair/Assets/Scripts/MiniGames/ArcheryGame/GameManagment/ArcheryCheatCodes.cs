@@ -40,31 +40,42 @@ public class  ArcheryCheatCodes : CheatCodes
         base.ActivateCheat(cheatCode);
 
         switch (cheatCode)
-        {  
+        {    case "reset":
+                _miniGameManager.ResetDifficulty();
+                return;
+
             case "happy":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.HAPPY);
                 return;
+
             case "neutral":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.NEUTRAL);
                 return;
+
             case "sad":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SAD);
                 return;
+
             case "angry":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.ANGRY);
                 return;
+
             case "disgust":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.DISGUST);
                 return;
+
             case "surprise":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SURPRISE);
                 return;
+
             case "fear":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.FEAR);
                 return;
+
             case "miss":
                 _arrowComponent.Launch(0f);
                 return;
+
             case "score":
                 // Random value of launch force, to ensure the arrow is no kinematic
                  _arrowComponent.Launch(5f);

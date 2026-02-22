@@ -47,7 +47,6 @@ using UnityEngine.Events;
 
     protected static Vector3 _currentTargetPos;
 
-    protected Transform _frisbeeTransform;
 
     private readonly AudioManager.GameSoundEffects _barkSoundEffect = AudioManager.GameSoundEffects.DOG_BARK;
 
@@ -63,6 +62,12 @@ using UnityEngine.Events;
     protected virtual void Awake()
     {   
         SetStateProprieties();
+
+         if (animator == null)
+        {
+            Debug.LogError("Animator reference is null in DogIdle state.");
+            return;
+        }
 
         _agent = GetComponent<NavMeshAgent>();
 
@@ -86,21 +91,6 @@ using UnityEngine.Events;
         {
             Debug.LogError("Player GameObject not found in the scene.");
 
-            return;
-        }
-
-         _frisbeeTransform = GameObject.FindGameObjectWithTag("Frisbee").transform;
-
-        if (_frisbeeTransform == null)
-        {
-            Debug.LogError("Frisbee GameObject not found in the scene.");
-
-            return;
-        }
-
-         if (animator == null)
-        {
-            Debug.LogError("Animator reference is null in DogIdle state.");
             return;
         }
     }

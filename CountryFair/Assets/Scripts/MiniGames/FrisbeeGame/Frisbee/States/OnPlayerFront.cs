@@ -45,12 +45,6 @@ public class OnPlayerFront : FrisbeeState
    private Renderer frisbeeRenderer;
 
     /// <summary>
-    /// Original parent transform of the frisbee (typically the player's hand).
-    /// Used to reattach the frisbee when resetting to the held position.
-    /// </summary>
-    private Transform _originalParent;
-
-    /// <summary>
     /// Array of materials from the frisbee's Renderer component.
     /// Used to modify opacity based on throw availability.
     /// </summary>
@@ -97,10 +91,7 @@ public class OnPlayerFront : FrisbeeState
     protected override void Awake()
     {  
         base.Awake();
-        
-        _originalParent = transform.parent;
-
-
+    
         if (frisbeeRenderer == null)
         {
             Debug.LogError("Component Renderer is not assigned in OnPlayerFront script.");
@@ -117,7 +108,7 @@ public class OnPlayerFront : FrisbeeState
 
         _followPlayerHead = GetComponent<FollowPlayerHead>();
 
-          SetUpMaterialsTransparency();
+        SetUpMaterialsTransparency();
     }
  
    
@@ -128,7 +119,7 @@ public class OnPlayerFront : FrisbeeState
     /// </summary>
     /// <remarks>
     /// Updates the material opacity based on <see cref="DogInTarget"/> status and calls
-    /// <see cref="PlayerHoldingFrisbee"/> to reset physics and transform.
+    /// <see cref="InPlayerFront"/> to reset physics and transform.
     /// This state is entered when the dog returns the frisbee to the player or at game start.
     /// </remarks>
     public override void Enter()
@@ -137,7 +128,7 @@ public class OnPlayerFront : FrisbeeState
 
         ChangeMaterialsOpacity();
 
-        PlayerHoldingFrisbee();
+        InPlayerFront();
    }
 
     /// <summary>
@@ -197,8 +188,6 @@ public class OnPlayerFront : FrisbeeState
         {   
             _followPlayerHead.enabled = false;
             
-            transform.parent = null;
-
             _rigidbody.isKinematic = false;
 
             _rigidbody.useGravity = true;
@@ -231,7 +220,7 @@ public class OnPlayerFront : FrisbeeState
     /// </list>
     /// </para>
     /// </remarks>
-    private void PlayerHoldingFrisbee()
+    private void InPlayerFront()
     {   
         ResetTransform();
 
@@ -245,7 +234,7 @@ public class OnPlayerFront : FrisbeeState
 
         _collider.isTrigger = true;
 
-         frisbeeGrabbable.enabled = true;
+        frisbeeGrabbable.enabled = true;
 
         _followPlayerHead.enabled = true;
     }
@@ -352,11 +341,7 @@ public class OnPlayerFront : FrisbeeState
     /// </remarks>
     private void ResetTransform()
     {
-        transform.parent = _originalParent;
-
         transform.localRotation = Quaternion.identity;
-
-        // transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
 
     /// <summary>
