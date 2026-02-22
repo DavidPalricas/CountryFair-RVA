@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
+[RequireComponent(typeof(MiniGameManager))]
 
 public class CheatCodes : MonoBehaviour
 {
@@ -12,6 +12,9 @@ public class CheatCodes : MonoBehaviour
     /// </summary>
     protected int _maxCheatLength;
 
+
+    protected MiniGameManager _miniGameManager;
+
     protected ActivateEmoji _activateEmoji;
 
        /// <summary>
@@ -19,13 +22,16 @@ public class CheatCodes : MonoBehaviour
     /// "throw" - Forces the frisbee to be thrown.
     /// "score" - Forces a score point to be registered.
     /// </summary>
-    protected string[] _cheatCodes = new string[] { "miss", "score", "neutral","sad", "happy","angry","disgust","surprise","fear","neutral"};
+    protected string[] _cheatCodes = new string[] {"reset", "miss", "score", "neutral","sad", "happy","angry","disgust","surprise","fear","neutral"};
 
     protected virtual void Start()
     {
          _maxCheatLength = _cheatCodes.Max(c => c.Length);
 
         _activateEmoji = GameObject.FindGameObjectWithTag("Emojis").GetComponent<ActivateEmoji>();  
+
+
+        _miniGameManager = GetComponent<MiniGameManager>();
 
         if (_activateEmoji == null)
         {

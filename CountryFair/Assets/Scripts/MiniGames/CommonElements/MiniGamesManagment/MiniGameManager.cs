@@ -73,4 +73,10 @@ public class MiniGameManager : MonoBehaviour
     public virtual void TutorialCompleted(){
         _cheatCodes.enabled = true;
     }
+
+    public virtual void ResetDifficulty()
+    {
+        difficultyLevel = 0;
+        ApplyDifficultySettings();
+    }
 }

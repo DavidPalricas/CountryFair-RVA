@@ -100,30 +100,42 @@ public class FrisbeeCheatCodes : CheatCodes
 
         switch (cheatCode)
         {  
+            case "reset":
+                _miniGameManager.ResetDifficulty();
+                return;
+
             case "happy":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.HAPPY);
                 return;
+
             case "neutral":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.NEUTRAL);
                 return;
+
             case "sad":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SAD);
                 return;
+
             case "angry":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.ANGRY);
                 return;
+
             case "disgust":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.DISGUST);
                 return;
+
             case "surprise":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SURPRISE);
                 return;
+
             case "fear":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.FEAR);
                 return;
+
             case "miss":
                 _frisbeePlayerFrontState.ThrowFrisbee(false);
                 return;
+
             case "score":
                   ForceScorePoint(false);      
                 return;
@@ -131,6 +143,7 @@ public class FrisbeeCheatCodes : CheatCodes
             case "dog":
                 ForceScorePoint(true);
                 return;
+                
             default:
                 Debug.LogError("Invalid cheat code: " + cheatCode);
                 return;

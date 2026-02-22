@@ -1414,7 +1414,6 @@ MonoBehaviour:
   targetsPerLevel: 0.2
   sessionScoreGoal: 50
   difficultyLevel: 0
-  baseDogDistance: 5
   distanceIncrement: 2
   maxDogDistance: 14
   movingRatioCurve:
@@ -7753,7 +7752,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1906985865}
+      addedObject: {fileID: 1906985868}
   m_SourcePrefab: {fileID: 100100000, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
 --- !u!4 &863539804 stripped
 Transform:
@@ -11515,6 +11514,17 @@ Transform:
   - {fileID: 1957881862}
   m_Father: {fileID: 157430466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1342524558 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6158268702081495465, guid: 9331c9cb940cd224b9264874b2583091, type: 3}
+  m_PrefabInstance: {fileID: 8229344247421322364}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eeddb7e649e2c4d866d67478354c46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GiveFrisbeeToPlayer
 --- !u!1001 &1363837701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15024,7 +15034,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
   m_PrefabInstance: {fileID: 863539803}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1906985865
+--- !u!65 &1906985868
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15043,8 +15053,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000001, y: 0, z: 1.0000001}
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Size: {x: 1.0000001, y: 1, z: 1}
+  m_Center: {x: -0.000000007450581, y: 0, z: 0}
 --- !u!1001 &1910010498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18528,9 +18538,25 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1547234363429646910, guid: 9331c9cb940cd224b9264874b2583091, type: 3}
-      propertyPath: 'states.Array.data[4]'
+      propertyPath: 'states.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8229344247421322366}
+    - target: {fileID: 1547234363429646910, guid: 9331c9cb940cd224b9264874b2583091, type: 3}
+      propertyPath: 'states.Array.data[1]'
+      value: 
+      objectReference: {fileID: 4335083379616336532}
+    - target: {fileID: 1547234363429646910, guid: 9331c9cb940cd224b9264874b2583091, type: 3}
+      propertyPath: 'states.Array.data[2]'
       value: 
       objectReference: {fileID: 8229344247421322365}
+    - target: {fileID: 1547234363429646910, guid: 9331c9cb940cd224b9264874b2583091, type: 3}
+      propertyPath: 'states.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8229344247421322368}
+    - target: {fileID: 1547234363429646910, guid: 9331c9cb940cd224b9264874b2583091, type: 3}
+      propertyPath: 'states.Array.data[4]'
+      value: 
+      objectReference: {fileID: 1342524558}
     - target: {fileID: 1547234363429646910, guid: 9331c9cb940cd224b9264874b2583091, type: 3}
       propertyPath: transitions.Array.size
       value: 5

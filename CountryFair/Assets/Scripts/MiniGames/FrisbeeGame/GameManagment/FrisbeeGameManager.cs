@@ -5,9 +5,7 @@ using UnityEngine;
 public class FrisbeeGameManager : MiniGameManager
 { 
     [Header("Dog Settings")]
-    [SerializeField]
-    private float baseDogDistance = 5f;       
-    
+   
     [SerializeField]
     private float distanceIncrement = 2.5f;   
     
@@ -38,6 +36,8 @@ public class FrisbeeGameManager : MiniGameManager
 
     private float _scoreAreaRadius = 0;
 
+    private float _defaultDogDistance;
+
 
     protected override void Awake()
     {
@@ -49,12 +49,18 @@ public class FrisbeeGameManager : MiniGameManager
         }
 
         _scoreAreaRadius = scoreAreaPrefab.GetComponent<Renderer>().bounds.extents.magnitude;
+
+        if (!GameManager.GetInstance().FrisbeeTutorialCompleted)
+        {
+            PlayerPrefs.DeleteKey("FrisbeeDifficultyLevel");
+        }
     }
 
     public override void TutorialCompleted()
     {   
         base.TutorialCompleted();
-        
+
+
         _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
         if (_playerTransform == null)
@@ -63,12 +69,11 @@ public class FrisbeeGameManager : MiniGameManager
             return;
         }
 
-    
-        float initialDist = GetPlayerDistanceToDog();
-        if (initialDist > 0)
-        {
-            baseDogDistance = initialDist;
-        } 
+        _defaultDogDistance =  GetPlayerDistanceToDog();
+        
+        difficultyLevel = PlayerPrefs.GetInt("FrisbeeDifficultyLevel", 0);
+
+        Debug.Log("Current Difficulty Level: " + difficultyLevel);
 
         ApplyDifficultySettings();
     }
@@ -84,10 +89,12 @@ public class FrisbeeGameManager : MiniGameManager
 
     protected override void ApplyDifficultySettings()
     {
-        float rawDistance = baseDogDistance + (difficultyLevel * distanceIncrement);
+        float rawDistance = _defaultDogDistance + (difficultyLevel * distanceIncrement);
         float finalDogDistance = Mathf.Min(rawDistance, maxDogDistance);
         
         PlayerPrefs.SetFloat("DogDistance", finalDogDistance);
+
+        PlayerPrefs.SetInt("FrisbeeDifficultyLevel", difficultyLevel);
 
         _currentDesiredCount = Mathf.RoundToInt(targetsCount + (difficultyLevel * targetsPerLevel));
 
@@ -154,7 +161,7 @@ public class FrisbeeGameManager : MiniGameManager
 
     protected override Vector3 GetRandomTargetPosition()
     {
-        float currentDogDist = PlayerPrefs.GetFloat("DogDistance", baseDogDistance);
+        float currentDogDist = PlayerPrefs.GetFloat("DogDistance", _defaultDogDistance);
         
         const float MIN_OFFSET = 0.2f;
         const float MAX_OFFSET = 1f;
