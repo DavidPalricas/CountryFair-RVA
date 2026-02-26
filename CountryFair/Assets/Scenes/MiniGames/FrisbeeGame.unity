@@ -4968,6 +4968,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 8.6404
       objectReference: {fileID: 0}
+    - target: {fileID: 2483171112407822886, guid: f54012181eacade4ea242c65f804720f, type: 3}
+      propertyPath: _monoscopic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483171112407822886, guid: f54012181eacade4ea242c65f804720f, type: 3}
+      propertyPath: requestBodyTrackingPermissionOnStartup
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2483171112681471076, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: _interactors.Array.size
       value: 1

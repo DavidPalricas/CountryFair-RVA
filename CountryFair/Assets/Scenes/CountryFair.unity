@@ -5967,8 +5967,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1412586093}
   - component: {fileID: 1412586094}
+  - component: {fileID: 1412586095}
   m_Layer: 0
-  m_Name: AudioManager
+  m_Name: CountryFairManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6022,6 +6023,20 @@ MonoBehaviour:
       Data3: -2130074490
       Data4: -1533081903
     Path: event:/CountryFair/CrowdNoise
+--- !u!114 &1412586095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412586092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eebac4d8a98876b42b5d145c65bedcfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FoveatedRenderingController
+  foveatedLevel: 4
+  useDynamic: 1
 --- !u!1001 &1412849571
 PrefabInstance:
   m_ObjectHideFlags: 0
