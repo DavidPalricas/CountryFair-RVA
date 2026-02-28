@@ -1564,6 +1564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee4d432b9d3e0d4f98fe23c09200b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FrisbeeCheatCodes
+  returnToFair: {fileID: 9022235213021595669}
   dogScoreAreaTransform: {fileID: 8229344247421322369}
 --- !u!1001 &150222637
 PrefabInstance:
@@ -19279,6 +19280,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f3d937219aee9b48b44a37fc13a182a, type: 3}
+--- !u!114 &9022235213021595669 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9207467826744350831, guid: 3f3d937219aee9b48b44a37fc13a182a, type: 3}
+  m_PrefabInstance: {fileID: 9022235213021595668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589905544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 779b27e0914ec8d4a9b98b44f7981139, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReturnToFair
 --- !u!1001 &9218704079312094388
 PrefabInstance:
   m_ObjectHideFlags: 0

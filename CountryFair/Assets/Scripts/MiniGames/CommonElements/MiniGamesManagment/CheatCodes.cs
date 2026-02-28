@@ -7,6 +7,9 @@ public class CheatCodes : MonoBehaviour
 {
     private string _playerInput = "";
 
+    [SerializeField]
+    protected ReturnToFair returnToFair;
+
     /// <summary>
     /// Maximum length of any cheat code, used to limit input buffer size.
     /// </summary>
@@ -22,11 +25,11 @@ public class CheatCodes : MonoBehaviour
     /// "throw" - Forces the frisbee to be thrown.
     /// "score" - Forces a score point to be registered.
     /// </summary>
-    protected string[] _cheatCodes = new string[] {"reset", "miss", "score", "neutral","sad", "happy","angry","disgust","surprise","fear","neutral"};
+    protected string[] _cheatCodes = new string[] {"return","reset", "miss", "score", "neutral","sad", "happy","angry","disgust","surprise","fear","neutral"};
 
     protected virtual void Start()
     {
-         _maxCheatLength = _cheatCodes.Max(c => c.Length);
+        _maxCheatLength = _cheatCodes.Max(c => c.Length);
 
         _activateEmoji = GameObject.FindGameObjectWithTag("Emojis").GetComponent<ActivateEmoji>();  
 
@@ -36,6 +39,12 @@ public class CheatCodes : MonoBehaviour
         if (_activateEmoji == null)
         {
             Debug.LogError("ActivateEmoji component not found in the scene. Please ensure there is a GameObject with the 'Emojis' tag and an ActivateEmoji component.");
+            return;
+        }
+
+        if (returnToFair == null)
+        {
+            Debug.LogError("ReturnToFair component not assigned. Please assign it in the inspector.");
         }
     }
 

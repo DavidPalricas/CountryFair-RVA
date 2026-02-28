@@ -104,6 +104,10 @@ public class FrisbeeCheatCodes : CheatCodes
                 _miniGameManager.ResetDifficulty();
                 return;
 
+            case "return":
+                returnToFair.Return();
+                return;
+
             case "happy":
                 _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.HAPPY);
                 return;

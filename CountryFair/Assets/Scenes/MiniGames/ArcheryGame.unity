@@ -942,6 +942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56047993f8964cd45b82823ed3a2f4c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcheryCheatCodes
+  returnToFair: {fileID: 309234832}
 --- !u!1001 &109936699
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1775,6 +1776,17 @@ Transform:
   - {fileID: 2048185900}
   m_Father: {fileID: 1844768436}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &309234832 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9207467826744350831, guid: 3f3d937219aee9b48b44a37fc13a182a, type: 3}
+  m_PrefabInstance: {fileID: 1940262868}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 779b27e0914ec8d4a9b98b44f7981139, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReturnToFair
 --- !u!1001 &341915779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2235,8 +2247,8 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.5566037, g: 0.42231268, b: 0.25084916, a: 0.35}
-    - _Color: {r: 0.5566037, g: 0.4223857, b: 0.25092217, a: 0.35}
+    - _BaseColor: {r: 0.5566037, g: 0.4223115, b: 0.250848, a: 0.35}
+    - _Color: {r: 0.5566037, g: 0.42231178, b: 0.25084826, a: 0.35}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
