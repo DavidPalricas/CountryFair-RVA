@@ -43,11 +43,11 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _Blend: 0
+    - _Blend: 2
     - _CastShadows: 1
-    - _Cull: 2
-    - _DstBlend: 10
-    - _FrenelPower: 1.8
+    - _Cull: 0
+    - _DstBlend: 1
+    - _FrenelPower: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SrcBlend: 5
@@ -55,7 +55,7 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZTest: 4
     - _ZWrite: 0
-    - _ZWriteControl: 0
+    - _ZWriteControl: 2
     m_Colors:
     - _FrenelColor: {r: 0.7735849, g: 0.27562737, b: 0.0693307, a: 1}
   m_BuildTextureStacks: []

@@ -59,40 +59,45 @@ public class ServerListener : MonoBehaviour
         ConnectToTcpServer();
     }
 
-    /// <summary>
-    /// Establishes a connection to the TCP server and starts the listening thread.
-    /// </summary>
-    private void ConnectToTcpServer()
-    {
-        try 
-        {
-            // Attempts to create the client and connect
-            _client = new TcpClient
-            {
-                // Optional timeout to prevent blocking the game if the server doesn't respond
-                ReceiveTimeout = 5000
-            };
-            
-            _client.Connect(serverIP, serverPort);
+private void ConnectToTcpServer()
+{
+    string sceneName = gameObject.scene.name;
 
-            // If it reached this point, the connection was successful
+    Thread connectThread = new(() =>
+    {
+        try
+        {
+            _client = new TcpClient();
+            IAsyncResult result = _client.BeginConnect(serverIP, serverPort, null, null);
+            bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(3));
+
+            if (!success || !_client.Connected)
+            {
+                _client.Close();
+                _client = null;
+                Debug.LogWarning($"[Optional] Could not connect to emotion server in scene {sceneName}. Timeout.");
+                return;
+            }
+
+            _client.EndConnect(result);
+            _client.ReceiveTimeout = 5000;
             _isRunning = true;
 
-            _receiveThread = new Thread(ListenForData)
-            {
-                IsBackground = true
-            };
+            _receiveThread = new Thread(ListenForData) { IsBackground = true };
             _receiveThread.Start();
-            
-            Debug.Log($"[SCENE: {gameObject.scene.name}] Connected to server.");
+
+            Debug.Log($"[SCENE: {sceneName}] Connected to server.");
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
-            Debug.LogWarning($"[Optional] Could not connect to emotion server in scene {gameObject.scene.name}. Game continuing in offline mode. Reason: {e.Message}");
-            
             _isRunning = false;
+            Debug.LogWarning($"[Optional] Could not connect to emotion server in scene {sceneName}. Reason: {e.Message}");
         }
-    }
+    })
+    { IsBackground = true };
+
+    connectThread.Start();
+}
 
     /// <summary>
     /// Listens for incoming data on a separate thread.
