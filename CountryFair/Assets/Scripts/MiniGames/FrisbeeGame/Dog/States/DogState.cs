@@ -47,6 +47,10 @@ using UnityEngine.Events;
 
     protected static Vector3 _currentTargetPos;
 
+    protected bool _isToChangeState = false;
+
+
+    protected int _currentAnimationHashName = 0;
 
     private readonly AudioManager.GameSoundEffects _barkSoundEffect = AudioManager.GameSoundEffects.DOG_BARK;
 
@@ -72,6 +76,26 @@ using UnityEngine.Events;
         _agent = GetComponent<NavMeshAgent>();
 
         _agent.updateRotation = false;
+    }
+
+
+    public override void Enter()
+    {
+        base.Enter();
+
+        _currentAnimationHashName = animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
+    }
+
+    public override void Execute()
+    {
+        base.Execute();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+
+        _isToChangeState = false;
     }
 
     /// <summary>
@@ -140,6 +164,11 @@ using UnityEngine.Events;
         }
     }
 
+
+    protected bool IsPlayingNewAnimation()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).shortNameHash != _currentAnimationHashName;
+    }
 
     protected void Bark()
     {

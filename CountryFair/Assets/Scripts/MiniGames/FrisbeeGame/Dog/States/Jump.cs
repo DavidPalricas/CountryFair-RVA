@@ -34,6 +34,13 @@ public class Jump: DogState
     public override void Execute()
     {
         base.Execute();
+
+        if (IsPlayingNewAnimation())
+        {
+            fSM.ChangeState("CatchFrisbee");
+
+            return;
+        }
     }
 
     private void JumpDog()
@@ -42,7 +49,6 @@ public class Jump: DogState
         {   
             animator.SetBool("StopAnim", false);
             animator.SetFloat("Speed", 1f);
-            fSM.ChangeState("CatchFrisbee");
         });
     }
 

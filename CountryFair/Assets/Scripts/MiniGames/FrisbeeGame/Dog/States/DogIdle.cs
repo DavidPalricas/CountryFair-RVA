@@ -97,10 +97,7 @@ public class DogIdle : DogState
         scoreArea.SetActive(true);
 
         positionReached.Invoke();
-
-        animator.SetFloat("Speed", 0f);
-
-       
+ 
         reSpawnScoreAreas.Invoke();
     }
 
@@ -116,6 +113,13 @@ public class DogIdle : DogState
     {
         base.Execute();
 
+
+        if (IsPlayingNewAnimation())
+        {
+            fSM.ChangeState("FrisbeeLanded");
+
+            return;
+        }
 
         if (Time.time >= _impatientTimer)
         {
@@ -139,7 +143,7 @@ public class DogIdle : DogState
 
         animator.SetBool("StopAnim", true);
 
-        fSM.ChangeState("FrisbeeLanded");
+        _isToChangeState = true;
     }
 
     /// <summary>

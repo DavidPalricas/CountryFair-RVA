@@ -93,13 +93,21 @@ public class GoToTarget : DogState{
     {
         base.Execute();
 
+        if (IsPlayingNewAnimation())
+        {
+            fSM.ChangeState("PositionReached");
+
+            return;
+        }  
+
         RotateDogTowardsTarget(_newTargetTransform);
 
         if (DogStoped())
-         {  
-            fSM.ChangeState("PositionReached");
-         }
+        {  
+            animator.SetFloat("Speed", 0f);
+        }
     }
+    
 
     /// <summary>
     /// Called when exiting the GoToNewTarget state.
