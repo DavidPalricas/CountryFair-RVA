@@ -27,8 +27,7 @@ public class Jump: DogState
     {
         base.Enter();
 
-        Invoke(nameof(JumpDog), animationsCooldown);
-
+        PerformJump();
     }
 
     public override void Execute()
@@ -43,7 +42,7 @@ public class Jump: DogState
         }
     }
 
-    private void JumpDog()
+    private void PerformJump()
     {
         transform.DOJump(transform.position, jumpPower, jumpNumbers, jumpDuration).OnComplete( () => 
         {   
@@ -55,6 +54,5 @@ public class Jump: DogState
     public override void Exit()
     {
        base.Exit();
-
     }    
 }

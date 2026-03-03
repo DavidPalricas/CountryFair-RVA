@@ -112,8 +112,7 @@ public class DogIdle : DogState
     public override void Execute()
     {
         base.Execute();
-
-
+        
         if (IsPlayingNewAnimation())
         {
             fSM.ChangeState("FrisbeeLanded");
@@ -126,8 +125,6 @@ public class DogIdle : DogState
              Bark();
             RestImpatientTimer();
         }
-
-        RotateDogTowardsTarget(_playerTransform);
     }
 
     /// <summary>
@@ -142,8 +139,6 @@ public class DogIdle : DogState
     {   scoreArea.SetActive(false);
 
         animator.SetBool("StopAnim", true);
-
-        _isToChangeState = true;
     }
 
     /// <summary>

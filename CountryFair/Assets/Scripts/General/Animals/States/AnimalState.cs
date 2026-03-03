@@ -1,8 +1,9 @@
+using Oculus.Platform;
 using UnityEngine;
 
 [RequireComponent(typeof(AnimalUtility))]
 
-public class AnimalState: State
+public class AnimalState: AnimatableState
 {   
     [Header("Increase Stats Rates")]
     [SerializeField]
@@ -27,11 +28,18 @@ public class AnimalState: State
 
     protected float _fatigueStat = 0f;
 
-    protected virtual void Awake()
-    {
-        _animalUtility = GetComponent<AnimalUtility>();
+   
 
-        _animator = _animalUtility.Animator;
+    protected string transitionName = string.Empty;
+
+
+    protected bool _readyToTransition = false;
+
+    protected override void Awake()
+    {   
+        base.Awake();
+
+        _animalUtility = GetComponent<AnimalUtility>();
 
         AnimalUtility.Stats animalStats = _animalUtility.stats;
 
@@ -47,6 +55,9 @@ public class AnimalState: State
         base.Enter();
 
         IncreaseStats();
+
+
+        Debug.Log("Animal Current State: " + StateName + " | Current Animation: " + _currentAnimationHashName);
     }
 
     public override void Execute()
@@ -57,6 +68,10 @@ public class AnimalState: State
     public override void Exit()
     {
         base.Exit();
+
+        _readyToTransition = false;
+
+              Debug.Log(" Exit Animal Current State: " + StateName + " | Current Animation: " + _currentAnimationHashName);
     }
 
 

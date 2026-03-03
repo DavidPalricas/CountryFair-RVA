@@ -29,6 +29,7 @@ public class GoToTarget : DogState{
     /// </value>
     public bool PlayerScored { get; set; } = false;
 
+
     /// <summary>
     /// Initializes the GoToNewTarget state by calling the base DogState initialization.
     /// </summary>
@@ -75,10 +76,13 @@ public class GoToTarget : DogState{
         Vector3 targetPos =  PlayerScored ? ChooseNewTargetPos() : _currentTargetPos;
 
         GameObject target = new("TargetPosition");
+
         target.transform.position = targetPos;
         _newTargetTransform = target.transform;
 
         _agent.SetDestination(targetPos);
+
+        RotateDogTowardsTarget(_newTargetTransform);
    }
 
     /// <summary>
@@ -100,10 +104,8 @@ public class GoToTarget : DogState{
             return;
         }  
 
-        RotateDogTowardsTarget(_newTargetTransform);
-
         if (DogStoped())
-        {  
+        {   RotateDogTowardsTarget(_playerTransform);
             animator.SetFloat("Speed", 0f);
         }
     }

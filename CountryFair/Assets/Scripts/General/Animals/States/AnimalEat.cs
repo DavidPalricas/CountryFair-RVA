@@ -33,10 +33,17 @@ public class AnimalEat: AnimalState
     {
         base.Execute();
 
-        if (Time.time >= _timeToEat)
+        if (IsPlayingNewAnimation())
         {
-            string transitionName = _animalUtility.DecideNextAction();
-            fSM.ChangeState(transitionName);
+             fSM.ChangeState(transitionName);
+             return;
+        }
+
+        if (Time.time >= _timeToEat && !_readyToTransition)
+        {   
+               Debug.Log("Animal STUCK: " + StateName);
+            _readyToTransition = true;
+            transitionName = _animalUtility.DecideNextAction(animator);
         }
     }
 

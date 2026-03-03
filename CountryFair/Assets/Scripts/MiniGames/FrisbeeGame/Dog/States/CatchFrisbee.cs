@@ -68,6 +68,8 @@ public class CatchFrisbee : DogState
    {
         base.Enter();
 
+        RotateDogTowardsTarget(_frisbeeTransform);
+
         SetFrisbeeDestination();
 
         Bark();
@@ -101,8 +103,6 @@ public class CatchFrisbee : DogState
     public override void Execute()
     {
          base.Execute();
-
-        RotateDogTowardsTarget(_frisbeeTransform);
 
          if (DogStoped())
          {  

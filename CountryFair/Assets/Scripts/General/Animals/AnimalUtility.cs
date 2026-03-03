@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Animator))]
+
 public class AnimalUtility: MonoBehaviour
 {
     public struct Stats
@@ -15,13 +15,9 @@ public class AnimalUtility: MonoBehaviour
     public Stats stats;
 
 
-    public Animator Animator { get; private set; }
-
-
     private void Awake()
     {
        InitializeStats();
-        Animator = GetComponent<Animator>();
     }
 
     private void InitializeStats()
@@ -35,7 +31,7 @@ public class AnimalUtility: MonoBehaviour
     }
 
 
-    public string DecideNextAction()
+    public string DecideNextAction(Animator animator)
     {   
         Dictionary<string, float> actions = new()
         {
@@ -46,7 +42,8 @@ public class AnimalUtility: MonoBehaviour
 
         string actionChoosen = actions.OrderByDescending(x => x.Value).First().Key;
 
-        Animator.SetTrigger(actionChoosen);
+        animator.SetTrigger(actionChoosen);
+
 
         return actionChoosen;
     }

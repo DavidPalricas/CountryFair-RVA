@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody))]
 public class AnimalWalk: AnimalState
 {   
     [Header("Recovery Stats Rates")]
@@ -19,6 +20,12 @@ public class AnimalWalk: AnimalState
         base.Awake();
         _agent = GetComponent<NavMeshAgent>();
         _agentDefaultPriority = _agent.avoidancePriority;   
+
+
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+
+        rigidbody.isKinematic = true;
+        rigidbody.useGravity = false;
     }
 
     public override void Enter()
@@ -40,10 +47,18 @@ public class AnimalWalk: AnimalState
     {
         base.Execute();
 
-        if (AnimalStoped())
+        if (IsPlayingNewAnimation())
         {
-            string transitionName = _animalUtility.DecideNextAction();
-            fSM.ChangeState(transitionName);
+             fSM.ChangeState(transitionName);
+             return;
+        }
+
+        if (AnimalStoped() && !_readyToTransition)
+        {   
+             _readyToTransition = true;
+
+            transitionName = _animalUtility.DecideNextAction(animator);
+
         }
     }
 

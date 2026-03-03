@@ -82,6 +82,8 @@ public class GiveFrisbeeToPlayer : DogState
         frisbeeInDogMouth.SetActive(true);
 
         _agent.SetDestination(_playerTransform.position);
+
+        RotateDogTowardsTarget(_playerTransform);
    }
 
     /// <summary>
@@ -104,8 +106,6 @@ public class GiveFrisbeeToPlayer : DogState
     public override void Execute()
     {
          base.Execute();
-
-         RotateDogTowardsTarget(_playerTransform);
 
          if (DogStoped())
          {  

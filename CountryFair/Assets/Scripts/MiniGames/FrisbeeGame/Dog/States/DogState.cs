@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using DG.Tweening;
 
 /// <summary>
 /// Abstract base class for all dog behavior states in the Frisbee mini-game.
@@ -12,7 +13,7 @@ using UnityEngine.Events;
 /// Derived classes should override state lifecycle methods (Enter, Execute, Exit) to implement specific behaviors.
 /// </remarks>
 [RequireComponent(typeof(NavMeshAgent))]
- public abstract class DogState: State
+ public abstract class DogState: AnimatableState
 {   
     /// <summary>
     /// Speed at which the dog rotates to face its target.
@@ -23,15 +24,6 @@ using UnityEngine.Events;
 
     [SerializeField]
     protected UnityEvent<AudioManager.GameSoundEffects, GameObject> barkEvent;
-
-
-    [Header("Dog Animation Settings")]
-
-    [SerializeField]
-    protected float animationsCooldown = 1.5f;
-    
-   [SerializeField]
-    protected Animator animator;
 
     /// <summary>
     /// Reference to the NavMeshAgent component used for AI navigation and pathfinding.
@@ -47,10 +39,8 @@ using UnityEngine.Events;
 
     protected static Vector3 _currentTargetPos;
 
-    protected bool _isToChangeState = false;
+    private Coroutine _rotateCoroutine;
 
-
-    protected int _currentAnimationHashName = 0;
 
     private readonly AudioManager.GameSoundEffects _barkSoundEffect = AudioManager.GameSoundEffects.DOG_BARK;
 
@@ -63,15 +53,9 @@ using UnityEngine.Events;
     /// Retrieves the NavMeshAgent component and disables automatic rotation (manual rotation is handled by <see cref="RotateDogTowardsTarget"/>).
     /// Derived classes should call base.Awake() when overriding this method.
     /// </remarks>
-    protected virtual void Awake()
-    {   
-        SetStateProprieties();
-
-         if (animator == null)
-        {
-            Debug.LogError("Animator reference is null in DogIdle state.");
-            return;
-        }
+    protected override void Awake()
+    {    
+        base.Awake();
 
         _agent = GetComponent<NavMeshAgent>();
 
@@ -82,8 +66,6 @@ using UnityEngine.Events;
     public override void Enter()
     {
         base.Enter();
-
-        _currentAnimationHashName = animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
     }
 
     public override void Execute()
@@ -94,8 +76,6 @@ using UnityEngine.Events;
     public override void Exit()
     {
         base.Exit();
-
-        _isToChangeState = false;
     }
 
     /// <summary>
@@ -136,39 +116,23 @@ using UnityEngine.Events;
         return !_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance;
     }
 
-    /// <summary>
-    /// Smoothly rotates the dog to face the specified target transform.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// Calculates the horizontal direction to the target (Y component is zeroed to prevent tilting)
-    /// and smoothly interpolates the dog's rotation using Slerp.
-    /// </para>
-    /// <para>
-    /// The direction is inverted before creating the rotation to ensure the dog faces the target correctly.
-    /// This method should be called in the Execute method of states that require the dog to face a specific target while moving.
-    /// </para>
-    /// </remarks>
-    /// <param name="targetTransform">The transform of the target to face. Must not be null.</param>
+
+
     protected void RotateDogTowardsTarget(Transform targetTransform)
-    {
+    {   
         Vector3 directionToTarget = (targetTransform.position - transform.position).normalized;
-        directionToTarget.y = 0; 
+        directionToTarget.y = 0;
 
         if (directionToTarget != Vector3.zero)
-        {   
-            // The direction is inverted to make the dog face the target correctly
+        {
             Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            
+            transform.DOKill(); 
+            transform.DORotateQuaternion(targetRotation, 0.5f).SetEase(Ease.InOutSine);
         }
     }
 
 
-    protected bool IsPlayingNewAnimation()
-    {
-        return animator.GetCurrentAnimatorStateInfo(0).shortNameHash != _currentAnimationHashName;
-    }
 
     protected void Bark()
     {
