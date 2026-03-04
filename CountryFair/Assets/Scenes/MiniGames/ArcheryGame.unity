@@ -515,6 +515,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3160597209698737637, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
   m_PrefabInstance: {fileID: 32811216}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &32811218 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4093951779773677315, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+  m_PrefabInstance: {fileID: 32811216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18ee7ac7514e724e87a805e9b1d1809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActivateEmoji
 --- !u!114 &35802205 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8931893437084419960, guid: 1563ddbf54fb0eb42bf9222eb9aa39a5, type: 3}
@@ -943,6 +954,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArcheryCheatCodes
   returnToFair: {fileID: 309234832}
+  carnyWise: {fileID: 620701819}
+  tutorial: {fileID: 2057617485}
+  activateEmoji: {fileID: 32811218}
+  arrowTransform: {fileID: 1754926366}
+  arrowComponent: {fileID: 1754926365}
 --- !u!1001 &109936699
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2247,8 +2263,8 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.5566037, g: 0.4223115, b: 0.250848, a: 0.35}
-    - _Color: {r: 0.5566037, g: 0.42231178, b: 0.25084826, a: 0.35}
+    - _BaseColor: {r: 0.5566037, g: 0.4223108, b: 0.25084728, a: 0.35}
+    - _Color: {r: 0.5566037, g: 0.42231148, b: 0.25084797, a: 0.35}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -7133,6 +7149,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855b41b9e58fed44faa81dda3bc7da05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Arrow
+--- !u!4 &1754926366 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 343275071630199665, guid: 571136f6eed984e4ca4d01b59d1e855a, type: 3}
+  m_PrefabInstance: {fileID: 1754926363}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1771169730
 PrefabInstance:
   m_ObjectHideFlags: 0
