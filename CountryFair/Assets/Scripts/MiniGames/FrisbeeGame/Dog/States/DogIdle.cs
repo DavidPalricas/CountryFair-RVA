@@ -32,7 +32,10 @@ public class DogIdle : DogState
 
     [Header("Idle Events")]
     [SerializeField]
-    private UnityEvent reSpawnScoreAreas;
+    private UnityEvent spawnScoreAreas;
+
+     [SerializeField]
+    private UnityEvent removeScoreAreas;
 
     /// <summary>
     /// Event invoked when the dog reaches its target position and enters the idle state.
@@ -43,6 +46,9 @@ public class DogIdle : DogState
 
 
     private float _impatientTimer = 0f;
+
+
+    private bool playerScored = false;
 
     /// <summary>
     /// Initializes the DogIdle state and ensures the score area is initially deactivated.
@@ -98,7 +104,7 @@ public class DogIdle : DogState
 
         positionReached.Invoke();
  
-        reSpawnScoreAreas.Invoke();
+        spawnScoreAreas.Invoke();
     }
 
     /// <summary>
@@ -114,11 +120,18 @@ public class DogIdle : DogState
         base.Execute();
         
         if (IsPlayingNewAnimation())
-        {
-            fSM.ChangeState("FrisbeeLanded");
+        {    
+            if (animator.GetBool("StopAnim"))
+            {
+                fSM.ChangeState("FrisbeeLanded");
 
+                return;
+            }
+
+            fSM.ChangeState("DiffcultyHasDecreased");          
             return;
         }
+
 
         if (Time.time >= _impatientTimer)
         {
@@ -136,9 +149,20 @@ public class DogIdle : DogState
     /// <see cref="CatchFrisbee"/> state where the dog navigates to retrieve the frisbee.
     /// </remarks>
     public void PlayerScored()
-    {   scoreArea.SetActive(false);
+    {   
+        if (fSM.CurrentState == this)
+        {
+            playerScored = true;
+            animator.SetBool("StopAnim", true);
+        }
+    }
 
-        animator.SetBool("StopAnim", true);
+    public void DiffHasChanged()
+    {    
+        if (fSM.CurrentState == this && !playerScored)
+        {
+            animator.SetFloat("Speed", 1f);
+        } 
     }
 
     /// <summary>
@@ -152,6 +176,12 @@ public class DogIdle : DogState
     public override void Exit()
     {
         base.Exit();
+
+        scoreArea.SetActive(false);
+
+        removeScoreAreas.Invoke();
+
+        playerScored = false;
     }
 
     private void RestImpatientTimer()

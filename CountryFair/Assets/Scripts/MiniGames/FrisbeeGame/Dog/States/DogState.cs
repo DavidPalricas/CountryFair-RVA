@@ -26,21 +26,20 @@ using DG.Tweening;
     protected UnityEvent<AudioManager.GameSoundEffects, GameObject> barkEvent;
 
     /// <summary>
+    /// Reference to the player's transform component.
+    /// Initialized in <see cref="LateStart"/> and used for navigation and positioning relative to the player.
+    /// </summary>
+    [SerializeField]
+    protected Transform playerTransform;
+
+    /// <summary>
     /// Reference to the NavMeshAgent component used for AI navigation and pathfinding.
     /// Automatically retrieved in <see cref="Awake"/> and configured to disable automatic rotation.
     /// </summary>
     protected NavMeshAgent _agent;
 
-    /// <summary>
-    /// Reference to the player's transform component.
-    /// Initialized in <see cref="LateStart"/> and used for navigation and positioning relative to the player.
-    /// </summary>
-    protected Transform _playerTransform;
-
     protected static Vector3 _currentTargetPos;
-
-    private Coroutine _rotateCoroutine;
-
+    
 
     private readonly AudioManager.GameSoundEffects _barkSoundEffect = AudioManager.GameSoundEffects.DOG_BARK;
 
@@ -56,6 +55,12 @@ using DG.Tweening;
     protected override void Awake()
     {    
         base.Awake();
+
+        if (playerTransform == null)
+        {
+            Debug.LogError("Player Transform not assigned. Please assign it in the inspector.");
+            return;
+        }
 
         _agent = GetComponent<NavMeshAgent>();
 
@@ -89,14 +94,7 @@ using DG.Tweening;
     /// </remarks>
     public override void LateStart()
     {
-        _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-
-        if (_playerTransform == null)
-        {
-            Debug.LogError("Player GameObject not found in the scene.");
-
-            return;
-        }
+        base.LateStart();
     }
 
     /// <summary>
@@ -115,8 +113,6 @@ using DG.Tweening;
     {
         return !_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance;
     }
-
-
 
     protected void RotateDogTowardsTarget(Transform targetTransform)
     {   

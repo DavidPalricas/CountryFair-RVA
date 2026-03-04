@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FrisbeeGameManager : MiniGameManager
 { 
@@ -27,8 +28,13 @@ public class FrisbeeGameManager : MiniGameManager
     [SerializeField]
     private Collider dogScoreAreaCollider;
 
+    [SerializeField]
     // Estado Interno
-    private Transform _playerTransform;
+    private Transform playerTransform;
+
+
+    [SerializeField]
+    private UnityEvent difficultyHasChanged;
     
     // Variáveis para spawn
     private float _currentMovingRatio;
@@ -42,6 +48,12 @@ public class FrisbeeGameManager : MiniGameManager
     protected override void Awake()
     {
         base.Awake();
+  
+        if (playerTransform == null)
+        {
+            Debug.LogError("Player not found. The rehabilitation system cannot start.");
+            return;
+        }
 
         if (movingRatioCurve.length == 0 || visibilityRatioCurve.length == 0)
         {
@@ -58,17 +70,6 @@ public class FrisbeeGameManager : MiniGameManager
 
     public override void TutorialCompleted()
     {   
-        base.TutorialCompleted();
-
-
-        _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-
-        if (_playerTransform == null)
-        {
-            Debug.LogError("Player not found. The rehabilitation system cannot start.");
-            return;
-        }
-
         _defaultDogDistance =  GetPlayerDistanceToDog();
         
         difficultyLevel = PlayerPrefs.GetInt("FrisbeeDifficultyLevel", 0);
@@ -79,12 +80,17 @@ public class FrisbeeGameManager : MiniGameManager
     }
 
     public override void ChangeDifficulty(bool isToIncreaseDiff)
-    {
+    {   
+        if (difficultyLevel > 0)
+        {   
+            difficultyHasChanged.Invoke();
+        }
+
         difficultyLevel = isToIncreaseDiff ? difficultyLevel + 1 : Mathf.Max(0, difficultyLevel - 1);
         Debug.Log($"<color=blue>DDA:</color> Adjusting difficulty to Level {difficultyLevel} ({(isToIncreaseDiff ? "Increased" : "Decreased")})");
         ApplyDifficultySettings();
-    }
 
+    }
 
 
     protected override void ApplyDifficultySettings()
@@ -104,8 +110,6 @@ public class FrisbeeGameManager : MiniGameManager
         _currentVisibilityRatio = visibilityRatioCurve.Evaluate(saturationFactor);
 
         Debug.Log($"[DDA] Level {difficultyLevel} | Dist: {finalDogDistance:F1}m | Targets: {_currentDesiredCount} | Complexity: {saturationFactor:P0}");
-
-        SyncTargets(_currentDesiredCount);
     }
 
     protected override void SyncTargets(int desiredCount)
@@ -170,7 +174,7 @@ public class FrisbeeGameManager : MiniGameManager
 
         float scoreAreaDistance = currentDogDist * Random.Range(MIN_OFFSET, MAX_OFFSET);
 
-        Vector3 scoreAreaPosition = _playerTransform.position + new Vector3(randomDirection.x, 0, randomDirection.y) * scoreAreaDistance;
+        Vector3 scoreAreaPosition = playerTransform.position + new Vector3(randomDirection.x, 0, randomDirection.y) * scoreAreaDistance;
 
         scoreAreaPosition.y = dogAreaCollider.bounds.center.y;
 
@@ -196,14 +200,22 @@ public class FrisbeeGameManager : MiniGameManager
     }
 
 
-    public void RespawnScoreAreas()
+    public void SpawnScoreAreas()
     {
-        while (_spawnedTargets.Count > 0)
-        {
-            RemoveTarget();
-        }
-
         SyncTargets(_currentDesiredCount);
+    }
+
+    public void RemoveScoreAreas()
+    {
+       if (_spawnedTargets.Count > 0)
+        {
+            foreach (GameObject target in _spawnedTargets)
+            {
+                Destroy(target);
+            }
+
+            _spawnedTargets.Clear();
+        }
     }
 
     private float GetPlayerDistanceToDog()
@@ -216,6 +228,13 @@ public class FrisbeeGameManager : MiniGameManager
             return 0f;
         }
 
-        return Vector3.Distance(_playerTransform.position, dog.transform.position);
+        return Vector3.Distance(playerTransform.position, dog.transform.position);
+    }
+
+
+    public override void ResetDifficulty()
+    {      
+        difficultyHasChanged.Invoke();
+        base.ResetDifficulty();
     }
 }

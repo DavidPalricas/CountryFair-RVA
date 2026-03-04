@@ -1,105 +1,68 @@
 using UnityEngine;
 using System.Linq;
 
-public class  ArcheryCheatCodes : CheatCodes
+public class ArcheryCheatCodes : MiniGameCheatCodes
 {   
-    private Transform _arrowTransform = null;
+    [Header("Arrow Dependencies")]
 
-    private Arrow _arrowComponent = null;
+    [SerializeField]
+    private Transform arrowTransform = null;
+
+
+    [SerializeField]
+    private Arrow arrowComponent = null;
 
     /// <summary>
-    /// Initializes the maximum cheat code length based on defined cheat codes.
+    /// Initializes component references and registers archery-specific cheat codes.
     /// Unity callback called when the script instance is being loaded.
     /// </summary>
-    protected override void Start()
-    {   
-        base.Start();
+    protected override void Awake()
+    {
+        base.Awake();
 
-        GameObject arrow = GameObject.FindGameObjectWithTag("Arrow");
-
-        if (arrow == null)
+        if (arrowComponent == null)
         {
-            Debug.LogError("Arrow GameObject not found.");
+            Debug.LogError("Arrow component reference is not assigned in the inspector.");
             return;
         }
 
-        _arrowTransform = arrow.transform;
-
-        if (!arrow.TryGetComponent<Arrow>(out var arrowComponent))
+        if (arrowTransform == null)
         {
-            Debug.LogError("Arrow component not found on Arrow GameObject.");
-
+            Debug.LogError("Arrow Transform reference is not assigned in the inspector.");
             return;
         }
 
-        _arrowComponent = arrowComponent;
+        _maxCheatLength = _cheatCommands.Keys.Max(c => c.Length);
     }
 
-    protected override void ActivateCheat(string cheatCode)
+    /// <summary>
+    /// Launches the arrow with no force, simulating a miss.
+    /// </summary>
+    protected override void OnMissCheat()
     {
-        base.ActivateCheat(cheatCode);
+        arrowComponent.Launch(0f);
+    }
 
-        switch (cheatCode)
-        {    case "reset":
-                _miniGameManager.ResetDifficulty();
-                return;
-
-            case "return":
-                returnToFair.Return();
-                return;
-
-            case "happy":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.HAPPY);
-                return;
-
-            case "neutral":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.NEUTRAL);
-                return;
-
-            case "sad":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SAD);
-                return;
-
-            case "angry":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.ANGRY);
-                return;
-
-            case "disgust":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.DISGUST);
-                return;
-
-            case "surprise":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SURPRISE);
-                return;
-
-            case "fear":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.FEAR);
-                return;
-
-            case "miss":
-                _arrowComponent.Launch(0f);
-                return;
-
-            case "score":
-                // Random value of launch force, to ensure the arrow is no kinematic
-                 _arrowComponent.Launch(5f);
-                _arrowTransform.position = GetCorrectBalloonPosition() + new Vector3(0, 0f, 0);
-                return;
-            default:
-                Debug.LogWarning("Unhandled cheat code: " + cheatCode);
-                return;
-        }
+    /// <summary>
+    /// Launches the arrow and teleports it to the correct balloon position, guaranteeing a score.
+    /// </summary>
+    protected override void OnScoreCheat()
+    {
+        // Random value of launch force, to ensure the arrow is not kinematic
+        arrowComponent.Launch(5f);
+        arrowTransform.position = GetCorrectBalloonPosition() + new Vector3(0, 0f, 0);
     }
 
     private Vector3 GetCorrectBalloonPosition()
-    {  
+    {
         string balloonColorToScore = PlayerPrefs.GetString("BalloonColorToScore", "red").ToLower();
-        
+
         Transform targetBalloonTransform = GameObject.FindGameObjectsWithTag("Balloon")
             .FirstOrDefault(balloon => balloon.GetComponent<BalloonArcheryGame>().GetBalloonColorName().ToLower() == balloonColorToScore)
             .transform;
-            
-        if (targetBalloonTransform == null){
+
+        if (targetBalloonTransform == null)
+        {
             Debug.LogError("Correct balloon color not found!");
             return Vector3.zero;
         }

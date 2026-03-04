@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using GLTFast.Schema;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -37,9 +35,11 @@ public class CarnyWise : MonoBehaviour
     private readonly List<float> _tasksTimes = new ();
     private readonly List<float> _tasksPrecisions = new ();
 
-    private string _miniGameName;
+    private bool _is_frisbeeMiniGame = false;
 
     private CarnyWiseDiffFeedback _diffFeedback;
+
+
 
     private void Awake()
     {
@@ -54,14 +54,14 @@ public class CarnyWise : MonoBehaviour
 
         if (sceneName.Contains("frisbee"))
         {
-            _miniGameName = "frisbee";
+            _is_frisbeeMiniGame = true;
 
-            return;
+             return;
         }
 
         if (sceneName.Contains("archery"))
         {
-            _miniGameName = "archery";
+            _is_frisbeeMiniGame = false;
 
             return;
         }
@@ -166,7 +166,7 @@ public class CarnyWise : MonoBehaviour
         }
     }
 
-    private void IncreaseDifficulty()
+    public void IncreaseDifficulty()
     {
         const bool IS_TO_INCREASE_DIFF = true;
 
@@ -179,13 +179,20 @@ public class CarnyWise : MonoBehaviour
         _excelCounter = 0; 
     }
 
-    private void DecreaseDifficulty()
-    {
+    public void DecreaseDifficulty()
+    {   
+        string playerPrefsDiffKey = _is_frisbeeMiniGame ? "FrisbeeDifficultyLevel" : "ArcheryDifficultyLevel";
+        
+        int currentDifficulty = PlayerPrefs.GetInt(playerPrefsDiffKey, 0);
+
         const bool IS_TO_INCREASE_DIFF = false;
+        
+        if (currentDifficulty > 0)
+        {
+            _diffFeedback.ShowNewDiffFeedback(IS_TO_INCREASE_DIFF);
+        }
 
         changeDifficulty.Invoke(IS_TO_INCREASE_DIFF);
-
-        _diffFeedback.ShowNewDiffFeedback(IS_TO_INCREASE_DIFF);
 
         _struggleCounter = 0; 
     }
@@ -202,23 +209,20 @@ public class CarnyWise : MonoBehaviour
     {   
         GameManager gameManager = GameManager.GetInstance();
 
-        if (_miniGameName == "frisbee")
+        if (_is_frisbeeMiniGame)
         {
             gameManager.FrisbeeSessionCompleted = true;
-            SceneManager.LoadScene("CountryFair");
-            return;
         }
-
-        if (_miniGameName == "archery")
+        else
         {
             gameManager.ArcherySessionCompleted = true;
-            SceneManager.LoadScene("CountryFair");
-            return;
         }
 
-        Debug.LogError("Invalid MiniGame Name " + _miniGameName);
+        SceneManager.LoadScene("CountryFair");
     }
+     
 
+     /*
     private void SaveSessionData()
     {
        int averageTaskPrecision = (int)System.Math.Round(_tasksPrecisions.Average() * 100);
@@ -234,4 +238,5 @@ public class CarnyWise : MonoBehaviour
 
        DataFileManager.GetInstance().SaveSessionData(sessionData, _sessionID, _miniGameName);
     }
+    */
 }

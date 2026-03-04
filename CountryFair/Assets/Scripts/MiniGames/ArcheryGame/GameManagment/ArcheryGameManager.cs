@@ -88,7 +88,6 @@ public class ArcheryGameManager : MiniGameManager
 
     public override void TutorialCompleted()
     {   
-        base.TutorialCompleted();
         difficultyLevel = PlayerPrefs.GetInt("ArcheryDifficultyLevel", 0);
         ApplyDifficultySettings();
     }
@@ -287,5 +286,14 @@ public class ArcheryGameManager : MiniGameManager
 
         balloonTypesCount[selectedBalloon]++;
         return selectedBalloon;
+    }
+
+    public override void ResetDifficulty()
+    {   
+        if (difficultyLevel > 0)
+        {
+            difficultyLevel = 0;
+            ApplyDifficultySettings();
+        }
     }
 }

@@ -14,8 +14,9 @@ public class CatchFrisbee : DogState
 {   
     [SerializeField]
     private UnityEvent catchFrisbee;
-
-    private Transform _frisbeeTransform;
+    
+    [SerializeField]
+    private Transform frisbeeTransform;
     
     /// <summary>
     /// Reference to the frisbee's transform component.
@@ -31,6 +32,13 @@ public class CatchFrisbee : DogState
     protected override void Awake()
     {  
         base.Awake();
+
+        if (frisbeeTransform == null)
+        {
+            Debug.LogError("Frisbee GameObject not found in the scene.");
+
+            return;
+        }
     }
 
     /// <summary>
@@ -44,16 +52,7 @@ public class CatchFrisbee : DogState
     /// </remarks>
     public override void LateStart()
     {
-        base.LateStart();
-
-        _frisbeeTransform = GameObject.FindGameObjectWithTag("Frisbee").transform;
-
-        if (_frisbeeTransform == null)
-        {
-            Debug.LogError("Frisbee GameObject not found in the scene.");
-
-            return;
-        }
+        base.LateStart();     
     }
 
     /// <summary>
@@ -68,7 +67,7 @@ public class CatchFrisbee : DogState
    {
         base.Enter();
 
-        RotateDogTowardsTarget(_frisbeeTransform);
+        RotateDogTowardsTarget(frisbeeTransform);
 
         SetFrisbeeDestination();
 
@@ -79,7 +78,7 @@ public class CatchFrisbee : DogState
 
    private void SetFrisbeeDestination()
     {
-        Vector3 frisbeePos = _frisbeeTransform.position;
+        Vector3 frisbeePos = frisbeeTransform.position;
 
         _agent.SetDestination(frisbeePos);
     }
@@ -106,7 +105,7 @@ public class CatchFrisbee : DogState
 
          if (DogStoped())
          {  
-            _frisbeeTransform.gameObject.SetActive(false);
+            frisbeeTransform.gameObject.SetActive(false);
             fSM.ChangeState("FrisbeeCaught");
          }
     }

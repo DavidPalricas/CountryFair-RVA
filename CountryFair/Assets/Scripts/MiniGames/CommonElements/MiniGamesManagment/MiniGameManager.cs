@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(CheatCodes))]
+[RequireComponent(typeof(MiniGameCheatCodes))]
 public class MiniGameManager : MonoBehaviour
 {      
     [Header("Targets Configuration")]
@@ -14,24 +14,23 @@ public class MiniGameManager : MonoBehaviour
     [SerializeField]
     protected int sessionScoreGoal = 3;
    
-   [SerializeField]
-    protected int difficultyLevel = 0;
+    public int difficultyLevel = 0;
 
     protected readonly List<GameObject> _spawnedTargets = new();
 
     protected int _currentDesiredCount; // CRÍTICO: Para saber quantos devemos ter
 
 
-    private CheatCodes _cheatCodes;
+    private MiniGameCheatCodes _cheatCodes;
 
     protected virtual void Awake()
     {
        PlayerPrefs.SetInt("SessionGoal", sessionScoreGoal);
 
-       _cheatCodes = GetComponent<CheatCodes>();
-
-       _cheatCodes.enabled = false;
+       _cheatCodes = GetComponent<MiniGameCheatCodes>();
     }
+
+
     public virtual void ChangeDifficulty(bool isToIncreaseDiff){
         Debug.LogError("ChangeDifficulty should be overridden in derived classes.");
     }
@@ -71,11 +70,12 @@ public class MiniGameManager : MonoBehaviour
     }
 
     public virtual void TutorialCompleted(){
-        _cheatCodes.enabled = true;
+        Debug.LogError("TutorialCompleted should be overridden in derived classes.");
     }
 
+    
     public virtual void ResetDifficulty()
-    {
+    {   
         difficultyLevel = 0;
         ApplyDifficultySettings();
     }

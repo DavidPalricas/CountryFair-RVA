@@ -1,157 +1,102 @@
 using System.Linq;
 using UnityEngine;
 
-
 /// <summary>
 /// Manages cheat code detection and activation for the Frisbee mini-game.
 /// Listens for keyboard input and triggers specific actions when valid cheat codes are entered.
 /// </summary>
-public class FrisbeeCheatCodes : CheatCodes
+public class FrisbeeCheatCodes : MiniGameCheatCodes
 {   
+    [Header ("Dog Dependencies")]
     [SerializeField]
     private Transform dogScoreAreaTransform;
 
+    [SerializeField]
+    private DogIdle dogIdleState;
+    
+    [Header("Frisbee Dependencies")]
+
+    [SerializeField]
     /// <summary>
     /// Reference to the frisbee's OnPlayerFront state component.
     /// </summary>
-    private OnPlayerFront _frisbeePlayerFrontState;
-
+    private OnPlayerFront frisbeePlayerFrontState;
+    
+    [SerializeField]
     /// <summary>
     /// Reference to the frisbee's Landed state component.
     /// </summary>
-    private Landed _frisbeeLandedState = null;
-
+    private Landed frisbeeLandedState = null;
+     
+    [SerializeField]
     /// <summary>
     /// Transform of the frisbee game object.
     /// </summary>
-     private Transform _frisbeeTransform = null;
-
+    private Transform frisbeeTransform = null;
+    
+    [SerializeField]
     /// <summary>
     /// Finite State Machine component controlling the frisbee's behavior.
     /// </summary>
-     private FSM _frisbeeFSM = null;
+    private FSM frisbeeFSM = null;
 
     /// <summary>
-    /// Initializes component references and calculates maximum cheat code length.
-    /// Finds and caches references to the Frisbee and ScoreArea game objects and their components.
+    /// Initializes component references and registers frisbee-specific cheat codes.
     /// Unity callback called when the script instance is being loaded.
     /// </summary>
-    protected override void Start()
+    protected override void Awake()
     {   
-        base.Start();
-
-        GameObject frisbee = GameObject.FindGameObjectWithTag("Frisbee");
-
-        if (frisbee == null)
-        {
-            Debug.LogError("Frisbee GameObject not found.");
-            return;
-        }
-
-        _frisbeeTransform = frisbee.transform;
-
-
-        _frisbeeFSM = frisbee.GetComponent<FSM>();
-
-        if (_frisbeeFSM == null)
+        base.Awake();
+        if (frisbeeFSM == null)
         {
             Debug.LogError("FSM component not found on Frisbee GameObject.");
-
             return;
         }
 
-        _frisbeePlayerFrontState = frisbee.GetComponent<OnPlayerFront>();
+        if (dogIdleState == null)
+        {
+            Debug.LogError("DogIdle component reference not assigned in the inspector.");
+            return;
+        }
 
-        if (_frisbeePlayerFrontState == null)
+        if (frisbeePlayerFrontState == null)
         {
             Debug.LogError("OnPlayerFront component not found.");
-
             return;
         }
 
-        _frisbeeLandedState = frisbee.GetComponent<Landed>();
-
-        if (_frisbeeLandedState == null)
+        if (frisbeeLandedState == null)
         {
             Debug.LogError("Landed component not found.");
-
             return;
         }
 
-     
         if (dogScoreAreaTransform == null)
         {
             Debug.LogError("DogScoreArea Transform not assigned.");
             return;
         }
- 
-        string[] frisbeeCheatCodes = new string[] {"dog"};
-        
-        _cheatCodes = _cheatCodes.Concat(frisbeeCheatCodes).ToArray();
+
+        // Register frisbee-specific cheat
+        RegisterCheat("dog", () => ForceScorePoint(true));
+
+        _maxCheatLength = _cheatCommands.Keys.Max(c => c.Length);
     }
 
     /// <summary>
-    /// Activates the specified cheat code and clears the input buffer.
-    /// Executes different actions based on the cheat code provided.
+    /// Throws the frisbee without scoring.
     /// </summary>
-    /// <param name="cheatCode">The cheat code string to activate.</param>
-    protected override void ActivateCheat(string cheatCode){
-       base.ActivateCheat(cheatCode);
+    protected override void OnMissCheat()
+    {
+        frisbeePlayerFrontState.ThrowFrisbee(false);
+    }
 
-        switch (cheatCode)
-        {  
-            case "reset":
-                _miniGameManager.ResetDifficulty();
-                return;
-
-            case "return":
-                returnToFair.Return();
-                return;
-
-            case "happy":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.HAPPY);
-                return;
-
-            case "neutral":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.NEUTRAL);
-                return;
-
-            case "sad":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SAD);
-                return;
-
-            case "angry":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.ANGRY);
-                return;
-
-            case "disgust":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.DISGUST);
-                return;
-
-            case "surprise":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SURPRISE);
-                return;
-
-            case "fear":
-                _activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.FEAR);
-                return;
-
-            case "miss":
-                _frisbeePlayerFrontState.ThrowFrisbee(false);
-                return;
-
-            case "score":
-                  ForceScorePoint(false);      
-                return;
-            
-            case "dog":
-                ForceScorePoint(true);
-                return;
-                
-            default:
-                Debug.LogError("Invalid cheat code: " + cheatCode);
-                return;
-        }
+    /// <summary>
+    /// Teleports the frisbee to a random extra score area, forcing a score point.
+    /// </summary>
+    protected override void OnScoreCheat()
+    {
+        ForceScorePoint(false);
     }
 
     /// <summary>
@@ -160,22 +105,22 @@ public class FrisbeeCheatCodes : CheatCodes
     /// Only works if the frisbee is in the OnPlayerFront state and the score area is active.
     /// </summary>
     private void ForceScorePoint(bool isDog)
-    {   
-        _frisbeeTransform.parent =  null;
-        _frisbeeTransform.localPosition = isDog ? dogScoreAreaTransform.position : GetExtraScoreAreaPosition();
-        
-        if (_frisbeeFSM.CurrentState == _frisbeePlayerFrontState && dogScoreAreaTransform.gameObject.activeSelf)
+    {
+        frisbeeTransform.parent = null;
+        frisbeeTransform.localPosition = isDog ? dogScoreAreaTransform.position : GetExtraScoreAreaPosition();
+
+        if (frisbeeFSM.CurrentState == frisbeePlayerFrontState && dogScoreAreaTransform.gameObject.activeSelf)
         {
-            _frisbeeFSM.ChangeState("ForcedPoint");
-            return;
+            frisbeeFSM.ChangeState("ForcedPoint");
         }
     }
 
 
     private Vector3 GetExtraScoreAreaPosition()
     {
-        GameObject[] scoreAreas = GameObject.FindGameObjectsWithTag("ScoreArea").
-                                  Where(scoreArea => scoreArea != dogScoreAreaTransform.gameObject).ToArray();
+        GameObject[] scoreAreas = GameObject.FindGameObjectsWithTag("ScoreArea")
+                                  .Where(scoreArea => scoreArea != dogScoreAreaTransform.gameObject)
+                                  .ToArray();
 
         if (scoreAreas.Length == 0)
         {

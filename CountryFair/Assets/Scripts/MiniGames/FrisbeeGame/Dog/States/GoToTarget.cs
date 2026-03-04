@@ -27,7 +27,7 @@ public class GoToTarget : DogState{
     /// <value>
     /// True if the player scored; otherwise, false.
     /// </value>
-    public bool PlayerScored { get; set; } = false;
+    public bool IsToChooseNewTarget { get; set; } = false;
 
 
     /// <summary>
@@ -72,8 +72,8 @@ public class GoToTarget : DogState{
     public override void Enter()
    {
         base.Enter();
-         
-        Vector3 targetPos =  PlayerScored ? ChooseNewTargetPos() : _currentTargetPos;
+
+        Vector3 targetPos =  IsToChooseNewTarget ? ChooseNewTargetPos() : _currentTargetPos;
 
         GameObject target = new("TargetPosition");
 
@@ -105,7 +105,7 @@ public class GoToTarget : DogState{
         }  
 
         if (DogStoped())
-        {   RotateDogTowardsTarget(_playerTransform);
+        {   RotateDogTowardsTarget(playerTransform);
             animator.SetFloat("Speed", 0f);
         }
     }
@@ -161,9 +161,9 @@ public class GoToTarget : DogState{
       
        Quaternion rotation = Quaternion.Euler(0, randomAngle * Mathf.Rad2Deg, 0);
 
-       Vector3 randomDirection = rotation * _playerTransform.forward;
+       Vector3 randomDirection = rotation * playerTransform.forward;
     
-       Vector3 targetPosition = _playerTransform.position + randomDirection * dogDistance;
+       Vector3 targetPosition = playerTransform.position + randomDirection * dogDistance;
 
         const  float NAVMESH_SAMPLE_RADIUS = 200f;
 

@@ -115,7 +115,11 @@ public class Tutorial : UIDialog
     private bool TutorialWasCompleted()
     {
         CheckCurrenMiniGame();
+
         GameManager gameManager = GameManager.GetInstance();
+
+        // If in the development the developer starts testing on a mini game scene without going through the fair intro, to make sure when return to te fair does not have the intro dialogue this flag is set to true.
+        gameManager.IntroCompleted = true;
 
         if (_isFromFrisbeGame && gameManager.FrisbeeTutorialCompleted)
         {
@@ -155,7 +159,7 @@ public class Tutorial : UIDialog
         ShowGameRule();
     }
 
-    private void ReadyToPlay()
+    public void ReadyToPlay()
     {
         miniGameProp.SetActive(true);
         postTutorialElements.SetActive(true);
