@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(Rigidbody))]
+
 public class AnimalWalk: AnimalState
 {   
     [Header("Recovery Stats Rates")]
@@ -20,12 +20,6 @@ public class AnimalWalk: AnimalState
         base.Awake();
         _agent = GetComponent<NavMeshAgent>();
         _agentDefaultPriority = _agent.avoidancePriority;   
-
-
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
     }
 
     protected override void RegisterActionInUtility()
