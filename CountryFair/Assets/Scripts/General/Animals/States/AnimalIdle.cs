@@ -17,6 +17,11 @@ public class AnimalIdle: AnimalState
 
     private float _timeIdle;
 
+    protected override void RegisterActionInUtility()
+    {
+        _animalUtility.RegisterAction("GoIdle", () => _animalUtility.stats.fatigue);
+    }
+
     public override void Enter()
     {
         base.Enter();
@@ -42,7 +47,6 @@ public class AnimalIdle: AnimalState
         if (Time.time >= _timeIdle && !_readyToTransition)
         
         {   
-            Debug.Log("Animal STUCK: " + StateName);
             _readyToTransition = true;
             transitionName = _animalUtility.DecideNextAction(animator);
         }

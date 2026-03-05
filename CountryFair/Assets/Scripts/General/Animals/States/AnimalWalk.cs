@@ -28,6 +28,11 @@ public class AnimalWalk: AnimalState
         rigidbody.useGravity = false;
     }
 
+    protected override void RegisterActionInUtility()
+    {
+        _animalUtility.RegisterAction("GoWalk", () => _animalUtility.stats.boredom);
+    }
+
     public override void Enter()
     {
         base.Enter();
