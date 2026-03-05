@@ -17,6 +17,11 @@ public class AnimalEat: AnimalState
 
     private float _timeToEat;
 
+    protected override void RegisterActionInUtility()
+    {
+        _animalUtility.RegisterAction("GoEat", () => _animalUtility.stats.hunger);
+    }
+
     public override void Enter()
     {
         base.Enter();
@@ -41,7 +46,6 @@ public class AnimalEat: AnimalState
 
         if (Time.time >= _timeToEat && !_readyToTransition)
         {   
-               Debug.Log("Animal STUCK: " + StateName);
             _readyToTransition = true;
             transitionName = _animalUtility.DecideNextAction(animator);
         }

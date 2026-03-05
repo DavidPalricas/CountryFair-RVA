@@ -48,7 +48,18 @@ public class AnimalState: AnimatableState
         _fatigueStat = animalStats.fatigue;
 
         SetStateProprieties();
+
+        // Each subclass registers its own trigger + stat so AnimalUtility
+        // knows which actions are available without any hardcoded list.
+        RegisterActionInUtility();
     }
+
+    /// <summary>
+    /// Override in subclasses to register the Animator trigger and the stat
+    /// this state is responsible for recovering.
+    /// Example:  _animalUtility.RegisterAction("GoEat", () => _animalUtility.stats.hunger);
+    /// </summary>
+    protected virtual void RegisterActionInUtility() { }
 
     public override void Enter()
     {
@@ -70,8 +81,6 @@ public class AnimalState: AnimatableState
         base.Exit();
 
         _readyToTransition = false;
-
-              Debug.Log(" Exit Animal Current State: " + StateName + " | Current Animation: " + _currentAnimationHashName);
     }
 
 
