@@ -1,12 +1,10 @@
 using UnityEngine;
 using System.Linq;
-using System.Collections.Generic;
-using UnityEngine.InputSystem;
 using System;
 
 
 [RequireComponent(typeof(MiniGameManager))]
-public class MiniGameCheatCodes : MonoBehaviour
+public class MiniGameCheatCodes : CheatCodes
 {
     [Header("Mini Game Dependencies")]
 
@@ -23,20 +21,8 @@ public class MiniGameCheatCodes : MonoBehaviour
     [SerializeField]
     private ActivateEmoji activateEmoji;
 
-    private string _playerInput = "";
 
     private MiniGameManager _miniGameManager;
-    
-    /// <summary>
-    /// Dictionary mapping cheat code strings to their corresponding commands (Actions).
-    /// Subclasses register their own cheats via RegisterCheat().
-    /// </summary>
-    protected Dictionary<string, System.Action> _cheatCommands = new();
-
-    /// <summary>
-    /// Maximum length of any cheat code, used to limit input buffer size.
-    /// </summary>
-    protected int _maxCheatLength;
 
     protected bool _tutorialCompleted = false;
 
@@ -74,14 +60,14 @@ public class MiniGameCheatCodes : MonoBehaviour
 
         _miniGameManager = GetComponent<MiniGameManager>();
 
-        RegisterBasecheats();
+        RegisterBaseCheats();
     }
 
     /// <summary>
     /// Registers all shared cheat codes available across every mini-game.
     /// Called during Start() before subclass cheats are added.
     /// </summary>
-    private void RegisterBasecheats()
+    protected override void RegisterBaseCheats()
     {
         RegisterCheat("return", () => returnToFair.Return());
         RegisterCheat("tutorial", () => SkipTutorial());
@@ -99,16 +85,7 @@ public class MiniGameCheatCodes : MonoBehaviour
         RegisterCheat("fear",     () => activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.FEAR));
     }
 
-    /// <summary>
-    /// Registers a cheat code with its associated command.
-    /// Subclasses call this in Start() (after base.Start()) to add game-specific cheats.
-    /// </summary>
-    /// <param name="code">The cheat code string.</param>
-    /// <param name="command">The action to execute when the code is entered.</param>
-    protected void RegisterCheat(string code, System.Action command)
-    {
-        _cheatCommands[code] = command;
-    }
+ 
 
     /// <summary>
     /// Called when the "miss" cheat is triggered. Override in subclasses for specific behaviour.
@@ -127,45 +104,9 @@ public class MiniGameCheatCodes : MonoBehaviour
     }
 
     /// <summary>
-    /// Subscribes to keyboard text input events when the component is enabled.
-    /// </summary>
-    private void OnEnable()
-    {
-        if (Keyboard.current != null)
-        {
-            Keyboard.current.onTextInput += OnTextInput;
-        }
-            
-    }
-
-    /// <summary>
-    /// Unsubscribes from keyboard text input events when the component is disabled.
-    /// </summary>
-    private void OnDisable()
-    {
-        if (Keyboard.current != null)
-            Keyboard.current.onTextInput -= OnTextInput;
-    }
-
-    /// <summary>
-    /// Handles keyboard character input and checks for cheat code patterns.
-    /// </summary>
-    private void OnTextInput(char c)
-    {
-        if (!char.IsLetterOrDigit(c)) return;
-
-        _playerInput += c.ToString().ToLower();
-
-        if (_playerInput.Length > _maxCheatLength)
-            _playerInput = _playerInput[^_maxCheatLength..];
-
-        CheckCheatCode();
-    }
-
-    /// <summary>
     /// Checks if the current input buffer contains any valid cheat code and executes it.
     /// </summary>
-    private void CheckCheatCode()
+    protected override void CheckCheatCode()
     {
         foreach (var (code, command) in _cheatCommands)
         {

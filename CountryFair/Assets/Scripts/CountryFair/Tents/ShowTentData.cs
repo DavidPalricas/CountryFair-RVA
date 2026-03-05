@@ -101,8 +101,6 @@ public class ShowTentData : MonoBehaviour
 
             return;
         }
-
-        Debug.LogWarning(gameObject.name + " does not have the mini game prefab to show!");
     }
 
     private void Start()

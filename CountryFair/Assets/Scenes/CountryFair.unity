@@ -5658,6 +5658,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b24b341f147cfe840ba050049c68f6f1, type: 3}
+--- !u!114 &1289485912 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1983537196744767392, guid: b24b341f147cfe840ba050049c68f6f1, type: 3}
+  m_PrefabInstance: {fileID: 1289485911}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c08830b0e3c58641a9f67d9f238d611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountryFairDialogue
 --- !u!1001 &1306348628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5968,6 +5979,7 @@ GameObject:
   - component: {fileID: 1412586093}
   - component: {fileID: 1412586094}
   - component: {fileID: 1412586095}
+  - component: {fileID: 1412586096}
   m_Layer: 0
   m_Name: CountryFairManager
   m_TagString: Untagged
@@ -6037,6 +6049,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FoveatedRenderingController
   _foveatedLevel: 4
   _useDynamic: 1
+--- !u!114 &1412586096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412586092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12fafd6e809b1444e8ecff10e9af978f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountryFairCheatCodes
+  archeryTentData: {fileID: 543233387694203530}
+  frisbeeTentData: {fileID: 1546124252}
+  countryFairDialogue: {fileID: 1289485912}
 --- !u!1001 &1412849571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7117,6 +7144,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4854182519245524966, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
   m_PrefabInstance: {fileID: 1546124250}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1546124252 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+  m_PrefabInstance: {fileID: 1546124250}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f4a250fe0b9a1b44aa7fe700e594b2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PopText
 --- !u!1001 &1549675872
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10532,6 +10570,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7853941498539440509, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
   m_PrefabInstance: {fileID: 543233387694203528}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &543233387694203530 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+  m_PrefabInstance: {fileID: 543233387694203528}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f4a250fe0b9a1b44aa7fe700e594b2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PopText
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

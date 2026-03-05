@@ -37,6 +37,7 @@ public class CountryFairDialogue : UIDialog
         if (gameManager.IntroCompleted)
         {   
             _currentDialogueState = DialogueState.INTRO_COMPLETED;
+            
             if (!gameManager.FrisbeeSessionCompleted && !gameManager.ArcherySessionCompleted)
             {   
                 _dialogueCompleted.Invoke();
@@ -166,7 +167,7 @@ public class CountryFairDialogue : UIDialog
         }
     }
 
-    private void IntroComplete()
+    public void IntroComplete()
     {   
         _dialogueCompleted.Invoke();
         gameTents.SetActive(true);
@@ -178,6 +179,7 @@ public class CountryFairDialogue : UIDialog
     {   
         if (_currentDialogueState != DialogueState.INTRO_COMPLETED)
             return typeof(IntroData);
+
         return typeof(SessionCompletedData);
     }
 
