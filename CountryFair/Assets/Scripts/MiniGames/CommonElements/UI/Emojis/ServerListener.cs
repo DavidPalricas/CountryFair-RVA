@@ -85,8 +85,6 @@ private void ConnectToTcpServer()
 
             _receiveThread = new Thread(ListenForData) { IsBackground = true };
             _receiveThread.Start();
-
-            Debug.Log($"[SCENE: {sceneName}] Connected to server.");
         }
         catch (Exception e)
         {
@@ -168,7 +166,7 @@ private void ConnectToTcpServer()
     {
         // Only logs if it was running, to avoid spam if it never connected
         if (_isRunning) {
-            Debug.Log($"[SCENE: {gameObject.scene.name}] Cleaning up connection...");
+           // Debug.Log($"[SCENE: {gameObject.scene.name}] Cleaning up connection...");
         }
         
         _isRunning = false;

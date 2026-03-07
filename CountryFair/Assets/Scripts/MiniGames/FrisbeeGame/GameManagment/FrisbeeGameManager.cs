@@ -87,7 +87,7 @@ public class FrisbeeGameManager : MiniGameManager
         }
 
         difficultyLevel = isToIncreaseDiff ? difficultyLevel + 1 : Mathf.Max(0, difficultyLevel - 1);
-        Debug.Log($"<color=blue>DDA:</color> Adjusting difficulty to Level {difficultyLevel} ({(isToIncreaseDiff ? "Increased" : "Decreased")})");
+        // Debug.Log($"<color=blue>DDA:</color> Adjusting difficulty to Level {difficultyLevel} ({(isToIncreaseDiff ? "Increased" : "Decreased")})");
         ApplyDifficultySettings();
 
     }
@@ -109,7 +109,7 @@ public class FrisbeeGameManager : MiniGameManager
         _currentMovingRatio = movingRatioCurve.Evaluate(saturationFactor);
         _currentVisibilityRatio = visibilityRatioCurve.Evaluate(saturationFactor);
 
-        Debug.Log($"[DDA] Level {difficultyLevel} | Dist: {finalDogDistance:F1}m | Targets: {_currentDesiredCount} | Complexity: {saturationFactor:P0}");
+        // Debug.Log($"[DDA] Level {difficultyLevel} | Dist: {finalDogDistance:F1}m | Targets: {_currentDesiredCount} | Complexity: {saturationFactor:P0}");
     }
 
     protected override void SyncTargets(int desiredCount)

@@ -19,11 +19,6 @@ public class WanderingPerson: MonoBehaviour
     private NavMeshAgent _agent;
 
 
-    private Vector3 previousPosition  = Vector3.zero;
-
-    private float stuckTimer = 0f;
-
-
     private void Awake()
     {   
         if (animator == null)
@@ -62,6 +57,5 @@ public class WanderingPerson: MonoBehaviour
         randomDirection += transform.position;
         NavMesh.SamplePosition(randomDirection, out NavMeshHit navHit, walkRadius, NavMesh.AllAreas);
         _agent.SetDestination(navHit.position);
-        stuckTimer = Time.time + stuckThreshold;
     }
 }

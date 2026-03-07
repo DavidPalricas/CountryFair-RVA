@@ -72,7 +72,6 @@ public class Tutorial : UIDialog
         }
 
         _numberOfTasks = Utils.GetChildren(practiceElements.transform).Length;
-        Debug.Log("Number of tasks in tutorial: " + _numberOfTasks);
 
         practiceElements.SetActive(false);
         miniGameProp.SetActive(false);

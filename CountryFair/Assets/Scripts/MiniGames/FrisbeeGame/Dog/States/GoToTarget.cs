@@ -169,8 +169,6 @@ public class GoToTarget : DogState{
 
         if (NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, NAVMESH_SAMPLE_RADIUS, NavMesh.AllAreas))
         {   
-            
-            Debug.Log("New target position chosen at: " + hit.position);
             return hit.position;
         }
 

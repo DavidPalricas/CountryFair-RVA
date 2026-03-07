@@ -93,14 +93,14 @@ public class CarnyWise : MonoBehaviour
     {   
         _currentAttemptsForTask++;
 
-        Debug.Log($"Player Scored! Current Attempts: {_currentAttemptsForTask}");
+        // Debug.Log($"Player Scored! Current Attempts: {_currentAttemptsForTask}");
         float timeTaken = Time.time - _taskStartTime;
 
         const int SCORE_ATTEMPT = 1; 
 
         float taskPrecision = SCORE_ATTEMPT / (float)_currentAttemptsForTask; 
 
-        Debug.Log("Task Precision: " + taskPrecision);
+        // Debug.Log("Task Precision: " + taskPrecision);
 
         _tasksPrecisions.Add(taskPrecision);
         _tasksTimes.Add(timeTaken);
@@ -146,7 +146,7 @@ public class CarnyWise : MonoBehaviour
 
     private void MantainFlowState()
     {   
-        Debug.Log("Mantaining Flow State");
+       // Debug.Log("Mantaining Flow State");
 
         _struggleCounter = Mathf.Max(0, _struggleCounter--);
         _excelCounter = Mathf.Max(0, _excelCounter--);

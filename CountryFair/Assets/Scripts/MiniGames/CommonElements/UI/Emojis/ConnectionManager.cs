@@ -17,7 +17,7 @@ public class ConnectionManager : MonoBehaviour
 
         if (autoConnectClient)
         {
-            Debug.Log($"A conectar a {serverIp}:{serverPort}...");
+            // Debug.Log($"Connecting to {serverIp}:{serverPort}...");
             NetworkManager.Singleton.StartClient();
         }
     }

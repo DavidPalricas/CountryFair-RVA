@@ -33,7 +33,7 @@ public class UIDialog : DisplayInPlayerFront
 
     protected virtual void OnDataLoaded()
     {
-        Debug.Log("Data loaded in base. Waiting for child class logic.");
+       // Debug.Log("Data loaded in base. Waiting for child class logic.");
     }
 
     protected virtual System.Type GetJSONDataType()
@@ -82,8 +82,7 @@ public class UIDialog : DisplayInPlayerFront
             if (!string.IsNullOrWhiteSpace(jsonContent))
             {
                 _data = (JSONData)JsonConvert.DeserializeObject(jsonContent, GetJSONDataType());
-                Debug.Log("JSON loaded successfully!");
-                
+
                 OnDataLoaded(); 
             }
         }

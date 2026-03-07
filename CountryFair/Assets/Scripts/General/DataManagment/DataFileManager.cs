@@ -40,7 +40,6 @@ public class DataFileManager
 
     private void SaveData()
     {
-        // Usa a propriedade FilePath que criámos acima
         string path = _filePath;
 
         string jsonString = JsonConvert.SerializeObject(CurrentData, Formatting.Indented);
@@ -48,11 +47,12 @@ public class DataFileManager
         try
         {
             File.WriteAllText(path, jsonString);
-            Debug.Log($"[DataFileManager] Dados gravados em: {path}");
+
+            // Debug.Log($"[DataFileManager] Data saved in : {path}");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"[DataFileManager] Erro ao gravar: {e.Message}");
+            Debug.LogError($"[DataFileManager] Error in saving: {e.Message}");
         }
     }
 

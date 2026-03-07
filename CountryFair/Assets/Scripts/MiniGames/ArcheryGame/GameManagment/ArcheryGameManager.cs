@@ -95,7 +95,7 @@ public class ArcheryGameManager : MiniGameManager
     public override void ChangeDifficulty(bool isToIncreaseDiff)
     {
         difficultyLevel = isToIncreaseDiff ? difficultyLevel + 1 : Mathf.Max(0, difficultyLevel - 1);
-        Debug.Log($"<color=orange>ARCHERY DDA:</color> Level {difficultyLevel}");
+        // Debug.Log($"<color=orange>ARCHERY DDA:</color> Level {difficultyLevel}");
         ApplyDifficultySettings();
     }
 
@@ -111,7 +111,7 @@ public class ArcheryGameManager : MiniGameManager
 
         PlayerPrefs.SetInt("ArcheryDifficultyLevel", difficultyLevel);
         
-        Debug.Log($"[Archery Stats] Total Balloons: {_currentDesiredCount} | Movimento Ratio: {_currentMovingRatio:P0} | Move Duration: {_currentMoveDuration:F1}s");
+        // Debug.Log($"[Archery Stats] Total Balloons: {_currentDesiredCount} | Movimento Ratio: {_currentMovingRatio:P0} | Move Duration: {_currentMoveDuration:F1}s");
         
         SetBalloonColorToScore();
         SyncTargets(_currentDesiredCount);
@@ -166,11 +166,7 @@ public class ArcheryGameManager : MiniGameManager
     {   
         balloonTypesCount[targetPrefab] = Mathf.Max(0, balloonTypesCount[targetPrefab] - 1);
         
-
-        Debug.Log("Previous Balloon Counts: " + _spawnedTargets.Count);
         _spawnedTargets.Remove(target);
-
-       Debug.Log("After Balloon Counts: " + _spawnedTargets.Count);
 
         Destroy(target);
 

@@ -2,11 +2,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
 public class CountryFairDialogue : UIDialog
 {   
     [Header("Country Fair Settings")]
-    [SerializeField] private GameObject gameTents;
-    [SerializeField] private GameObject playerArea;
+    [SerializeField] 
+    private GameObject postIntroElements;
+    [SerializeField] 
+    private GameObject playerArea;
+
     
     [Header("Characters")]
     [SerializeField] private GameObject zeca;
@@ -30,20 +34,6 @@ public class CountryFairDialogue : UIDialog
 
     protected override void Awake()
     {   
-        // 1. Configurações inicias que NÃO dependem do JSON
-        GameManager gameManager = GameManager.GetInstance();
-
-        if (gameManager.IntroCompleted)
-        {   
-            _currentDialogueState = DialogueState.INTRO_COMPLETED;
-            
-            if (!gameManager.FrisbeeSessionCompleted && !gameManager.ArcherySessionCompleted)
-            {   
-                Destroy(transform.parent.gameObject);
-                return;
-            }
-        }
-
         // Chama o Awake do pai (que inicia o download do JSON)
         base.Awake();
 
@@ -55,19 +45,32 @@ public class CountryFairDialogue : UIDialog
         }
         carnyWise.SetActive(false);
 
-        if (gameTents == null)
+        if (postIntroElements == null)
         {
             Debug.LogError("Game Tents missing.");
             return;
         }
 
-
-        gameTents.SetActive(false);
-
-
         if (playerArea == null)
         {
             Debug.LogError("Player Area missing.");
+
+            return ;
+        }
+
+        postIntroElements.SetActive(false);
+
+        GameManager gameManager = GameManager.GetInstance();
+
+        if (gameManager.IntroCompleted)
+        {   
+            _currentDialogueState = DialogueState.INTRO_COMPLETED;
+            
+            if (!gameManager.FrisbeeSessionCompleted && !gameManager.ArcherySessionCompleted)
+            {   
+                Destroy(transform.parent.gameObject);
+                return;
+            }
         }
     }
 
@@ -110,8 +113,6 @@ public class CountryFairDialogue : UIDialog
             _sessionCompleteData = sessionCompleteData;
             ShowSessionCompletedLine();
         }
-
-        Debug.Log("Dados inicializados com sucesso. À espera que o jogador clique Next.");
     }
 
     // O NextStep mantém-se apenas para AVANÇAR o diálogo
@@ -122,7 +123,7 @@ public class CountryFairDialogue : UIDialog
 
         if (_currentDialogueState == DialogueState.INTRO_COMPLETED)
         {   
-            gameTents.SetActive(true);
+            postIntroElements.SetActive(true);
             Destroy(transform.parent.gameObject);
             return;
         }
@@ -177,8 +178,9 @@ public class CountryFairDialogue : UIDialog
 
     public void IntroComplete()
     {   
-        gameTents.SetActive(true);
+        postIntroElements.SetActive(true);
         GameManager.GetInstance().IntroCompleted = true;
+
         Destroy(transform.parent.gameObject);
     }
 

@@ -140,7 +140,6 @@ public class BowHandTracking : MonoBehaviour
         if (rig != null)
         {
             _handSource = rig.rightControllerAnchor;
-            Debug.Log("[Bow] Using RIGHT CONTROLLER as pulling hand fallback.");
         }
     }
 

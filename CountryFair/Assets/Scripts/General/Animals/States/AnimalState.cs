@@ -66,9 +66,6 @@ public class AnimalState: AnimatableState
         base.Enter();
 
         IncreaseStats();
-
-
-        Debug.Log("Animal Current State: " + StateName + " | Current Animation: " + _currentAnimationHashName);
     }
 
     public override void Execute()

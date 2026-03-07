@@ -51,12 +51,9 @@ public class CheatCodes : MonoBehaviour
         {
             Keyboard.current.onTextInput -= OnTextInput; // avoid double subscription
             Keyboard.current.onTextInput += OnTextInput;
-            Debug.Log($"[CheatCodes] Keyboard subscribed: {Keyboard.current.name}");
 
             return;
         }
-       
-        Debug.LogWarning("[CheatCodes] No keyboard detected.");
     }
 
     /// <summary>
@@ -77,7 +74,6 @@ public class CheatCodes : MonoBehaviour
 
             if (change == InputDeviceChange.Removed || change == InputDeviceChange.Disconnected)
             {
-                Debug.Log($"[CheatCodes] Keyboard disconnected: {keyboard.name}");
                 keyboard.onTextInput -= OnTextInput;
             }
         }

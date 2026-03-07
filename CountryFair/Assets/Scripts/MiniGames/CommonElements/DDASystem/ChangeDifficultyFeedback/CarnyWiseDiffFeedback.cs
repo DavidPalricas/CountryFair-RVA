@@ -46,13 +46,10 @@ public class CarnyWiseDiffFeedback : UIDialog
         }
 
         _feedbackData = _data as DiffcultyFeedBackData;
-        Debug.Log("[SUCCESS] Feedback Data loaded.");
-
 
         while (_pendingRequests.Count > 0)
         {
             bool wasIncrease = _pendingRequests.Dequeue();
-            Debug.Log("[LOGIC] Processing delayed request from queue.");
             ShowNewDiffFeedback(wasIncrease); 
         }
     }

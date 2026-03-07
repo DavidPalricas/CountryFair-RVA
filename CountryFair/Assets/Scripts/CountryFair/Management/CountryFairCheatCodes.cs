@@ -61,8 +61,6 @@ public class CountryFairCheatCodes : CheatCodes
 
     protected override void CheckCheatCode()
     {   
-        Debug.Log("Current player input: " + _playerInput);
-
         foreach (var (code, command) in _cheatCommands)
         {
             if (_playerInput.Contains(code))
