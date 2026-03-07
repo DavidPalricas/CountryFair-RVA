@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class CountryFairDialogue : UIDialog
 {   
     [Header("Country Fair Settings")]
     [SerializeField] private GameObject gameTents;
-    [SerializeField] private UnityEvent _dialogueCompleted;
+    [SerializeField] private GameObject playerArea;
     
     [Header("Characters")]
     [SerializeField] private GameObject zeca;
@@ -40,7 +39,6 @@ public class CountryFairDialogue : UIDialog
             
             if (!gameManager.FrisbeeSessionCompleted && !gameManager.ArcherySessionCompleted)
             {   
-                _dialogueCompleted.Invoke();
                 Destroy(transform.parent.gameObject);
                 return;
             }
@@ -62,10 +60,21 @@ public class CountryFairDialogue : UIDialog
             Debug.LogError("Game Tents missing.");
             return;
         }
+
+
         gameTents.SetActive(false);
 
-        // NOTA: Removemos daqui a lógica de converter _data e mostrar linhas.
-        // O Awake termina aqui, enquanto o download continua em background.
+
+        if (playerArea == null)
+        {
+            Debug.LogError("Player Area missing.");
+        }
+    }
+
+
+    private void Start()
+    {
+        Destroy(playerArea);
     }
 
     // --- AQUI ESTÁ A CORREÇÃO ---
@@ -113,7 +122,6 @@ public class CountryFairDialogue : UIDialog
 
         if (_currentDialogueState == DialogueState.INTRO_COMPLETED)
         {   
-            _dialogueCompleted.Invoke();
             gameTents.SetActive(true);
             Destroy(transform.parent.gameObject);
             return;
@@ -169,7 +177,6 @@ public class CountryFairDialogue : UIDialog
 
     public void IntroComplete()
     {   
-        _dialogueCompleted.Invoke();
         gameTents.SetActive(true);
         GameManager.GetInstance().IntroCompleted = true;
         Destroy(transform.parent.gameObject);
