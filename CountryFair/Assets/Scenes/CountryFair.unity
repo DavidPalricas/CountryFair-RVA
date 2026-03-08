@@ -12988,7 +12988,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1157759816
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17188,6 +17188,10 @@ PrefabInstance:
     - target: {fileID: 1680612828599594319, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1745718729246412483, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 2005853384340392081, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: buttonPressed.m_PersistentCalls.m_Calls.Array.size

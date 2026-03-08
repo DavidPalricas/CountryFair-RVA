@@ -152,14 +152,14 @@ public class DogIdle : DogState
     {   
         if (fSM.CurrentState == this)
         {
-            playerScored = true;
             animator.SetBool("StopAnim", true);
+            animator.SetFloat("Speed", 0f);
         }
     }
 
     public void DiffHasChanged()
     {    
-        if (fSM.CurrentState == this && !playerScored)
+        if (fSM.CurrentState == this && !animator.GetBool("StopAnim"))
         {
             animator.SetFloat("Speed", 1f);
         } 

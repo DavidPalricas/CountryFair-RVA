@@ -245,7 +245,6 @@ public class OnMovement : FrisbeeState
     {
         if (other.gameObject.CompareTag("Ground") && fSM.CurrentState == this)
         {
-            _touchedGround = false;
             _rigidbody.angularDamping = 0.1f;
         }
     }

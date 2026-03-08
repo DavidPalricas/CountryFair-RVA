@@ -197,6 +197,10 @@ public class ScoreAreaProperties : MonoBehaviour
         if (areaType == AreaType.NORMAL)
         {
              _frisbeeGameManager.DestroyTarget(gameObject);
+
+             return;
         }
+
+        gameObject.SetActive(false);
     }
 }
