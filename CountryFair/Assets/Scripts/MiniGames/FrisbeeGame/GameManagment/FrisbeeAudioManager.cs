@@ -5,7 +5,7 @@ using FMODUnity;
 /// Manages audio playback for the Frisbee mini-game, including dog sounds, frisbee throws, and scoring effects.
 /// Inherits from AudioManager to provide game-specific audio functionality.
 /// </summary>
-public class FrisbeeAudioManager : AudioManager
+public class FrisbeeAudioManager : MiniGameAudioManager
 {   
     [Header("Frisbee Game Sound Effects")]
     /// <summary>
@@ -69,7 +69,6 @@ public class FrisbeeAudioManager : AudioManager
         }
     }
 
-
     /// <summary>
     /// Initializes the Frisbee audio manager.
     /// </summary>
@@ -89,6 +88,14 @@ public class FrisbeeAudioManager : AudioManager
 
         switch (soundEffect)
         {   
+            case GameSoundEffects.CARNYWISE_INCREASE_DIFF:
+                eventToPlay = carnyWiseIncreaseDiffSound;
+                break;
+
+                case GameSoundEffects.CARNYWISE_DECREASE_DIFF:
+                eventToPlay = carnyWiseDecreaseDiffSound;
+                break;
+
             case GameSoundEffects.BUTTON_PRESSED:
                 eventToPlay = buttonPressedSound;
                 break;
@@ -130,6 +137,7 @@ public class FrisbeeAudioManager : AudioManager
             case GameSoundEffects.POINT_SCORED:
                 eventToPlay = pointScoredSound;
                 break;
+                
             default:
                 Debug.LogError("Unhandled sound effect: " + soundEffect);
                 return;

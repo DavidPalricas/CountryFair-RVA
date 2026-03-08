@@ -5,7 +5,7 @@
 			<value>ArcheryGame</value>
 		</property>
 		<relationship name="folder">
-			<destination>{fa519c13-8194-449d-913b-470fcf965b81}</destination>
+			<destination>{a4931caf-dedc-4dcd-a995-0d57543aa669}</destination>
 		</relationship>
 	</object>
 </objects>

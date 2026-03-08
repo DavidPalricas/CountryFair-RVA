@@ -38,6 +38,11 @@ public class AudioManager: MonoBehaviour
     public enum GameSoundEffects {
         /* General Sound Effects */
         BUTTON_PRESSED,
+        
+        /* Carny Wise Sound Effects */
+        CARNYWISE_INCREASE_DIFF,
+
+        CARNYWISE_DECREASE_DIFF,
 
         /* Frisbee Game Sound Effects*/
         /// <summary>Dog barking sound effect.</summary>

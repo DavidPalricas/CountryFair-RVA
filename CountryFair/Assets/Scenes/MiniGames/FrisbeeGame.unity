@@ -1713,41 +1713,55 @@ MonoBehaviour:
       Data3: -385448515
       Data4: 192746226
     Path: event:/ButtonPressed
+  carnyWiseIncreaseDiffSound:
+    Guid:
+      Data1: -678776880
+      Data2: 1274082137
+      Data3: 1157704078
+      Data4: 1715619348
+    Path: event:/MiniGames/CommonStuff/IncreaseDiffFeedBack
+  carnyWiseDecreaseDiffSound:
+    Guid:
+      Data1: 256732501
+      Data2: 1186802053
+      Data3: -324501598
+      Data4: -857868640
+    Path: event:/MiniGames/CommonStuff/DecreaseDiffFeedBack
   dogBarkSound:
     Guid:
       Data1: -645732235
       Data2: 1276830689
       Data3: 319381179
       Data4: 624469678
-    Path: event:/FrisbeeGame/DogBark
+    Path: event:/MiniGames/FrisbeeGame/DogBark
   dogHappyWhineSound:
     Guid:
       Data1: 782148235
       Data2: 1098964832
       Data3: -890514008
       Data4: -5289901
-    Path: event:/FrisbeeGame/DogHappyWhine
+    Path: event:/MiniGames/FrisbeeGame/DogHappyWhine
   frisbeeThrowSound:
     Guid:
       Data1: 1410675346
       Data2: 1212930598
       Data3: -535680093
       Data4: -1083065083
-    Path: event:/FrisbeeGame/FrisbeeThrow
+    Path: event:/MiniGames/FrisbeeGame/FrisbeeThrow
   pointScoredSound:
     Guid:
       Data1: 294725713
       Data2: 1187458227
       Data3: -26351985
       Data4: -951385872
-    Path: event:/FrisbeeGame/ScorePoint
+    Path: event:/MiniGames/FrisbeeGame/ScorePoint
   dogFootstepsSound:
     Guid:
       Data1: 1199296018
       Data2: 1116568719
       Data3: -84970573
       Data4: -749454200
-    Path: event:/FrisbeeGame/DogFootSteps
+    Path: event:/MiniGames/FrisbeeGame/DogFootSteps
 --- !u!114 &147053876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20296,6 +20310,30 @@ PrefabInstance:
     - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
       propertyPath: distanceFromPlayer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 147053875}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlaySpatialSoundEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: FrisbeeAudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8557370047735245748, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
       propertyPath: m_CullTransparentMesh

@@ -1,7 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 
-public class ArcheryAudioManager : AudioManager
+public class ArcheryAudioManager :MiniGameAudioManager
 {  
 
     [SerializeField]
@@ -49,6 +49,14 @@ public class ArcheryAudioManager : AudioManager
 
         switch (soundEffect)
         {  
+            case GameSoundEffects.CARNYWISE_INCREASE_DIFF:
+                eventToPlay = carnyWiseIncreaseDiffSound;
+                break;
+
+             case GameSoundEffects.CARNYWISE_DECREASE_DIFF:
+                eventToPlay = carnyWiseDecreaseDiffSound;
+                break;
+    
            case GameSoundEffects.BUTTON_PRESSED:
                 eventToPlay = buttonPressedSound;
                 break;

@@ -7,11 +7,7 @@ public class WanderingPerson: MonoBehaviour
 {   
     [SerializeField]
     private float walkRadius = 10f;
-
-    [SerializeField]
-    private float stuckThreshold = 5f;
-
-
+    
     [SerializeField]
     private Animator animator;
 

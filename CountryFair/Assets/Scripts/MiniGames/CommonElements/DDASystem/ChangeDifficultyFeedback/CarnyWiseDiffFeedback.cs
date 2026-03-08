@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using DG.Tweening;
+using UnityEngine.Events;
 
 public class CarnyWiseDiffFeedback : UIDialog
 {
@@ -8,16 +8,20 @@ public class CarnyWiseDiffFeedback : UIDialog
     [SerializeField]
     private float displayDuration = 6f;
 
-    [SerializeField]
-    private float transitionDuration = 0.4f;
-
     [Header("Carny Wise Expressions")]
     [SerializeField]
     private GameObject increaseDiffExpression;
     [SerializeField]
     private GameObject decreaseDiffExpression;
 
+    [Header("Sound Feedback")]
+    [SerializeField]
+    private UnityEvent <AudioManager.GameSoundEffects, GameObject> soundFeedback;
+
     private DiffcultyFeedBackData _feedbackData;
+
+    private readonly AudioManager.GameSoundEffects _increaseDiffSound = AudioManager.GameSoundEffects.CARNYWISE_INCREASE_DIFF;
+    private readonly AudioManager.GameSoundEffects _decreaseDiffSound = AudioManager.GameSoundEffects.CARNYWISE_DECREASE_DIFF;
 
     private Queue<bool> _pendingRequests = new ();
 
@@ -64,7 +68,7 @@ public class CarnyWiseDiffFeedback : UIDialog
         _jsonFileName = "change_difficulty.json";
     }
 
-    // Método chamado pelo Jogo
+
     public void ShowNewDiffFeedback(bool isToIncrease)
     {
         if (_feedbackData == null)
@@ -78,16 +82,26 @@ public class CarnyWiseDiffFeedback : UIDialog
 
         List<string> feedbackTexts;
 
+        AudioManager.GameSoundEffects soundToPlay;
+
+        GameObject currentExpression;
+
         if (isToIncrease)
         {
             increaseDiffExpression.SetActive(true);
+            currentExpression = increaseDiffExpression;
             feedbackTexts = _feedbackData.IncreaseDiff;
+            soundToPlay = _increaseDiffSound;
         }
         else
         {
             decreaseDiffExpression.SetActive(true);
+            currentExpression = decreaseDiffExpression;
             feedbackTexts = _feedbackData.DecreaseDiff;
+            soundToPlay = _decreaseDiffSound;
         }
+
+        soundFeedback.Invoke(soundToPlay, currentExpression);
 
         dialogueBoxGameObject.SetActive(true);
 
@@ -101,7 +115,6 @@ public class CarnyWiseDiffFeedback : UIDialog
             Debug.LogError("List of feedback texts is null or empty.");
         }
 
-        // Reseta o timer para esconder
         CancelInvoke(nameof(HideFeedback));
         Invoke(nameof(HideFeedback), displayDuration);
     }

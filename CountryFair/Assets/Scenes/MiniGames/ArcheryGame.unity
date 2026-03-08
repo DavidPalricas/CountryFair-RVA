@@ -1376,6 +1376,20 @@ MonoBehaviour:
       Data3: -385448515
       Data4: 192746226
     Path: event:/ButtonPressed
+  carnyWiseIncreaseDiffSound:
+    Guid:
+      Data1: -678776880
+      Data2: 1274082137
+      Data3: 1157704078
+      Data4: 1715619348
+    Path: event:/MiniGames/CommonStuff/IncreaseDiffFeedBack
+  carnyWiseDecreaseDiffSound:
+    Guid:
+      Data1: 256732501
+      Data2: 1186802053
+      Data3: -324501598
+      Data4: -857868640
+    Path: event:/MiniGames/CommonStuff/DecreaseDiffFeedBack
   balloonPopSound:
     Guid:
       Data1: -1789323876
@@ -4247,8 +4261,8 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.5566037, g: 0.4212168, b: 0.24975327, a: 0.35}
-    - _Color: {r: 0.5566037, g: 0.42121786, b: 0.24975434, a: 0.35}
+    - _BaseColor: {r: 0.5566037, g: 0.42121568, b: 0.24975216, a: 0.35}
+    - _Color: {r: 0.5566037, g: 0.42121676, b: 0.24975324, a: 0.35}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -5244,6 +5258,30 @@ PrefabInstance:
       propertyPath: centerEyeTransform
       value: 
       objectReference: {fileID: 2135016405}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 106628086}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlaySpatialSoundEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ArcheryAudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7979614268624152678, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
+      propertyPath: soundFeedback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8878798017660467077, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
       propertyPath: m_LocalScale.x
       value: 1

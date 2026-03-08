@@ -15,13 +15,6 @@ using DG.Tweening;
 [RequireComponent(typeof(NavMeshAgent))]
  public abstract class DogState: AnimatableState
 {   
-    /// <summary>
-    /// Speed at which the dog rotates to face its target.
-    /// Higher values result in faster rotation.
-    /// </summary>
-    [SerializeField]
-    private float rotationSpeed = 2f;
-
     [SerializeField]
     protected UnityEvent<AudioManager.GameSoundEffects, GameObject> barkEvent;
 
