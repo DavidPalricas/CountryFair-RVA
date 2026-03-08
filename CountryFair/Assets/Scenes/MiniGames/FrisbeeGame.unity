@@ -3014,7 +3014,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 250471883}
+      addedObject: {fileID: 250471886}
   m_SourcePrefab: {fileID: 100100000, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
 --- !u!4 &250471881 stripped
 Transform:
@@ -3026,7 +3026,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
   m_PrefabInstance: {fileID: 250471880}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &250471883
+--- !u!65 &250471886
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3045,8 +3045,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000001, y: 1, z: 1}
-  m_Center: {x: -0.000000007450581, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 0.99999994}
+  m_Center: {x: 0.000000029802322, y: 0.00000023841858, z: -0.00000011920929}
 --- !u!224 &251507905 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1731276637148235079, guid: 59ce59f7a54d9574cb4d1b6f4469c3c9, type: 3}
@@ -8822,7 +8822,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 812217537}
+      addedObject: {fileID: 812217540}
   m_SourcePrefab: {fileID: 100100000, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
 --- !u!4 &812217535 stripped
 Transform:
@@ -8834,7 +8834,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
   m_PrefabInstance: {fileID: 812217534}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &812217537
+--- !u!65 &812217540
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8853,8 +8853,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000001, y: 1, z: 1}
-  m_Center: {x: -0.000000007450581, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0.00000011920929, y: 0, z: 0}
 --- !u!1001 &816684054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9241,7 +9241,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1906985868}
+      addedObject: {fileID: 1906985871}
   m_SourcePrefab: {fileID: 100100000, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
 --- !u!4 &863539804 stripped
 Transform:
@@ -10115,7 +10115,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 923426093}
+      addedObject: {fileID: 923426096}
   m_SourcePrefab: {fileID: 100100000, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
 --- !u!4 &923426091 stripped
 Transform:
@@ -10127,7 +10127,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
   m_PrefabInstance: {fileID: 923426090}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &923426093
+--- !u!65 &923426096
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10147,7 +10147,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.0000001, y: 1, z: 1}
-  m_Center: {x: -0.000000007450581, y: 0, z: 0}
+  m_Center: {x: 0.000000029802322, y: 0, z: -0.00000011920929}
 --- !u!1001 &983777157
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17815,7 +17815,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6313707847711860148, guid: 8c1b6fe4eab02ab48be94ac117ff2b50, type: 3}
   m_PrefabInstance: {fileID: 863539803}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1906985868
+--- !u!65 &1906985871
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17834,8 +17834,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000001, y: 1, z: 1}
-  m_Center: {x: -0.000000007450581, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: -0.000000059604645, y: 0, z: 0}
 --- !u!1001 &1910010498
 PrefabInstance:
   m_ObjectHideFlags: 0

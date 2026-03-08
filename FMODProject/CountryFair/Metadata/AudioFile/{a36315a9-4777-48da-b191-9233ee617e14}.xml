@@ -5,13 +5,13 @@
 			<value>scoreEffect.wav</value>
 		</property>
 		<property name="frequencyInKHz">
-			<value>44.0999985</value>
+			<value>48</value>
 		</property>
 		<property name="channelCount">
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>3.5758730158730159</value>
+			<value>1.8133333333333332</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{af4a6e97-14d7-49e8-aae4-8e30a0f18222}</destination>
