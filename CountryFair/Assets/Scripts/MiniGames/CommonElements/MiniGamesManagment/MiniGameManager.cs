@@ -20,14 +20,9 @@ public class MiniGameManager : MonoBehaviour
 
     protected int _currentDesiredCount; // CRÍTICO: Para saber quantos devemos ter
 
-
-    private MiniGameCheatCodes _cheatCodes;
-
     protected virtual void Awake()
     {
        PlayerPrefs.SetInt("SessionGoal", sessionScoreGoal);
-
-       _cheatCodes = GetComponent<MiniGameCheatCodes>();
     }
 
 

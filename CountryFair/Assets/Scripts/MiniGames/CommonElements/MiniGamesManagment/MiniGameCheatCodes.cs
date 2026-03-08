@@ -74,6 +74,7 @@ public class MiniGameCheatCodes : CheatCodes
         RegisterCheat("reset",  () => ResetDifficulty());
         RegisterCheat("miss",   OnMissCheat);
         RegisterCheat("score",  OnScoreCheat);
+        RegisterCheat("complete", ()=> carnyWise.SessionGoalReached());
         RegisterCheat("increase", () => IncreaseDifficulty());
         RegisterCheat("decrease", () => DecreaseDifficulty());
         RegisterCheat("happy",    () => activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.HAPPY));

@@ -34,10 +34,21 @@ public class CountryFairDialogue : UIDialog
 
     protected override void Awake()
     {   
-        // Chama o Awake do pai (que inicia o download do JSON)
+        GameManager gameManager = GameManager.GetInstance();
+
+        if (gameManager.IntroCompleted)
+        {   
+            _currentDialogueState = DialogueState.INTRO_COMPLETED;
+            
+            if (!gameManager.FrisbeeSessionCompleted && !gameManager.ArcherySessionCompleted)
+            {   
+                Destroy(transform.parent.gameObject);
+                return;
+            }
+        }
+
         base.Awake();
 
-        // Validações de segurança
         if (zeca == null || carnyWise == null || characterNameText == null )
         {
             Debug.LogError("Characters missing.");
@@ -58,35 +69,13 @@ public class CountryFairDialogue : UIDialog
             return ;
         }
 
-        postIntroElements.SetActive(false);
-
-        GameManager gameManager = GameManager.GetInstance();
-
-        if (gameManager.IntroCompleted)
-        {   
-            _currentDialogueState = DialogueState.INTRO_COMPLETED;
-            
-            if (!gameManager.FrisbeeSessionCompleted && !gameManager.ArcherySessionCompleted)
-            {   
-                Destroy(transform.parent.gameObject);
-                return;
-            }
-        }
-    }
-
-
-    private void Start()
-    {
         Destroy(playerArea);
+
+        postIntroElements.SetActive(false);
     }
 
-    // --- AQUI ESTÁ A CORREÇÃO ---
-    // Este método é chamado automaticamente pelo UIDialog ASSIM que o JSON chega.
     protected override void OnDataLoaded()
     {
-        // Agora é seguro mexer no _data porque o download acabou.
-        
-        // Lógica para Intro
         if (_currentDialogueState != DialogueState.INTRO_COMPLETED)
         {
              if (_data is not IntroData introData)
@@ -97,11 +86,9 @@ public class CountryFairDialogue : UIDialog
 
             _introData = introData;
 
-            // Inicializa as variáveis e mostra a PRIMEIRA frase automaticamente
             SetIntroCurrentState();
             ShowIntroLines(); 
         }
-        // Lógica para Sessão Completa
         else
         {
             if (_data is not SessionCompletedData sessionCompleteData)
@@ -115,10 +102,8 @@ public class CountryFairDialogue : UIDialog
         }
     }
 
-    // O NextStep mantém-se apenas para AVANÇAR o diálogo
     public override void NextStep()
     {   
-        // Se os dados não tiverem chegado, aborta para evitar erros
         if (_data == null) return;
 
         if (_currentDialogueState == DialogueState.INTRO_COMPLETED)
@@ -128,7 +113,6 @@ public class CountryFairDialogue : UIDialog
             return;
         }
        
-        // Avança nas linhas ou muda de estado
         if (_currentDialogueLines.Count == 0)
         {
             SetIntroCurrentState();
@@ -137,8 +121,7 @@ public class CountryFairDialogue : UIDialog
         ShowIntroLines();
     }
 
-    // ... (O resto dos teus métodos auxiliares mantêm-se iguais) ...
-    
+
     private void SetIntroCurrentState()
     {  
         switch (_currentDialogueState)
@@ -230,7 +213,11 @@ public class CountryFairDialogue : UIDialog
     private void ShowSessionCompletedLine()
     {   
         characterNameText.text = "Zeca Bigodes";
+
         if(_sessionCompleteData != null && _sessionCompleteData.Congrats != null)
-            dialogueBoxText.text = _sessionCompleteData.Congrats[Utils.RandomValueInRange(0, _sessionCompleteData.Congrats.Count)];
+        {
+             dialogueBoxText.text = _sessionCompleteData.Congrats[Utils.RandomValueInRange(0, _sessionCompleteData.Congrats.Count)];
+        }
+           
     }
 }

@@ -32,6 +32,8 @@ public class ArcheryCheatCodes : MiniGameCheatCodes
             return;
         }
 
+        _tutorialCompleted = GameManager.GetInstance().ArcheryTutorialCompleted;
+
         _maxCheatLength = _cheatCommands.Keys.Max(c => c.Length);
     }
 
