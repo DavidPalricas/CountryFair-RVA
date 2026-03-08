@@ -248,4 +248,14 @@ public class OnMovement : FrisbeeState
             _rigidbody.angularDamping = 0.1f;
         }
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("OutOfBounds") && fSM.CurrentState == this)
+        {   
+            playerMissed.Invoke();
+            fSM.ChangeState("ReturnToPlayer");
+        }
+    }
 }
