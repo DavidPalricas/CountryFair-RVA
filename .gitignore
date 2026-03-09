@@ -216,3 +216,7 @@ CountryFair/Assets/_Recovery.meta
 FMODProject/CountryFair/.cache/
 CountryFair/Assets/Plugins/FMOD/Cache/Editor
 
+# Excel Temporary and Owner Files
+~$*.xlsx*
+.~lock.*#
+*.tmp
