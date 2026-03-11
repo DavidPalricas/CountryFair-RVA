@@ -20,7 +20,17 @@ pip install -r requirements.txt
 ```
 
 ## Generate Graphs
+1. Go to the folder Notes and execute the following command:
+```
+bash
 python gen_graphs
+```
 
-## Check the images generated
-Open the generated directory named "Graphs"
+2. Open the generated directory named "Graphs" to see the images
+
+## Get Sus
+1. Go to the folder Results and execute the following command:
+```
+bash
+python  get_sus.py
+```

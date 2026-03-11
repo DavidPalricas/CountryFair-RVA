@@ -219,7 +219,7 @@ CountryFair/Assets/Plugins/FMOD/Cache/Editor
 
 ## User Test Stuff
 UserTests/Notes/Graphs/
-UserTests/Notes/env/
+UserTests/env/
 
 # Excel Temporary and Owner Files
 ~$*.xlsx*
