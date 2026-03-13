@@ -23,8 +23,12 @@ Grade interpretation (Bangor et al., 2009):
 
 import csv
 import os
+import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
 
 SUS_RESULTS_FILE = "UserTestResultsWave2.csv"
+GRAPH_DIR = "Graphs"
+SUS_GRAPH_FILE = "SUS_Scores.png"
 
 # Maps Likert response labels to their numeric value (1–5)
 LIKERT_MAP = {
@@ -82,14 +86,91 @@ def calculate_sus_score(responses):
 
     for i, response in enumerate(responses):
         value = LIKERT_MAP.get(response.strip())
+
         if value is None:
             return None
+        
         if i % 2 == 0:  # odd questions (1,3,5,7,9) — positive items
             total += value - 1
         else:            # even questions (2,4,6,8,10) — negative items
             total += 5 - value
 
     return int(total * 2.5)
+
+
+def gen_sus_graph(results):
+    """Generate a SUS score bar chart highlighting best/worst and average."""
+    valid_results = [r for r in results if r["SUS"] is not None]
+
+    if not valid_results:
+        print("No valid SUS scores found. Graph was not generated.")
+        return
+
+    participant_ids = [r["ID"] for r in valid_results]
+    scores = [r["SUS"] for r in valid_results]
+
+    best_idx = scores.index(max(scores))
+    worst_idx = scores.index(min(scores))
+
+    colors = ["#5B9BD5"] * len(scores)
+    colors[best_idx] = "#2ECC71"   # green for best score
+    colors[worst_idx] = "#E74C3C"  # red for worst score
+
+    avg = int(sum(scores) / len(scores))
+    avg_grade, avg_adjective = get_sus_grade(avg)
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bars = ax.bar(participant_ids, scores, color=colors, edgecolor="white", linewidth=0.8)
+
+    # Add score labels on top of bars.
+    for i, (bar, score) in enumerate(zip(bars, scores)):
+        weight = "bold" if i in (best_idx, worst_idx) else "normal"
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 1.2,
+            f"{score}",
+            ha="center",
+            va="bottom",
+            fontsize=10,
+            fontweight=weight,
+        )
+
+    ax.axhline(avg, color="#F39C12", linestyle="--", linewidth=2, label="Average")
+    ax.text(
+        0.99,
+        0.96,
+        f"Avg: {avg} ({avg_grade}, {avg_adjective})",
+        transform=ax.transAxes,
+        ha="right",
+        va="top",
+        fontsize=10,
+        bbox={"facecolor": "white", "alpha": 0.85, "edgecolor": "#F39C12"},
+    )
+
+    ax.set_title("System Usability Scale (SUS) Scores", fontsize=14, fontweight="bold", pad=15)
+    ax.set_xlabel("Participant", fontsize=12)
+    ax.set_ylabel("SUS Score", fontsize=12)
+    ax.set_ylim(0, 105)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+    legend_elements = [
+        Patch(facecolor="#2ECC71", label=f"Best Score ({max(scores)})"),
+        Patch(facecolor="#E74C3C", label=f"Worst Score ({min(scores)})"),
+        Patch(facecolor="#5B9BD5", label="Other Scores"),
+    ]
+    ax.legend(handles=legend_elements, loc="upper left", fontsize=10)
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    graph_dir = os.path.join(script_dir, GRAPH_DIR)
+    os.makedirs(graph_dir, exist_ok=True)
+
+    graph_path = os.path.join(graph_dir, SUS_GRAPH_FILE)
+    plt.tight_layout()
+    plt.savefig(graph_path, dpi=150)
+    plt.close()
+
+    print(f"Saved graph: {graph_path}")
 
 
 def get_sus_results():
@@ -104,26 +185,31 @@ def get_sus_results():
     filepath = os.path.join(script_dir, SUS_RESULTS_FILE)
 
     results = []
+
     with open(filepath, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             responses = [row[q] for q in SUS_QUESTIONS]
             score = calculate_sus_score(responses)
+
             if score is not None:
                 grade, adjective = get_sus_grade(score)
             else:
                 grade, adjective = None, None
+
             results.append({"ID": row["ID"], "SUS": score, "Grade": grade, "Adjective": adjective})
 
     return results
 
 
 def main():
-    """Print a formatted SUS results table with scores, grades, and adjectives."""
+    """Print SUS results table and generate a SUS score graph."""
+
     sus = get_sus_results()
 
     print(f"{'ID':<6} {'Score':>7}  {'Grade':<4}  Adjective")
     print("-" * 38)
+
     for r in sus:
         if r["SUS"] is not None:
             print(f"{r['ID']:<6} {r['SUS']:>7}  {r['Grade']:<4}  {r['Adjective']}")
@@ -135,9 +221,11 @@ def main():
     if scores:
         avg = int(sum(scores) / len(scores))
         avg_grade, avg_adjective = get_sus_grade(avg)
+
         print("-" * 38)
         print(f"{'Avg':<6} {avg:>7}  {avg_grade:<4}  {avg_adjective}")
 
+    gen_sus_graph(sus)
 
 if __name__ == "__main__":
     main()

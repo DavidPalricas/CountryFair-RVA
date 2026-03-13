@@ -1,32 +1,78 @@
 Column1,Column2,Column3,Column4,Column5,Column6
 Participant_ID,Task_1_Select_Mini_Game,Task_2_Complete_Frisbee,Task_3_Complete_Archery,General_Observations,Unprompted_Suggestions
-User 1,18 seconds,3.13 minutes,2.00 minutes,"1. The user in the frisbee game focused only on throwing the frisbee to the area around the dog and completely ignored the others.
+User 1,18 seconds,3:13 minutes,2:00 minutes,"1. The user in the frisbee game focused only on throwing the frisbee to the area around the dog and completely ignored the others.
 2. The problems caused to this user may have been due to poor calibration of the headset, which mid-game they complained was falling off.",Change the trajectory color in the archery mini-game
-User 2,10 seconds,2.03 minutes,1.00 minute,"1. The user in the frisbee game focused only on throwing the frisbee to the area around the dog and completely ignored the others.
+User 2,10 seconds,2:03 minutes,1:00 minute,"1. The user in the frisbee game focused only on throwing the frisbee to the area around the dog and completely ignored the others.
 2. They wanted to keep playing after the test had ended.",
-User 3,3 seconds,3.44 minutes,27 seconds,"1. In the frisbee game, they practically focused on throwing to the extra areas and only started throwing to the dog when the observer reminded him that the area around the dog was worth more points they thought it was the opposite.
+User 3,3 seconds,3:44 minutes,27 seconds,"1. In the frisbee game, they practically focused on throwing to the extra areas and only started throwing to the dog when the observer reminded him that the area around the dog was worth more points they thought it was the opposite.
 2. They showed no difficulty in the archery game; from the observer's perspective, they completed it very quickly, likely because they had tested the game before.
 3. During the frisbee game, the user commented that they were having a 'skill issue' attributing his difficulties to his own lack of ability rather than to problems with the system.
 4. They wanted to keep playing after the test had ended.",.
-User 4,4 seconds,1.38 minutes,1.00 minute,"1. They felt frustrated when selecting the mini-game they found the eye-gaze interaction mechanism clunky and said they had to look precisely at the tent for the selection button to appear.
+User 4,4 seconds,1:38 minutes,1:00 minute,"1. They felt frustrated when selecting the mini-game they found the eye-gaze interaction mechanism clunky and said they had to look precisely at the tent for the selection button to appear.
 2. They said the frisbee mini-game was a lot of fun and that they could see himself playing it in his free time.
 3.His favorite mini-game was by far the frisbee one they only wanted to play this game. When asked in task 3 to play the archery mini-game, they said they wanted to continue with the frisbee one. 
 4. They loved the country fair environment they found it very fun and realistic. They just thought the animations of the characters walking were a bit clunky.",
-User 5,5 seconds,2.51 minutes,54 seconds,"1. At the beginning of the session while exploring the country fair environment, the user had fun watching the NPCs move around. They ended up following one of them to see what it would do and enthusiastically commented on its actions.
+User 5,5 seconds,2:51 minutes,54 seconds,"1. At the beginning of the session while exploring the country fair environment, the user had fun watching the NPCs move around. They ended up following one of them to see what it would do and enthusiastically commented on its actions.
 2. They really liked the effect of the balloons flying away and then popping at the fair.
 3. The user had trouble figuring out how to pick up the frisbee. This might be because they didn't want to do the tutorial and only watched the previous user
 4. At the start of the archery game since they didn't want to watch the tutorial they didn't understand how to pull the bow's string. To avoid the same issue as with the frisbee one of the observers immediately explained how to pull the string. After that, they showed no further difficulties.",
-User 6, 3 seconds, 1:45 minutes, 1.08 minutes,"1. They liked the atmosphere around the frisbee game and said it was cute.
+User 6, 3 seconds, 1:45 minutes, 1:08 minutes,"1. They liked the atmosphere around the frisbee game and said it was cute.
 2. They said the frisbee minigame was their favorite game, loved the mechanic of the dog catching the frisbee, and mentioned several times that the dog was cute.
 3. They noticed that in both games, the adaptive parameters had changed (balloons started moving, for example) but didn't realize that this was linked to customization.
 4. They wanted to keep playing after the test had ended",
-User 7, 2 seconds, 5.53 minutes, 1.01 minutes,"1. They really liked the videos that appeared in the tutorial, saying several times, 'this video thing is really cool.'
+User 7, 2 seconds, 5:53 minutes, 1:01 minutes,"1. They really liked the videos that appeared in the tutorial, saying several times, 'this video thing is really cool.'
 2. The long time they spent on the task of completing the frisbee game was due to several factors. At the beginning of the task, the user was avoiding the objective, preferring to throw the frisbee at the deer around the game area. (The observer should have told them to keep playing). They then went back to messing around, throwing to the areas around the dog and saying that the dog was very fat and needed to run. This was also the observer's fault for not telling them to continue playing normally, but on the one hand, it showed that they were having fun. It was also due to their distraction/confusion when they returned to playing normally. At the start of the game, to remember what was said in the tutorial, they asked the observer if the area around the dog was worth more points than the others, and the observer said yes. However, when they started playing normally again, they only aimed for the extra areas until they asked the observer, 'Is this never going to end?' and the observer said that aiming for the area around the dog scores more points. Then the participant said, 'Oh, I thought it was the opposite.'
 3. They said their favorite mini-game is the archery one.
 4. They wanted to keep playing after the test had ended.",
-User 8, 15 seconds, 2. 18 minutes, 1.21 minutes,"1.  The user had difficulties pressing the buttons.
+User 8, 15 seconds, 2:18 minutes, 1:21 minutes,"1.  The user had difficulties pressing the buttons.
 2.  They initially had difficulties using the bow but then adapted.
 3.  They said their favorite mini-game was the archery one.
 4.  They wanted to keep playing after the test had ended.", 
-User 9, 3 seconds, 2.39 minutes, 1.22 minutes,"1. They showed curiosity about how the game's difficulty was adjusted. 2. They said the archery game was cool. 3.  After playing the archery game they said their arm felt tired. The participant mentioned that this might be due to the muscle pain they have been having.",
+User 9, 3 seconds, 2:39 minutes, 1:22 minutes,"1. They showed curiosity about how the game's difficulty was adjusted. 2. They said the archery game was cool. 3.  After playing the archery game they said their arm felt tired. The participant mentioned that this might be due to the muscle pain they have been having.",
+User 10,6 seconds,2:39 minutes,47 seconds,"1. They suggested a highscore mode.
+2.  They liked the mechanic of the dog returning the frisbee.
+3.  They seemed to have fun in both games laughing and cheering when scoring points.
+4.  They did not notice that the color changed in the archery game.
+5.  They were very attentive in reading the instructions and clearly understood the objectives of the games.
+6.  They wanted to keep playing after the test had ended.",
+User 11,1 second,1:42 minutes,1:27 minutes,"1.  They read the instructions carefully.
+2.  They enjoyed exploring the environment, constantly turning their head to look at details in the surroundings.
+3.  In the archery mini-game, they were very attentive to see if the color changed.
+4.  The participant was left-handed and noted that in their test it was more difficult to throw the frisbee with their left hand.
+5.  They really liked the people walking in the background at the fair and the animals that were present.
+6.  They started playing around with an NPC talking to it and asking where it was going.
+7.  They said the frisbee game was boring.
+8.  They wanted to keep playing after the test had ended.",
+User 12,2 seconds,1:08 minutes,13 seconds,"1.  They discovered a bug: when dropping the frisbee at the start of the game, it falls infinitely.
+2.  In the archery game, they shot with too much force and the arrow fell off the map since it didn't collide with anything it didn't return to the bow.
+3.  They felt dizzy.
+4.  They liked that the archery game was positioned higher up compared to the fair and the frisbee game.
+5.  The archery mini-game crashed on them twice.
+6.  They wanted to keep playing after the test had ended.",
+User 13,4 seconds,1:21 minutes,1:12 minutes,"1.  They read the instructions carefully.
+2.  They had difficulties releasing the frisbee when throwing it.
+3.  The color of the balloon changed randomly at the beginning, which is not supposed to happen.
+4.  They wanted to keep playing after the test had ended.",
+User 14,10 seconds,1:56 minutes,1:17 minutes,"1.  They had fun playing frisbee at the beginning and liked the dog fetching it, but by the end they felt a bit frustrated, saying that the throw sometimes worked and sometimes didn't and started using expressions like 'I'm getting tilted'.
+2.  The bug occurred where the frisbee is dropped and falls to the ground infinitely.
+3.  They loved the archery game.
+4.  They did not notice that they had to pop balloons of a specific color.
+5.  They did not notice that the color of the balloon changed.
+6.  They wanted to keep playing after the test had ended.",
+User 15,1 second,3:54 minutes,1:50 minutes,"1.  They read the instructions carefully and out loud.
+2.  They had difficulties with the frisbee game.
+3.  They had difficulties pulling the bow.
+4.  They did not understand the objective of the archery game.
+5.  They preferred the archery game.
+6.  They wanted to keep playing after the test had ended.",
+User 16,7 seconds,2:26 minutes,31 seconds,"1.  They initially had difficulties releasing the frisbee, but after understanding how to release it they had no further difficulties.
+2.  They seemed to be having fun playing and commented on their actions out loud.
+3.  They were very focused while watching the demonstration videos.
+4.  They did not notice that the color of the correct balloon had changed in the archery game.
+5.  They wanted to keep playing after the test had ended.",
+User 17,4 seconds,1:28 minutes,48 seconds,"1.  They said the frisbee button was positioned a bit too low for them.
+2.  Due to an initial poor setup of the room that wasn't sufficiently well-lit, the participant failed twice at the frisbee game because the hand tracking wasn't working as it should.
+3.  They did not notice the color of the correct balloon changing in the archery game.",
+
+
  

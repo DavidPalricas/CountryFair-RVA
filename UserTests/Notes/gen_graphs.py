@@ -113,7 +113,7 @@ def read_data():
 
 
 def format_seconds(seconds):
-    """Format a duration in seconds into a compact human-readable string.
+    """Format a duration as whole seconds.
 
     Parameters
     ----------
@@ -123,13 +123,9 @@ def format_seconds(seconds):
     Returns
     -------
     str
-        Formatted string, e.g. ``"45s"`` or ``"2m 18s"``.
+        Formatted string in seconds, e.g. ``"45s"``.
     """
-    if seconds < 60:
-        return f"{seconds:.0f}s"
-    m = int(seconds // 60)
-    s = int(seconds % 60)
-    return f"{m}m {s:02d}s"
+    return f"{seconds:.0f}s"
 
 
 def gen_bar_chart(participants, times, title, ylabel, file_name, color_default="#5B9BD5"):
@@ -155,12 +151,13 @@ def gen_bar_chart(participants, times, title, ylabel, file_name, color_default="
     """
     best_idx = times.index(min(times))
     worst_idx = times.index(max(times))
+    avg_time = sum(times) / len(times)
 
     colors = [color_default] * len(times)
     colors[best_idx] = "#2ECC71"   # green for best time
     colors[worst_idx] = "#E74C3C"  # red for worst time
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    _, ax = plt.subplots(figsize=(10, 6))
     bars = ax.bar(participants, times, color=colors, edgecolor="white", linewidth=0.8)
 
     # Add value labels on top of each bar
@@ -170,6 +167,8 @@ def gen_bar_chart(participants, times, title, ylabel, file_name, color_default="
         ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + max(times) * 0.02,
                 label, ha="center", va="bottom", fontsize=10, fontweight=weight)
 
+    ax.axhline(avg_time, color="#F39C12", linestyle="--", linewidth=2)
+ 
     ax.set_title(title, fontsize=14, fontweight="bold", pad=15)
     ax.set_xlabel("Participant", fontsize=12)
     ax.set_ylabel(ylabel, fontsize=12)
@@ -181,6 +180,7 @@ def gen_bar_chart(participants, times, title, ylabel, file_name, color_default="
     legend_elements = [
         Patch(facecolor="#2ECC71", label=f"Best Time ({format_seconds(min(times))})"),
         Patch(facecolor="#E74C3C", label=f"Worst Time ({format_seconds(max(times))})"),
+        Patch(facecolor="#F39C12", label=f"Average ({format_seconds(avg_time)})"),
     ]
     ax.legend(handles=legend_elements, loc="upper right", fontsize=10)
 
