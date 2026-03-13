@@ -25,6 +25,7 @@ import csv
 import os
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
 
 SUS_RESULTS_FILE = "UserTestResultsWave2.csv"
 GRAPH_DIR = "Graphs"
@@ -119,7 +120,7 @@ def gen_sus_graph(results):
     avg = int(sum(scores) / len(scores))
     avg_grade, avg_adjective = get_sus_grade(avg)
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    _, ax = plt.subplots(figsize=(10, 6))
     bars = ax.bar(participant_ids, scores, color=colors, edgecolor="white", linewidth=0.8)
 
     # Add score labels on top of bars.
@@ -135,17 +136,7 @@ def gen_sus_graph(results):
             fontweight=weight,
         )
 
-    ax.axhline(avg, color="#F39C12", linestyle="--", linewidth=2, label="Average")
-    ax.text(
-        0.99,
-        0.96,
-        f"Avg: {avg} ({avg_grade}, {avg_adjective})",
-        transform=ax.transAxes,
-        ha="right",
-        va="top",
-        fontsize=10,
-        bbox={"facecolor": "white", "alpha": 0.85, "edgecolor": "#F39C12"},
-    )
+    ax.axhline(avg, color="#F39C12", linestyle="--", linewidth=2)
 
     ax.set_title("System Usability Scale (SUS) Scores", fontsize=14, fontweight="bold", pad=15)
     ax.set_xlabel("Participant", fontsize=12)
@@ -158,8 +149,22 @@ def gen_sus_graph(results):
         Patch(facecolor="#2ECC71", label=f"Best Score ({max(scores)})"),
         Patch(facecolor="#E74C3C", label=f"Worst Score ({min(scores)})"),
         Patch(facecolor="#5B9BD5", label="Other Scores"),
+        Line2D(
+            [0],
+            [0],
+            color="#F39C12",
+            lw=2,
+            linestyle="--",
+            label=f"Average ({avg}, {avg_grade}, {avg_adjective})",
+        ),
     ]
-    ax.legend(handles=legend_elements, loc="upper left", fontsize=10)
+    ax.legend(
+        handles=legend_elements,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.02),
+        ncol=2,
+        fontsize=10,
+    )
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     graph_dir = os.path.join(script_dir, GRAPH_DIR)

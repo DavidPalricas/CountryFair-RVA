@@ -17,9 +17,18 @@ import re
 import os
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
 
 DIR_TO_SAVE_GRAPHS = "Graphs/"
 USER_TEST_FILE = "UserTestWave2.csv"
+
+
+def format_participant_label(participant):
+    """Return a numeric participant label when possible (e.g. "User 12" -> "12")."""
+    numbers = re.findall(r"\d+", participant)
+    if numbers:
+        return numbers[-1]
+    return participant
 
 
 def parse_time_to_seconds(time_str):
@@ -93,14 +102,14 @@ def read_data():
 
     with open(USER_TEST_FILE, newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
-        header_row1 = next(reader)  # Column1, Column2, ...
-        header_row2 = next(reader)  # Participant_ID, Task_1_Select_Mini_Game, ...
+        _ = next(reader)  # Column1, Column2, ...
+        _= next(reader)  # Participant_ID, Task_1_Select_Mini_Game, ...
 
         for row in reader:
             if len(row) < 4:
                 continue
 
-            participant = row[0].strip()
+            participant = format_participant_label(row[0].strip())
             t1 = parse_time_to_seconds(row[1])
             t2 = parse_time_to_seconds(row[2])
             t3 = parse_time_to_seconds(row[3])
@@ -180,9 +189,16 @@ def gen_bar_chart(participants, times, title, ylabel, file_name, color_default="
     legend_elements = [
         Patch(facecolor="#2ECC71", label=f"Best Time ({format_seconds(min(times))})"),
         Patch(facecolor="#E74C3C", label=f"Worst Time ({format_seconds(max(times))})"),
-        Patch(facecolor="#F39C12", label=f"Average ({format_seconds(avg_time)})"),
+        Patch(facecolor="#5B9BD5", label="Others"),
+        Line2D([0], [0], color="#F39C12", lw=2, linestyle="--", label=f"Average ({format_seconds(avg_time)})"),
     ]
-    ax.legend(handles=legend_elements, loc="upper right", fontsize=10)
+    ax.legend(
+        handles=legend_elements,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.02),
+        ncol=4,
+        fontsize=10,
+    )
 
     plt.tight_layout()
     plt.savefig(file_name, dpi=150)
@@ -199,7 +215,6 @@ def gen_task1_graph(participants, times):
         title="Task 1 — Select Mini-Game (Time in Seconds)",
         ylabel="Time (seconds)",
         file_name=file_name,
-        color_default="#5B9BD5",
     )
 
 
@@ -212,7 +227,6 @@ def gen_task2_graph(participants, times):
         title="Task 2 — Complete Frisbee (Time in Seconds)",
         ylabel="Time (seconds)",
         file_name=file_name,
-        color_default="#ED7D31",
     )
 
 
@@ -225,7 +239,6 @@ def gen_task3_graph(participants, times):
         title="Task 3 — Complete Archery (Time in Seconds)",
         ylabel="Time (seconds)",
         file_name=file_name,
-        color_default="#A855F7",
     )
 
 
