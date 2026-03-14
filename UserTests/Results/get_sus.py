@@ -23,6 +23,7 @@ Grade interpretation (Bangor et al., 2009):
 
 import csv
 import os
+import re
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
@@ -99,6 +100,17 @@ def calculate_sus_score(responses):
     return int(total * 2.5)
 
 
+def format_participant_id(participant_id):
+    """Return participant ID shifted by -1 when it contains a number."""
+    text = str(participant_id).strip()
+    numbers = re.findall(r"\d+", text)
+    if not numbers:
+        return text
+
+    shifted = int(numbers[-1]) - 1
+    return str(shifted)
+
+
 def gen_sus_graph(results):
     """Generate a SUS score bar chart highlighting best/worst and average."""
     valid_results = [r for r in results if r["SUS"] is not None]
@@ -107,7 +119,7 @@ def gen_sus_graph(results):
         print("No valid SUS scores found. Graph was not generated.")
         return
 
-    participant_ids = [r["ID"] for r in valid_results]
+    participant_ids = [format_participant_id(r["ID"]) for r in valid_results]
     scores = [r["SUS"] for r in valid_results]
 
     best_idx = scores.index(max(scores))
@@ -217,9 +229,9 @@ def main():
 
     for r in sus:
         if r["SUS"] is not None:
-            print(f"{r['ID']:<6} {r['SUS']:>7}  {r['Grade']:<4}  {r['Adjective']}")
+            print(f"{format_participant_id(r['ID']):<6} {r['SUS']:>7}  {r['Grade']:<4}  {r['Adjective']}")
         else:
-            print(f"{r['ID']:<6} {'N/A':>7}")
+            print(f"{format_participant_id(r['ID']):<6} {'N/A':>7}")
 
     scores = [r["SUS"] for r in sus if r["SUS"] is not None]
     
