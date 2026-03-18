@@ -45,10 +45,11 @@ User 11,1 second,1:42 minutes,1:27 minutes,"1.  They read the instructions caref
 8.  They wanted to keep playing after the test had ended.",
 User 12,2 seconds,1:08 minutes,13 seconds,"1.  They discovered a bug: when dropping the frisbee at the start of the game, it falls infinitely.
 2.  In the archery game, they shot with too much force and the arrow fell off the map since it didn't collide with anything it didn't return to the bow.
-3.  They felt dizzy.
-4.  They liked that the archery game was positioned higher up compared to the fair and the frisbee game.
-5.  The archery mini-game crashed on them twice.
-6.  They wanted to keep playing after the test had ended.",
+3.  A bug occurred in the archery game tutorial: when the participant pulled the bowstring, their hands ended up too far behind the HMD's sensors causing the game to crash.
+4.  They felt dizzy.
+5.  They liked that the archery game was positioned higher up compared to the fair and the frisbee game.
+6.  The archery mini-game crashed on them twice.
+7.  They wanted to keep playing after the test had ended.",
 User 13,4 seconds,1:21 minutes,1:12 minutes,"1.  They read the instructions carefully.
 2.  They had difficulties releasing the frisbee when throwing it.
 3.  The color of the balloon changed randomly at the beginning, which is not supposed to happen.
@@ -98,13 +99,28 @@ User 22, 1 second, 2:39 minutes, 1:42 minutes,"1.  They liked the dog returning 
 2.  They seemed to have fun playing the frisbee game when the dog came to deliver the frisbee, they said 'bring it here to daddy.'
 3.  They said the experience was very fun interactive and immersive but complained that the text was difficult to read.
 4.  They wanted to keep playing after the test had ended.",They said it wasn't very obvious that you had to look at the tents for the button to appear to select a minigame. To solve the problem, they suggested having something more interactive or even an arrow saying "look here".
-User 23, 3 seconds, 3:25 minutes, 1:32 seconds,"1.  At the beginning of the frisbee game they had no difficulties but towards the end they struggled and asked how to control the throwing force.",
-User 24, 3 seconds, 2:49 minutes, 58 seconds, "1. Halfway through the frisbee mini-game, they wanted to switch to another mini-game.",
+User 23, 3 seconds, 3:25 minutes, 1:32 minutes,"1.  At the beginning of the frisbee game they had no difficulties but towards the end they struggled and asked how to control the throwing force.",
+User 24, 3 seconds, 2:49 minutes, 58 seconds,"1. Halfway through the frisbee mini-game they wanted to switch to another mini-game.",
 User 25, 2 seconds, 2:22 minutes, 47 seconds,"1.  They said that in the archery game sometimes the arrow would release too early meaning before they actually let it go.
 2.  They said the frisbee came back crooked when the dog returned it.
 3.  They showed curiosity and asked the observer how this could be beneficial for stroke rehabilitation. They liked the explanation of the scientific reasoning behind these games. They mentioned they were curious because they are attending a master's program related to rehabilitation but not specifically for strokes.",
-
-
-
-
- 
+User 26, 11 seconds, 2:55 minutes, 1:12 minutes,"1.They didn't care about the mini-game instructions they didn't read them and the observer had to explain the rules.
+2. They laughed during the frisbee mini-game.
+3. They said the frisbee mini-game was difficult.
+4. They said the archery mini-game was great.
+5. They wanted to keep playing after the test had ended.",
+User 27, 13 seconds, 2:05 minutes, 1:06 minutes,"1.They did not notice that they had to hit a specific color in the archery game.
+2. They wanted to keep playing after the test had ended.",
+User 28, 10 seconds, 1:32 minutes, 1:12 minutes,"1. They had difficulty pulling the bowstring.
+2.  They wanted to keep playing after the test had ended.",
+User 29, 6 seconds, 1:40 minutes, 1:04 minutes,"1.  They had difficulty pulling the bowstring.
+2.  They did not notice that they had to hit a specific color in the archery game.
+3.  A bug occurred in the archery game tutorial: when the participant pulled the bowstring their hands ended up too far behind the HMD's sensors causing the game to crash.
+4.  They had difficulties pressing the button after completing a mini-game.
+5.  They said throwing the frisbee was cool.
+6.  They wanted to keep playing after the test had ended.",
+User 30, 1 second, 2:13 minutes, 30 seconds,"1.  A bug occurred in the archery game tutorial: when the participant pulled the bowstring, their hands ended up too far behind the HMD's sensors causing the game to crash.
+2.  They said the archery game was very cool.
+3.  They liked the dog returning the frisbee.
+4.  They said they liked both mini-games but preferred the archery game because they had more control compared to the frisbee game.
+5.  They wanted to keep playing after the test had ended.",

@@ -27,7 +27,8 @@ def format_participant_label(participant):
     """Return participant label shifted by -1 when it contains a number."""
     numbers = re.findall(r"\d+", participant)
     if numbers:
-        return str(int(numbers[-1]) - 1)
+        return str(int(numbers[-1]))
+    
     return participant
 
 
