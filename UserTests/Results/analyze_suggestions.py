@@ -1,21 +1,21 @@
 """
 analyze_suggestions.py
 ======================
-Reads the UserTestResultsWave2.csv file, extracts open-ended responses from
-three free-text columns:
+Reads the UserTestResultsWave2 file (.xlsx), extracts open-ended
+responses from three free-text columns:
     - "What did you like most and less about the game."
     - "Do you have any suggestions, comments, or thoughts about your
        experience with the personalized XR session?"
     - "Other Suggestions"
 
 Each response is matched against thematic categories via regex patterns.
+A single response can belong to multiple themes simultaneously, since
+suggestions often address several topics at once. Each participant is
+counted at most once per theme.
+
 The report shows how many participants mentioned each theme and the
-corresponding percentage of the total respondent pool.
-
-Usage:
-    python analyze_suggestions.py
-
-Dependencies: pandas (pip install pandas)
+corresponding percentage of the total respondent pool (participants with
+at least one non-empty free-text response).
 """
 
 import csv
@@ -29,14 +29,13 @@ import pandas as pd
 
 # ---------------------------------------------------------------------------
 # FILE PATH CONSTANT
-# Change this to point to your CSV file.
+# Supports .xlsx or .csv — extension is detected automatically.
 # ---------------------------------------------------------------------------
 FILE_PATH = "UserTestResultsWave2.csv"
 
 # ---------------------------------------------------------------------------
 # FREE-TEXT COLUMNS TO ANALYSE
-# Partial name matches are used so minor whitespace/encoding differences in
-# the header are tolerated.
+# Partial name matches (case-insensitive) against actual column headers.
 # ---------------------------------------------------------------------------
 TEXT_COLUMN_SUBSTRINGS = [
     "like most",
@@ -63,12 +62,12 @@ THEMES: list[dict] = [
             r"caixas.*texto", r"text.*box", r"text.*not.*visible",
             r"texto.*n.o.*bastante.*vis",
             r"reduce.*text", r"shorten.*text", r"simplif.*text",
-            r"instru.*audio", r"narrad", r"narrat",
             r"instrução.*fonte", r"fonte.*instrução",
             r"dificuldade.*ler", r"dificuldade a ler",
             r"aproxima.*caixas", r"distância.*caixas",
-            r"diminuir.*distância.*caixas",
             r"closer.*text", r"text.*closer",
+            r"change.*aspect.*easier.*reading",
+            r"easier.*reading",
         ],
     },
     {
@@ -76,9 +75,11 @@ THEMES: list[dict] = [
         "patterns": [
             r"narrad", r"narrat", r"audio.*instrução", r"instrução.*audio",
             r"audio.*instru", r"instru.*audio",
-            r"voice.*over", r"voiced", r"text.*audio",
-            r"audio.*text", r"audio.*oposto.*texto",
+            r"voice.*over", r"voiced",
+            r"audio.*oposto.*texto",
             r"video.*introd", r"introd.*video",
+            r"dita.*audio", r"formato.*audio",
+            r"aconcelho.*audio",
         ],
     },
 
@@ -95,6 +96,11 @@ THEMES: list[dict] = [
             r"não.*intuitivo.*ter de olhar",
             r"button.*hide", r"menu.*hide", r"shouldn.t hide",
             r"detection.*not.*great", r"jarring",
+            r"strange places.*button", r"look.*strange.*places",
+            r"button.*press.*one finger", r"press.*button.*one finger",
+            r"button.*doesn.t.*work", r"button.*not.*work",
+            r"movimentação.*menu principal", r"movement.*main menu",
+            r"interagir.*ambiente.*tendas", r"ir de encontro.*tendas",
         ],
     },
 
@@ -112,6 +118,10 @@ THEMES: list[dict] = [
             r"frisbee.*às vezes.*n.o.*responde",
             r"hard.*throw.*frisbee", r"hard.*accurately.*throw",
             r"difficult.*release.*frisbee",
+            r"mapping.*physical.*movement.*frisbee",
+            r"physical.*movement.*frisbee.*trajectory",
+            r"frisbee.*trajectory.*mapping",
+            r"movement.*frisbee.*not.*intuitive",
         ],
     },
     {
@@ -120,6 +130,7 @@ THEMES: list[dict] = [
             r"trajectory.*frisbee", r"frisbee.*trajectory",
             r"indicação.*trajetória", r"trajetória.*frisbee",
             r"indication.*trajectory", r"trajectory.*indication",
+            r"guide.*frisbee", r"frisbee.*guide",
         ],
     },
     {
@@ -149,11 +160,34 @@ THEMES: list[dict] = [
         ],
     },
     {
+        "label": "Positive reaction to archery game",
+        "patterns": [
+            r"liked.*bow.*arrow", r"bow.*arrow.*very.*much",
+            r"bow.*arrow.*easy", r"bow.*arrow.*fun",
+            r"arco.*e.*flecha.*intuitiv", r"arco.*e.*flecha.*divertid",
+            r"arco.*e.*flecha.*facil",
+            r"like.*bow.*and.*arrow", r"enjoyed.*archery",
+            r"bow.*and.*arrow.*pleasing", r"bow.*and.*arrow.*enjoyable",
+            r"easy.*fine.*tune.*difficulty",
+            r"like.*bow.*and.*arrow.*very.*much",
+        ],
+    },
+    {
         "label": "Suggestion: more archery space / obstacle variation",
         "patterns": [
             r"espaço.*maior.*arco", r"arco.*espaço.*maior",
             r"distância.*player.*balões", r"obstáculo.*arco",
             r"obstáculos.*jogador", r"vary.*angle", r"ângulo.*lançamento",
+            r"greater range.*control.*archery", r"range.*archery",
+        ],
+    },
+    {
+        "label": "Suggestion: arrow guide on/off toggle",
+        "patterns": [
+            r"switch.*on.*off.*guide.*arrow", r"toggle.*guide.*arrow",
+            r"guide.*arrow.*on.*off", r"arrow.*guide.*optional",
+            r"personaliz.*arrow.*guide",
+            r"switching.*on.*off.*guide.*arrow",
         ],
     },
 
@@ -168,16 +202,21 @@ THEMES: list[dict] = [
             r"adapt.*difficulty", r"dificuldade.*crescente",
             r"increasing.*difficulty", r"difficulty.*increasing",
             r"dificuldade.*foi aumentando",
+            r"areas.*foram.*ajustando", r"areas.*ajustando.*dificuldade",
         ],
     },
     {
-        "label": "Suggestion: better feedback on difficulty level-up",
+        "label": "Suggestion: better / explicit feedback on difficulty change",
         "patterns": [
             r"feedback.*dificuldade", r"dificuldade.*feedback",
             r"level.*up.*sound", r"som.*level.*up", r"fogos.*artificio",
             r"fireworks", r"sound.*difficulty", r"efeito.*sonoro.*mudança",
             r"mudança.*dificuldade.*som", r"more.*feedback.*difficult",
             r"subida.*nível.*feedback",
+            r"explicit.*say.*difficulty.*increasing",
+            r"explicitly.*say.*difficulty",
+            r"reward.*performance", r"recompensa.*progresso",
+            r"see.*evolution.*difficulty", r"difficulty.*evolution",
         ],
     },
     {
@@ -204,7 +243,7 @@ THEMES: list[dict] = [
         "label": "Suggestion: more audio feedback / dialogue",
         "patterns": [
             r"mais.*feedback.*auditivo", r"feedback.*auditivo.*errar",
-            r"mais.*diálogo", r"more.*dialogue", r"more.*audio",
+            r"mais.*diálogo", r"more.*dialogue", r"more.*audio.*feedback",
             r"audio.*feedback.*miss",
         ],
     },
@@ -217,9 +256,9 @@ THEMES: list[dict] = [
         "patterns": [
             r"imersiv", r"immersi", r"ambiente.*diferente",
             r"cenário.*bem", r"som.*ambiental", r"fair.*3d",
-            r"truly.*seeing.*fair", r"feira.*3d",
-            r"felt.*i was.*fair", r"felt.*in.*fair",
+            r"truly.*seeing.*fair",
             r"ambiente.*jogo", r"envolvência",
+            r"realistic.*movement", r"realistic.*task",
         ],
     },
 
@@ -235,6 +274,14 @@ THEMES: list[dict] = [
             r"simplicit", r"vibrant",
             r"genuinely.*having fun", r"really.*fun",
             r"muito.*bem.*concebido",
+            r"interessante.*mesmo.*ao.*longo",
+            r"mantém.*interessante", r"interativo",
+            r"conceito.*interessante",
+            r"acessível.*dinâmico",
+            r"duração.*adequada",
+            r"instruções.*faceis.*entender",
+            r"jogos.*em.*si",
+            r"sistema.*intuitivo.*fácil",
         ],
     },
 
@@ -249,18 +296,23 @@ THEMES: list[dict] = [
             r"other.*mode", r"outros.*modos",
             r"more.*maps", r"different.*maps",
             r"collection.*maps", r"cover more.*needs",
+            r"alargar.*mini.jogos", r"mais variedade.*mini.jogo",
+            r"variedade.*mini.jogo",
         ],
     },
 
     # ------------------------------------------------------------------
-    # SCORING / GAME MODES
+    # SCORING / PROGRESSION
     # ------------------------------------------------------------------
     {
-        "label": "Suggestion: highscore / competitive mode",
+        "label": "Suggestion: highscore / competitive / progression mode",
         "patterns": [
-            r"highscore", r"high.*score", r"score.*mode",
+            r"highscore", r"high.*score",
             r"acréscimo.*pontos", r"register.*highscore",
             r"limited.*time.*mode", r"time.*mode",
+            r"see.*evolution.*score", r"compare.*evolution",
+            r"evolution.*difficulty.*end.*game",
+            r"feedback.*end.*game", r"scores.*compare",
         ],
     },
 
@@ -276,6 +328,19 @@ THEMES: list[dict] = [
             r"buttons.*height", r"altura.*botões",
             r"na mesma área.*visão", r"same.*field.*view",
             r"notification.*bell", r"bell.*notification",
+            r"objects.*same.*area.*vision",
+        ],
+    },
+
+    # ------------------------------------------------------------------
+    # LEFT-HANDEDNESS / MOTOR ACCESSIBILITY
+    # ------------------------------------------------------------------
+    {
+        "label": "Suggestion: left-handed / motor accessibility support",
+        "patterns": [
+            r"left.hand", r"esquerdist", r"adaptar.*esquerdist",
+            r"left.*handed", r"esquerda.*dificuldade",
+            r"dificuldade.*esquerda", r"movimentos.*esquerda",
         ],
     },
 
@@ -299,6 +364,7 @@ THEMES: list[dict] = [
         "patterns": [
             r"reabilita", r"rehabilit", r"terapêutic", r"therapeut",
             r"stroke", r"acidente.*vascular",
+            r"útil.*reabilita", r"reabilita.*divertid",
         ],
     },
 
@@ -310,6 +376,7 @@ THEMES: list[dict] = [
         "patterns": [
             r"didn.t.*liked.*graphic", r"graphics.*bad",
             r"graphic.*not.*great", r"visual.*poor",
+            r"didnt.*liked.*graphic",
         ],
     },
 ]
@@ -318,35 +385,44 @@ UNCATEGORIZED_LABEL = "Other / uncategorized"
 
 
 # ---------------------------------------------------------------------------
-# CSV LOADER – robust to column-count mismatches
+# FILE LOADER – supports .xlsx and .csv
 # ---------------------------------------------------------------------------
 
-def load_csv(csv_path: str) -> pd.DataFrame:
+def load_file(file_path: str) -> pd.DataFrame:
     """
-    Load the CSV, tolerating rows with more fields than the header declares.
+    Load either an .xlsx or .csv file into a DataFrame.
 
-    Uses Python's csv module to read raw rows, then truncates each data row
-    to the header column count — preventing any participant from being dropped
-    due to unescaped commas in free-text fields.
+    For CSV: uses Python's csv module to tolerate rows with more fields than
+    the header (unescaped commas in free-text columns).
+    For XLSX: uses openpyxl via pandas read_excel.
     """
-    raw_text = Path(csv_path).read_text(encoding="utf-8-sig")
-    reader = csv.reader(io.StringIO(raw_text))
-    rows = list(reader)
+    path = Path(file_path)
+    suffix = path.suffix.lower()
 
-    if not rows:
-        raise ValueError(f"Empty file: {csv_path}")
+    if suffix == ".xlsx":
+        df = pd.read_excel(path, engine="openpyxl", header=0)
+        df.columns = [str(c).strip() for c in df.columns]
+        df = df[df.iloc[:, 0].notna() & df.iloc[:, 0].astype(str).str.strip().ne("")]
+        return df.reset_index(drop=True)
 
-    header = [col.strip() for col in rows[0]]
-    n_cols = len(header)
+    elif suffix == ".csv":
+        raw_text = path.read_text(encoding="utf-8-sig")
+        reader = csv.reader(io.StringIO(raw_text))
+        rows = list(reader)
+        if not rows:
+            raise ValueError(f"Empty file: {file_path}")
+        header = [col.strip() for col in rows[0]]
+        n_cols = len(header)
+        records = []
+        for row in rows[1:]:
+            if not row or not row[0].strip():
+                continue
+            padded = (row + [""] * n_cols)[:n_cols]
+            records.append({header[i]: padded[i].strip() for i in range(n_cols)})
+        return pd.DataFrame(records)
 
-    records = []
-    for row in rows[1:]:
-        if not row or not row[0].strip():
-            continue
-        padded = (row + [""] * n_cols)[:n_cols]
-        records.append({header[i]: padded[i].strip() for i in range(n_cols)})
-
-    return pd.DataFrame(records)
+    else:
+        raise ValueError(f"Unsupported file format: {suffix}. Use .xlsx or .csv")
 
 
 # ---------------------------------------------------------------------------
@@ -369,23 +445,22 @@ def resolve_text_columns(columns: list[str]) -> list[str]:
 
 def collect_responses(row: pd.Series, text_cols: list[str]) -> list[str]:
     """
-    Gather all non-empty free-text responses from a participant row,
-    one string per non-empty column.
+    Gather all non-empty free-text responses from a participant row.
+    Skips values that are just whitespace or trivial non-answers.
     """
+    non_answers = {"no", "nop", "no.", "none", "-", "n/a", "", "nan"}
     responses = []
     for col in text_cols:
-        val = row.get(col, "")
-        if isinstance(val, str) and val.strip():
-            responses.append(val.strip())
+        val = str(row.get(col, "") or "").strip()
+        if val and val.lower() not in non_answers:
+            responses.append(val)
     return responses
 
 
 def match_themes(response: str) -> list[str]:
     """
-    Return all theme labels that match the response.
-    A response can belong to multiple themes (unlike the observations script
-    which assigns only the first match), because suggestions often address
-    several topics at once.
+    Return all theme labels whose patterns match the response.
+    A response can belong to multiple themes simultaneously.
     """
     matched = []
     obs_lower = response.lower()
@@ -393,7 +468,7 @@ def match_themes(response: str) -> list[str]:
         for pattern in theme["patterns"]:
             if re.search(pattern, obs_lower):
                 matched.append(theme["label"])
-                break  # move to next theme once one pattern hits
+                break
     return matched if matched else [UNCATEGORIZED_LABEL]
 
 
@@ -401,9 +476,9 @@ def match_themes(response: str) -> list[str]:
 # MAIN ANALYSIS
 # ---------------------------------------------------------------------------
 
-def analyse(csv_path: str) -> tuple[pd.DataFrame, int]:
+def analyse(file_path: str) -> tuple[pd.DataFrame, int]:
     """
-    Load the CSV, analyse free-text responses, and return a summary DataFrame.
+    Load the file, analyse free-text responses, and return a summary DataFrame.
 
     Each participant is counted at most once per theme, regardless of how many
     of their responses matched that theme.
@@ -414,13 +489,13 @@ def analyse(csv_path: str) -> tuple[pd.DataFrame, int]:
         Summary table with columns (Theme | Participants | Percentage)
         and the total number of respondents with at least one free-text answer.
     """
-    df = load_csv(csv_path)
+    df = load_file(file_path)
 
     text_cols = resolve_text_columns(df.columns.tolist())
     if not text_cols:
         raise RuntimeError(
             "Could not find free-text columns. "
-            f"Check TEXT_COLUMN_SUBSTRINGS against headers: {df.columns.tolist()}"
+            f"Check TEXT_COLUMN_SUBSTRINGS against headers:\n{df.columns.tolist()}"
         )
 
     print(f"\n{'='*62}")
@@ -430,25 +505,26 @@ def analyse(csv_path: str) -> tuple[pd.DataFrame, int]:
         print(f"    • {col}")
     print(f"{'='*62}\n")
 
-    # Count participants who have at least one non-empty response
-    has_response = df[text_cols].apply(
-        lambda col: col.str.strip().ne(""), axis=0
-    ).any(axis=1)
-    total_with_response = int(has_response.sum())
+    non_answers = {"no", "nop", "no.", "none", "-", "n/a", "", "nan"}
 
-    # theme_label -> set of participant row indices that triggered it
+    def has_real_response(row: pd.Series) -> bool:
+        return any(
+            str(row.get(col, "") or "").strip().lower() not in non_answers
+            for col in text_cols
+        )
+
+    total_with_response = int(df.apply(has_real_response, axis=1).sum())
+
     theme_to_participants: dict[str, set] = defaultdict(set)
 
     for idx, row in df.iterrows():
         responses = collect_responses(row, text_cols)
         if not responses:
             continue
-        # Aggregate all themes mentioned across all free-text fields
         themes_for_participant: set[str] = set()
         for response in responses:
             for theme_label in match_themes(response):
                 themes_for_participant.add(theme_label)
-
         for theme_label in themes_for_participant:
             theme_to_participants[theme_label].add(idx)
 
