@@ -5,18 +5,6 @@ Reads the UserTestWave2.csv file, extracts individual observations from the
 'General_Observations' column, clusters them into thematic categories using
 keyword matching, and reports how many participants triggered each category
 along with the percentage of the total participant pool.
-
-NOTE ON CSV PARSING:
-    The source CSV has a known issue on certain rows where an unescaped comma
-    inside the Unprompted_Suggestions column produces more fields than the
-    header declares (e.g. User 22). Using on_bad_lines="skip" silently drops
-    those rows. Instead, we read the raw text and manually parse each row so
-    every participant is captured regardless of column-count mismatches.
-
-Usage:
-    python analyze_observations.py
-
-Dependencies: pandas (pip install pandas)
 """
 
 import csv
@@ -42,6 +30,7 @@ FILE_PATH = "UserTestWave2.csv"
 # matches. Order matters: put more-specific themes before broader ones.
 # ---------------------------------------------------------------------------
 THEMES: list[dict] = [
+
     # ------------------------------------------------------------------
     # ENGAGEMENT / MOTIVATION
     # ------------------------------------------------------------------
@@ -58,7 +47,7 @@ THEMES: list[dict] = [
         "patterns": [
             r"favorite.*frisbee", r"favour.*frisbee",
             r"frisbee.*favorite", r"frisbee.*favour",
-            r"frisbee.*favorite.*game", r"only wanted to play.*frisbee",
+            r"only wanted to play.*frisbee",
             r"preferred.*frisbee",
         ],
     },
@@ -80,7 +69,7 @@ THEMES: list[dict] = [
     },
 
     # ------------------------------------------------------------------
-    # USABILITY ISSUES – INTERACTION
+    # USABILITY – INTERACTION / MENU
     # ------------------------------------------------------------------
     {
         "label": "Difficulty with eye-gaze / button / menu interaction",
@@ -90,8 +79,14 @@ THEMES: list[dict] = [
             r"not.*obvious.*look.*tent", r"look at the tent",
             r"frisbee button.*positioned", r"difficul.*press.*button",
             r"difficulty.*press.*button",
+            r"did not like.*having.*look.*tent",
+            r"look at the tents.*button",
         ],
     },
+
+    # ------------------------------------------------------------------
+    # USABILITY – FRISBEE
+    # ------------------------------------------------------------------
     {
         "label": "Difficulty with frisbee mechanics (picking up / releasing / throwing)",
         "patterns": [
@@ -102,6 +97,18 @@ THEMES: list[dict] = [
             r"control.*throwing force", r"frisbee.*more complicated",
             r"struggled.*frisbee", r"frisbee.*difficult",
             r"difficulties.*frisbee",
+            r"didn.t understand.*frisbee.*throw",
+            r"lot of difficulties.*frisbee",
+            r"observer.*demonstrate.*grab.*frisbee",
+            r"had to intervene.*frisbee",
+        ],
+    },
+    {
+        "label": "Negative reaction to frisbee game (boring / unengaging)",
+        "patterns": [
+            r"frisbee.*boring", r"frisbee.*boring",
+            r"frisbee.*secante", r"frisbee.*not.*motivat",
+            r"didn.t motivat.*frisbee",
         ],
     },
     {
@@ -114,19 +121,42 @@ THEMES: list[dict] = [
         ],
     },
     {
+        "label": "Questioned frisbee trajectory / physics",
+        "patterns": [
+            r"frisbee.*trajectory.*curved", r"trajectory.*curved",
+            r"curved.*trajectory", r"questioned.*frisbee.*trajectory",
+            r"frisbee.*physics.*weird", r"frisbee.*physics",
+        ],
+    },
+
+    # ------------------------------------------------------------------
+    # USABILITY – ARCHERY
+    # ------------------------------------------------------------------
+    {
         "label": "Difficulty with bow / archery mechanics",
         "patterns": [
             r"difficul.*bow", r"how to pull.*bow", r"pull.*string",
             r"pull.*bow", r"difficul.*archery",
             r"arrow.*release.*too early", r"difficulty.*pull.*bowstring",
             r"had difficulty.*pull.*bowstring",
+            r"bow.*too sensitive", r"bow.*very sensitive",
+            r"arrow.*release.*when.*pulled", r"too sensitive.*bow",
+            r"hand.*disappear.*archery", r"hand.*disappeared.*pull",
         ],
     },
+
+    # ------------------------------------------------------------------
+    # USABILITY – TEXT / READABILITY
+    # ------------------------------------------------------------------
     {
         "label": "Difficulty reading text (UI readability)",
         "patterns": [
             r"text.*difficult.*read", r"difficult.*read.*text",
             r"found.*text.*difficult", r"text.*hard.*read",
+            r"not.*able.*read.*text", r"complain.*read.*text",
+            r"letters.*blurry", r"blurry.*letter",
+            r"spelling.*mistake", r"spelling.*error",
+            r"did not notice.*text.*dialogue",
         ],
     },
     {
@@ -135,6 +165,7 @@ THEMES: list[dict] = [
             r"didn.t.*read.*instruct", r"didn.t care.*instruct",
             r"didn.t care about.*mini.game.*instruct",
             r"observer.*explain.*rules",
+            r"could not remember.*rules",
         ],
     },
 
@@ -152,14 +183,18 @@ THEMES: list[dict] = [
             r"did not notice.*had to pop",
             r"did not notice.*hit a specific color",
             r"had to hit a specific color",
+            r"color.*not obvious", r"change.*color.*not obvious",
+            r"did not notice.*text.*dialogue.*changing",
         ],
     },
     {
-        "label": "Noticed adaptive changes (balloons / difficulty)",
+        "label": "Noticed adaptive changes (balloons / difficulty / dog distance)",
         "patterns": [
             r"noticed.*adaptive", r"adaptive.*changed",
             r"balloons started moving", r"attentive.*color.*changed",
             r"very attentive.*color",
+            r"noticed.*dog.*farther", r"dog.*farther.*difficulty",
+            r"dog went farther", r"dog.*distance.*increased",
         ],
     },
     {
@@ -167,7 +202,8 @@ THEMES: list[dict] = [
         "patterns": [
             r"curiosit.*difficulty", r"how.*difficulty.*adjust",
             r"linked.*customiz", r"rehabilitation",
-            r"scientific reasoning",
+            r"scientific reasoning", r"stroke.*rehabilitation",
+            r"beneficial.*stroke",
         ],
     },
 
@@ -184,19 +220,28 @@ THEMES: list[dict] = [
             r"frisbee.*crooked", r"arrow.*fell.*map", r"shot.*off.*map",
             r"hands.*too far behind.*sensor",
             r"hands ended up too far behind",
+            r"color.*alternate.*miss", r"color.*should.*not.*change",
+            r"poorly lit", r"lighting.*space",
+            r"spelling.*mistake", r"spelling.*error",
         ],
     },
 
     # ------------------------------------------------------------------
-    # EMOTIONAL REACTIONS
+    # EMOTIONAL REACTIONS – NEGATIVE
     # ------------------------------------------------------------------
     {
         "label": "Frustration during gameplay",
         "patterns": [
             r"frustrat", r"tilted", r"cursing", r"getting tilted",
             r"throw.*sometimes worked.*sometimes didn.t",
+            r"cursed.*archery", r"cursed.*button",
+            r"getting.*frustrated", r"showed frustration",
         ],
     },
+
+    # ------------------------------------------------------------------
+    # EMOTIONAL REACTIONS – POSITIVE
+    # ------------------------------------------------------------------
     {
         "label": "Positive reaction to frisbee game",
         "patterns": [
@@ -205,6 +250,10 @@ THEMES: list[dict] = [
             r"fun.*frisbee", r"having fun.*frisbee",
             r"laughed.*frisbee", r"frisbee.*laugh",
             r"throwing.*frisbee.*cool",
+            r"liked.*mechanic.*grab.*throw.*frisbee",
+            r"mechanic.*grabbing.*throwing.*frisbee",
+            r"fun.*both.*games", r"fun in both games",
+            r"cheering.*scoring",
         ],
     },
     {
@@ -213,6 +262,9 @@ THEMES: list[dict] = [
             r"archery.*cool", r"archery.*great", r"archery.*awesome",
             r"loved.*archery", r"liked.*archery", r"archery.*liked",
             r"archery.*very cool",
+            r"archery.*controlled well",
+            r"archery.*very good", r"found.*bow.*funny",
+            r"bow.*amusing",
         ],
     },
     {
@@ -222,7 +274,21 @@ THEMES: list[dict] = [
             r"fair.*realistic", r"country fair", r"environment.*fun",
             r"experience.*cool", r"experience.*fun",
             r"experience.*immersive", r"experience.*interactive",
-            r"cool.*experience", r"said.*experience.*cool",
+            r"loved.*overall.*experience", r"loved.*experience",
+            r"vr.*experience.*interesting", r"vr.*experiences.*interesting",
+            r"experience.*very interesting",
+            r"liked.*experience.*saying.*good",
+            r"enjoyed.*exploring.*environment",
+            r"exploring.*environment.*turning.*head",
+        ],
+    },
+    {
+        "label": "Did not understand the objective / rules of the game",
+        "patterns": [
+            r"did not understand.*objective", r"didn.t understand.*objective",
+            r"could not remember.*rules", r"did not understand.*archery",
+            r"wanted to switch.*mini.game", r"wanted.*switch.*game",
+            r"halfway.*wanted.*switch",
         ],
     },
 
@@ -236,6 +302,8 @@ THEMES: list[dict] = [
             r"watching.*npc", r"animals.*present", r"people walking",
             r"characters walking", r"animations.*character",
             r"liked.*npc", r"npcs.*background",
+            r"liked.*deer", r"really liked.*deer",
+            r"liked.*grass",
         ],
     },
     {
@@ -243,7 +311,19 @@ THEMES: list[dict] = [
         "patterns": [
             r"dog.*cute", r"dog.*catching", r"dog.*fetching",
             r"dog.*returning", r"liked.*dog", r"mechanic.*dog",
-            r"dog.*deliver",
+            r"dog.*deliver", r"dog.*brings.*frisbee.*back",
+            r"dog.*barking", r"spatial.*sound.*dog",
+            r"locate.*dog.*sound", r"loved.*dog",
+            r"dog.*model", r"talking.*dog", r"called.*dog",
+            r"kept.*talking.*dog", r"bigodes", r"whiskers",
+        ],
+    },
+    {
+        "label": "Positive reaction to hand tracking precision",
+        "patterns": [
+            r"hand tracking.*precise", r"hand tracking.*fast",
+            r"impressed.*hand tracking",
+            r"hand tracking.*very precise",
         ],
     },
     {
@@ -296,6 +376,31 @@ THEMES: list[dict] = [
         "patterns": [
             r"felt dizzy", r"diz+y", r"arm.*tired",
             r"muscle pain", r"fatigue",
+            r"arm.*hurt", r"arm hurt",
+        ],
+    },
+
+    # ------------------------------------------------------------------
+    # LEFT-HANDEDNESS
+    # ------------------------------------------------------------------
+    {
+        "label": "Left-handed participant reported difficulty",
+        "patterns": [
+            r"left.hand", r"left.*handed",
+            r"pull.*bowstring.*left.*hand",
+            r"throw.*frisbee.*left.*hand",
+            r"left hand.*more difficult",
+        ],
+    },
+
+    # ------------------------------------------------------------------
+    # CONTENT / WORDING FEEDBACK
+    # ------------------------------------------------------------------
+    {
+        "label": "Feedback on game wording / terminology",
+        "patterns": [
+            r"avoid.*term.*impossible", r"impossible.*more difficult",
+            r"term.*impossible", r"wording.*impossible",
         ],
     },
 
@@ -308,6 +413,7 @@ THEMES: list[dict] = [
             r"suggest", r"highscore", r"trajectory color",
             r"something more interactive", r"arrow.*saying.*look here",
             r"not.*obvious.*look",
+            r"visual aid.*frisbee", r"frisbee.*visual aid",
         ],
     },
 ]
