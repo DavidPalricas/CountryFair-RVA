@@ -1,12 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.Netcode;
+using System;
 
 /// <summary>
 /// Manages emoji activation and synchronization over the network.
+/// Works in conjunction with EmojiDisplayManager to support both server and slider modes.
 /// </summary>
-public class ActivateEmoji : NetworkBehaviour
-{ 
+/// <remarks>
+/// This component handles the core emoji visualization logic.
+/// For display mode management (server vs slider), use <see cref="EmojiDisplayManager"/>.
+/// </remarks>
+public class EmojiDisplay : EmotionDisplay
+{
     /// <summary>
     /// Dictionary to look up emoji GameObjects by name.
     /// </summary>
@@ -17,44 +23,43 @@ public class ActivateEmoji : NetworkBehaviour
     /// </summary>
     private GameObject _currentEmojiActive = null;
 
-    /// <summary>
-    /// Control variable to prevent infinite loops during network updates.
-    /// </summary>
-    private bool _isUpdatingFromNetwork = false;
-
-    /// <summary>
+      /// <summary>
     /// Network variable to maintain emoji state across clients.
     /// Only the server has permission to write to this variable.
     /// </summary>
-    private readonly NetworkVariable<EmojiType> _netEmojiState = new(
-        EmojiType.NEUTRAL, 
-        NetworkVariableReadPermission.Everyone, 
+    private readonly NetworkVariable<EMOJI_TYPE> _netEmojiState = new(
+        EMOJI_TYPE.NEUTRAL,
+        NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server
     );
 
     /// <summary>
     /// Enumeration of supported emoji types.
     /// </summary>
-    public enum EmojiType { 
+    public enum EMOJI_TYPE {
         /// <summary>Represents a sad expression.</summary>
-        SAD, 
+        SAD,
         /// <summary>Represents a happy expression.</summary>
-        HAPPY, 
+        HAPPY,
         /// <summary>Represents an angry expression.</summary>
-        ANGRY, 
+        ANGRY,
         /// <summary>Represents a disgusted expression.</summary>
-        DISGUST, 
+        DISGUST,
         /// <summary>Represents a surprised expression.</summary>
-        SURPRISE, 
+        SURPRISE,
         /// <summary>Represents a fearful expression.</summary>
-        FEAR, 
+        FEAR,
         /// <summary>Represents a neutral expression.</summary>
-        NEUTRAL 
+        NEUTRAL
     }
 
     /// <summary>
     /// Unity Awake method. Initializes internal state.
     /// </summary>
+    /// <remarks>
+    /// Display mode selection is now handled by <see cref="EmojiDisplayManager"/>.
+    /// This component focuses solely on emoji visualization and network sync.
+    /// </remarks>
     private void Awake()
     {
         SetEmojis();
@@ -66,7 +71,7 @@ public class ActivateEmoji : NetworkBehaviour
     /// </summary>
     public override void OnNetworkSpawn()
     {
-        _netEmojiState.OnValueChanged += OnEmojiStateChanged;
+        _netEmojiState.OnValueChanged += OnEmojiChanged;
         
         // Force initial visual update without triggering send logic
         _isUpdatingFromNetwork = true;
@@ -80,7 +85,7 @@ public class ActivateEmoji : NetworkBehaviour
     /// </summary>
     public override void OnNetworkDespawn()
     {
-        _netEmojiState.OnValueChanged -= OnEmojiStateChanged;
+        _netEmojiState.OnValueChanged -= OnEmojiChanged;
     }
 
     /// <summary>
@@ -88,7 +93,7 @@ public class ActivateEmoji : NetworkBehaviour
     /// </summary>
     /// <param name="previous">Previous state.</param>
     /// <param name="current">New state.</param>
-    private void OnEmojiStateChanged(EmojiType previous, EmojiType current)
+    private void OnEmojiChanged(EMOJI_TYPE previous, EMOJI_TYPE current)
     {
         // Protection: Notify UpdateVisuals that this came from the network
         _isUpdatingFromNetwork = true;
@@ -101,7 +106,7 @@ public class ActivateEmoji : NetworkBehaviour
     /// Does both local visual updates and network synchronization.
     /// </summary>
     /// <param name="type">The emoji type to display.</param>
-    public void UpdateVisuals(EmojiType type)
+    public void UpdateVisuals(EMOJI_TYPE type)
     { 
         // 1. VISUAL UPDATE (Local and Immediate)
         string emojiName = type.ToString().ToLower();
@@ -131,8 +136,8 @@ public class ActivateEmoji : NetworkBehaviour
     /// <summary>
     /// Isolated logic for sending state to the network.
     /// </summary>
-    /// <param name="type">The emoji type to synchronize.</param>
-    private void SyncToNetwork(EmojiType type)
+    /// <param name="displayValue">The emoji type to synchronize.</param>
+    private void SyncToNetwork(EMOJI_TYPE type)
     {
         // Checks if NetworkManager exists and is running
         if (NetworkManager.Singleton == null || (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer))
@@ -146,10 +151,13 @@ public class ActivateEmoji : NetworkBehaviour
         if (IsServer)
         {
             _netEmojiState.Value = type;
+
+            return;
         }
-        else if (IsOwner) // If it's a local cheat by the owner
+
+        if (IsOwner) // If it's a local cheat by the owner
         {
-            RequestEmojiChangeServerRpc(type);
+            RequestDisplayChangeServerRpc(type);
         }
     }
 
@@ -158,7 +166,7 @@ public class ActivateEmoji : NetworkBehaviour
     /// </summary>
     /// <param name="newType">The new emoji type requested.</param>
     [ServerRpc]
-    private void RequestEmojiChangeServerRpc(EmojiType newType)
+    private void RequestDisplayChangeServerRpc(EMOJI_TYPE newType)
     {
         _netEmojiState.Value = newType;
     }
@@ -169,12 +177,13 @@ public class ActivateEmoji : NetworkBehaviour
     /// Processes a string message (e.g., from server) and updates the emoji.
     /// </summary>
     /// <param name="message">String representation of the EmojiType.</param>
-    public void ProcessServerString(string message)
+    public override void ProcessServerString(string message)
     {
-        if (string.IsNullOrEmpty(message)) return;
-        
-        message = message.Trim();
-        if (System.Enum.TryParse(message, true, out EmojiType result))
+        base.ProcessServerString(message);
+
+        string emotionName = message.Split(_messageSeparator)[0];
+
+        if (Enum.TryParse(emotionName, true, out EMOJI_TYPE result))
         {
             UpdateVisuals(result); 
         }
@@ -186,10 +195,10 @@ public class ActivateEmoji : NetworkBehaviour
     private void SetEmojis()
     {
         foreach (GameObject emoji in Utils.GetChildren(transform))
-        {   
+        {
             string emojiName = emoji.name.ToLower();
             _emojis[emojiName] = emoji;
-            emoji.SetActive(false); 
+            emoji.SetActive(false);
         }
 
         if (_emojis.ContainsKey("neutral")) _currentEmojiActive = _emojis["neutral"];

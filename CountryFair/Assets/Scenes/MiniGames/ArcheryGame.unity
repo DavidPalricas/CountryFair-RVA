@@ -535,6 +535,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1370255372}
     m_Modifications:
+    - target: {fileID: 40835411355473854, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 40835411355473854, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 40835411355473854, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227713966519058615, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 227713966519058615, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1297461513360187714, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
@@ -617,7 +637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3160597209698737637, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 440
       objectReference: {fileID: 0}
     - target: {fileID: 3160597209698737637, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -637,11 +657,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3160597209698737637, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -20
+      value: 432
       objectReference: {fileID: 0}
     - target: {fileID: 3160597209698737637, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 350
+      value: 796
       objectReference: {fileID: 0}
     - target: {fileID: 3160597209698737637, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -661,7 +681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3914214517096288678, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_Name
-      value: Emojis
+      value: Emotions
       objectReference: {fileID: 0}
     - target: {fileID: 3914214517096288678, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_IsActive
@@ -749,17 +769,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3160597209698737637, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
   m_PrefabInstance: {fileID: 32811216}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &32811218 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4093951779773677315, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
-  m_PrefabInstance: {fileID: 32811216}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18ee7ac7514e724e87a805e9b1d1809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActivateEmoji
 --- !u!114 &35802205 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8931893437084419960, guid: 1563ddbf54fb0eb42bf9222eb9aa39a5, type: 3}
@@ -1426,7 +1435,23 @@ MonoBehaviour:
   returnToFair: {fileID: 309234832}
   carnyWise: {fileID: 620701819}
   tutorial: {fileID: 2057617485}
-  activateEmoji: {fileID: 32811218}
+  emojiDisplay: {fileID: 255034105}
+  sliderDisplay: {fileID: 1668669052}
+  changeEmotionDisplay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 338991018}
+        m_TargetAssemblyTypeName: ServerListener, Assembly-CSharp
+        m_MethodName: UpdateDisplayMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   arrowTransform: {fileID: 1754926366}
   arrowComponent: {fileID: 1754926365}
 --- !u!1001 &109936699
@@ -2851,6 +2876,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2736079853083670342, guid: 0d541eed0617bee48a4bedcdb766cb40, type: 3}
   m_PrefabInstance: {fileID: 251972145}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &255034105 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7624742657988348168, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+  m_PrefabInstance: {fileID: 32811216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18ee7ac7514e724e87a805e9b1d1809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmojiDisplay
 --- !u!1 &263975844
 GameObject:
   m_ObjectHideFlags: 16
@@ -3240,6 +3276,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6856789205069589247, guid: 6cb9acbccf4dd53458d86697126f70f0, type: 3}
   m_PrefabInstance: {fileID: 335824473}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &338991018 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4313943641193146690, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+  m_PrefabInstance: {fileID: 32811216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c64cbcb4a0fce548b2b6cfa8b5a9475, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ServerListener
 --- !u!1001 &340485470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4261,8 +4308,8 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.5566037, g: 0.42120665, b: 0.24974313, a: 0.35}
-    - _Color: {r: 0.5566037, g: 0.42121565, b: 0.24975213, a: 0.35}
+    - _BaseColor: {r: 0.5566037, g: 0.4211723, b: 0.24970877, a: 0.35}
+    - _Color: {r: 0.5566037, g: 0.42117253, b: 0.24970901, a: 0.35}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -13143,6 +13190,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4854182519245524966, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
   m_PrefabInstance: {fileID: 1664032619}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1668669052 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8132782977344325314, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+  m_PrefabInstance: {fileID: 32811216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f7e19ae6c1fc942a352a0920a2cd48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SliderDisplay
 --- !u!1001 &1669450634
 PrefabInstance:
   m_ObjectHideFlags: 0
