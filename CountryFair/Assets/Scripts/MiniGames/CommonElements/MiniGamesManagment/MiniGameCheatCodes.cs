@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.Events;
 
 
 [RequireComponent(typeof(MiniGameManager))]
@@ -17,9 +18,15 @@ public class MiniGameCheatCodes : CheatCodes
     [SerializeField]
     private Tutorial tutorial;
 
-
+    [Header("Emotion Server Dependencies")]
     [SerializeField]
-    private ActivateEmoji activateEmoji;
+    private  EmojiDisplay emojiDisplay;
+    
+    [SerializeField]
+    private SliderDisplay sliderDisplay;
+   
+   [SerializeField]
+    private UnityEvent <ServerListener.DISPLAYMODE> changeEmotionDisplay;
 
 
     private MiniGameManager _miniGameManager;
@@ -51,7 +58,7 @@ public class MiniGameCheatCodes : CheatCodes
             return;
         }
 
-        if (activateEmoji == null)
+        if (emojiDisplay == null)
         {
             Debug.LogError("ActivateEmoji component not found in the scene. Please ensure there is a GameObject with the 'Emojis' tag and an ActivateEmoji component.");
             return;
@@ -70,20 +77,29 @@ public class MiniGameCheatCodes : CheatCodes
     protected override void RegisterBaseCheats()
     {
         RegisterCheat("return", () => returnToFair.Return());
+
         RegisterCheat("tutorial", () => SkipTutorial());
+
         RegisterCheat("reset",  () => ResetDifficulty());
+        
         RegisterCheat("miss",   OnMissCheat);
         RegisterCheat("score",  OnScoreCheat);
+
         RegisterCheat("complete", ()=> carnyWise.SessionGoalReached());
+
         RegisterCheat("increase", () => IncreaseDifficulty());
         RegisterCheat("decrease", () => DecreaseDifficulty());
-        RegisterCheat("happy",    () => activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.HAPPY));
-        RegisterCheat("neutral",  () => activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.NEUTRAL));
-        RegisterCheat("sad",      () => activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SAD));
-        RegisterCheat("angry",    () => activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.ANGRY));
-        RegisterCheat("disgust",  () => activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.DISGUST));
-        RegisterCheat("surprise", () => activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.SURPRISE));
-        RegisterCheat("fear",     () => activateEmoji.UpdateVisuals(ActivateEmoji.EmojiType.FEAR));
+
+        RegisterCheat("happy",    () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.HAPPY));
+        RegisterCheat("neutral",  () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.NEUTRAL));
+        RegisterCheat("sad",      () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.SAD));
+        RegisterCheat("angry",    () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.ANGRY));
+        RegisterCheat("disgust",  () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.DISGUST));
+        RegisterCheat("surprise", () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.SURPRISE));
+        RegisterCheat("fear",     () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.FEAR));
+
+        RegisterCheat("positive", () => DisplaySlider(SliderDisplay.EMOJI_CATEGORY.POSITIVE));
+        RegisterCheat("negative", () => DisplaySlider(SliderDisplay.EMOJI_CATEGORY.NEGATIVE));
     }
 
  
@@ -168,5 +184,22 @@ public class MiniGameCheatCodes : CheatCodes
         tutorial.ReadyToPlay();
 
         _tutorialCompleted = true;
+    }
+
+
+
+    private void DisplayEmotion(EmojiDisplay.EMOJI_TYPE type)
+    {      
+        changeEmotionDisplay.Invoke(ServerListener.DISPLAYMODE.EMOJI);
+    
+        emojiDisplay.UpdateVisuals(type);
+    }
+
+
+    private void DisplaySlider(SliderDisplay.EMOJI_CATEGORY category)
+    {
+        changeEmotionDisplay.Invoke(ServerListener.DISPLAYMODE.SLIDER);
+
+        sliderDisplay.UpdateSlider(category);
     }
 }
