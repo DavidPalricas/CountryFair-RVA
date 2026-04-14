@@ -226,3 +226,6 @@ UserTests/env/
 ~$*.xlsx*
 .~lock.*#
 *.tmp
+
+# Claude Code file generated which contain information about code otimizations and suggestions.
+Otimizations.md
