@@ -20,7 +20,10 @@ public class MiniGameCheatCodes : CheatCodes
 
     [Header("Emotion Server Dependencies")]
     [SerializeField]
-    private  EmojiDisplay emojiDisplay;
+    private  ExpressionDisplay emojiDisplay;
+   
+   [SerializeField]
+    private ExpressionDisplay faceDisplay;
     
     [SerializeField]
     private SliderDisplay sliderDisplay;
@@ -58,9 +61,9 @@ public class MiniGameCheatCodes : CheatCodes
             return;
         }
 
-        if (emojiDisplay == null)
+        if (emojiDisplay == null || faceDisplay == null || sliderDisplay == null)
         {
-            Debug.LogError("ActivateEmoji component not found in the scene. Please ensure there is a GameObject with the 'Emojis' tag and an ActivateEmoji component.");
+            Debug.LogError("One or more emotions display is missing");
             return;
         }
 
@@ -90,13 +93,21 @@ public class MiniGameCheatCodes : CheatCodes
         RegisterCheat("increase", () => IncreaseDifficulty());
         RegisterCheat("decrease", () => DecreaseDifficulty());
 
-        RegisterCheat("happy",    () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.HAPPY));
-        RegisterCheat("neutral",  () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.NEUTRAL));
-        RegisterCheat("sad",      () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.SAD));
-        RegisterCheat("angry",    () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.ANGRY));
-        RegisterCheat("disgust",  () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.DISGUST));
-        RegisterCheat("surprise", () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.SURPRISE));
-        RegisterCheat("fear",     () => DisplayEmotion(EmojiDisplay.EMOJI_TYPE.FEAR));
+        RegisterCheat("ehappy",    () => DisplayEmoji(ExpressionDisplay.EXPRESSION_TYPE.HAPPY));
+        RegisterCheat("eneutral",  () => DisplayEmoji(ExpressionDisplay.EXPRESSION_TYPE.NEUTRAL));
+        RegisterCheat("esad",      () => DisplayEmoji(ExpressionDisplay.EXPRESSION_TYPE.SAD));
+        RegisterCheat("eangry",    () => DisplayEmoji(ExpressionDisplay.EXPRESSION_TYPE.ANGRY));
+        RegisterCheat("edisgust",  () => DisplayEmoji(ExpressionDisplay.EXPRESSION_TYPE.DISGUST));
+        RegisterCheat("esurprise", () => DisplayEmoji(ExpressionDisplay.EXPRESSION_TYPE.SURPRISE));
+        RegisterCheat("efear",     () => DisplayEmoji(ExpressionDisplay.EXPRESSION_TYPE.FEAR));
+
+        RegisterCheat("fhappy",    () => DisplayFace(ExpressionDisplay.EXPRESSION_TYPE.HAPPY));
+        RegisterCheat("fneutral",  () => DisplayFace(ExpressionDisplay.EXPRESSION_TYPE.NEUTRAL));
+        RegisterCheat("fsad",      () => DisplayFace(ExpressionDisplay.EXPRESSION_TYPE.SAD));
+        RegisterCheat("fangry",    () => DisplayFace(ExpressionDisplay.EXPRESSION_TYPE.ANGRY));
+        RegisterCheat("fdisgust",  () => DisplayFace(ExpressionDisplay.EXPRESSION_TYPE.DISGUST));
+        RegisterCheat("fsurprise", () => DisplayFace(ExpressionDisplay.EXPRESSION_TYPE.SURPRISE));
+        RegisterCheat("ffear",     () => DisplayFace(ExpressionDisplay.EXPRESSION_TYPE.FEAR));
 
         RegisterCheat("positive", () => DisplaySlider(SliderDisplay.EMOJI_CATEGORY.POSITIVE));
         RegisterCheat("negative", () => DisplaySlider(SliderDisplay.EMOJI_CATEGORY.NEGATIVE));
@@ -188,11 +199,18 @@ public class MiniGameCheatCodes : CheatCodes
 
 
 
-    private void DisplayEmotion(EmojiDisplay.EMOJI_TYPE type)
+    private void DisplayEmoji(ExpressionDisplay.EXPRESSION_TYPE type)
     {      
         changeEmotionDisplay.Invoke(ServerListener.DISPLAYMODE.EMOJI);
     
         emojiDisplay.UpdateVisuals(type);
+    }
+
+    private void DisplayFace(ExpressionDisplay.EXPRESSION_TYPE type)
+    {
+        changeEmotionDisplay.Invoke(ServerListener.DISPLAYMODE.FACE);
+    
+        faceDisplay.UpdateVisuals(type);
     }
 
 

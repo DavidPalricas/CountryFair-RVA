@@ -1,11 +1,8 @@
 """
 analyze_suggestions.py
 ======================
-Reads the UserTestResultsWave2 file (.xlsx), extracts open-ended
-responses from three free-text columns:
-    - "What did you like most and less about the game."
-    - "Do you have any suggestions, comments, or thoughts about your
-       experience with the personalized XR session?"
+Reads the UserTestResultsWave2 file (.xlsx or .csv), extracts open-ended
+responses from the free-text column for question 22:
     - "Other Suggestions"
 
 Each response is matched against thematic categories via regex patterns.
@@ -15,7 +12,7 @@ counted at most once per theme.
 
 The report shows how many participants mentioned each theme and the
 corresponding percentage of the total respondent pool (participants with
-at least one non-empty free-text response).
+at least one non-empty response in question 22).
 """
 
 import csv
@@ -38,9 +35,8 @@ FILE_PATH = "UserTestResultsWave2.csv"
 # Partial name matches (case-insensitive) against actual column headers.
 # ---------------------------------------------------------------------------
 TEXT_COLUMN_SUBSTRINGS = [
-    "like most",
-    "suggestions, comments",
-    "Other Suggestions",
+    "suggestions, comments",  # Question 21
+    "Other Suggestions",      # Question 22
 ]
 
 # ---------------------------------------------------------------------------
@@ -55,22 +51,6 @@ THEMES: list[dict] = [
     # UI / READABILITY
     # ------------------------------------------------------------------
     {
-        "label": "Text / instructions hard to read or too long",
-        "patterns": [
-            r"text.*difficult", r"diffi.*read", r"hard.*read",
-            r"letra.*maior", r"tamanho.*letra", r"font",
-            r"caixas.*texto", r"text.*box", r"text.*not.*visible",
-            r"texto.*n.o.*bastante.*vis",
-            r"reduce.*text", r"shorten.*text", r"simplif.*text",
-            r"instrução.*fonte", r"fonte.*instrução",
-            r"dificuldade.*ler", r"dificuldade a ler",
-            r"aproxima.*caixas", r"distância.*caixas",
-            r"closer.*text", r"text.*closer",
-            r"change.*aspect.*easier.*reading",
-            r"easier.*reading",
-        ],
-    },
-    {
         "label": "Suggestion: audio narration / voice-over for instructions",
         "patterns": [
             r"narrad", r"narrat", r"audio.*instrução", r"instrução.*audio",
@@ -83,47 +63,10 @@ THEMES: list[dict] = [
         ],
     },
 
-    # ------------------------------------------------------------------
-    # MENU / SELECTION INTERACTION
-    # ------------------------------------------------------------------
-    {
-        "label": "Menu / game selection button unintuitive or buggy",
-        "patterns": [
-            r"menu.*bug", r"main menu.*bug", r"menu.*bugged",
-            r"button.*appear", r"olhar.*jogo.*botão", r"look.*tent.*button",
-            r"select.*button.*not.*intuitive", r"not.*intuitive.*select",
-            r"não.*intuitivo.*olhar", r"olhar.*botão",
-            r"não.*intuitivo.*ter de olhar",
-            r"button.*hide", r"menu.*hide", r"shouldn.t hide",
-            r"detection.*not.*great", r"jarring",
-            r"strange places.*button", r"look.*strange.*places",
-            r"button.*press.*one finger", r"press.*button.*one finger",
-            r"button.*doesn.t.*work", r"button.*not.*work",
-            r"movimentação.*menu principal", r"movement.*main menu",
-            r"interagir.*ambiente.*tendas", r"ir de encontro.*tendas",
-        ],
-    },
 
     # ------------------------------------------------------------------
     # FRISBEE MECHANICS
     # ------------------------------------------------------------------
-    {
-        "label": "Frisbee mechanics / physics feel awkward or inconsistent",
-        "patterns": [
-            r"frisbee.*physics", r"frisbee.*weird", r"frisbee.*awkward",
-            r"frisbee.*inconsistent", r"lançamento.*estranho",
-            r"frisbee.*too fast", r"frisbee.*fast",
-            r"disco.*secante", r"lançamento.*disco",
-            r"frisbee.*not.*respond", r"frisbee.*doesn.t.*respond",
-            r"frisbee.*às vezes.*n.o.*responde",
-            r"hard.*throw.*frisbee", r"hard.*accurately.*throw",
-            r"difficult.*release.*frisbee",
-            r"mapping.*physical.*movement.*frisbee",
-            r"physical.*movement.*frisbee.*trajectory",
-            r"frisbee.*trajectory.*mapping",
-            r"movement.*frisbee.*not.*intuitive",
-        ],
-    },
     {
         "label": "Suggestion: frisbee trajectory indicator",
         "patterns": [
@@ -147,32 +90,6 @@ THEMES: list[dict] = [
     # ARCHERY MECHANICS
     # ------------------------------------------------------------------
     {
-        "label": "Archery target color not obvious / hard to notice",
-        "patterns": [
-            r"target.*color.*not.*obvious", r"color.*not.*obvious",
-            r"color.*target.*changed", r"cor.*balão.*distrai",
-            r"cor.*objetivo.*n.o.*vis", r"cor.*não.*perceb",
-            r"objetivo.*jogo.*atual.*mais.*vis",
-            r"make.*color.*more.*obvious", r"make.*target.*visible",
-            r"não.*perceb.*logo.*balões", r"color.*had.*changed",
-            r"wasn.t.*obvious.*color", r"not.*obvious.*target.*color",
-            r"balões.*uns.*cima.*outros", r"balloons.*on.*top",
-        ],
-    },
-    {
-        "label": "Positive reaction to archery game",
-        "patterns": [
-            r"liked.*bow.*arrow", r"bow.*arrow.*very.*much",
-            r"bow.*arrow.*easy", r"bow.*arrow.*fun",
-            r"arco.*e.*flecha.*intuitiv", r"arco.*e.*flecha.*divertid",
-            r"arco.*e.*flecha.*facil",
-            r"like.*bow.*and.*arrow", r"enjoyed.*archery",
-            r"bow.*and.*arrow.*pleasing", r"bow.*and.*arrow.*enjoyable",
-            r"easy.*fine.*tune.*difficulty",
-            r"like.*bow.*and.*arrow.*very.*much",
-        ],
-    },
-    {
         "label": "Suggestion: more archery space / obstacle variation",
         "patterns": [
             r"espaço.*maior.*arco", r"arco.*espaço.*maior",
@@ -194,17 +111,6 @@ THEMES: list[dict] = [
     # ------------------------------------------------------------------
     # ADAPTIVE DIFFICULTY
     # ------------------------------------------------------------------
-    {
-        "label": "Positive feedback on adaptive difficulty",
-        "patterns": [
-            r"ajuste.*automático", r"dificuldade.*ajust",
-            r"ajust.*dificuldade", r"difficulty.*adjust",
-            r"adapt.*difficulty", r"dificuldade.*crescente",
-            r"increasing.*difficulty", r"difficulty.*increasing",
-            r"dificuldade.*foi aumentando",
-            r"areas.*foram.*ajustando", r"areas.*ajustando.*dificuldade",
-        ],
-    },
     {
         "label": "Suggestion: better / explicit feedback on difficulty change",
         "patterns": [
@@ -231,15 +137,6 @@ THEMES: list[dict] = [
     # AUDIO / SOUND
     # ------------------------------------------------------------------
     {
-        "label": "Positive reaction to audio / sound design",
-        "patterns": [
-            r"resposta.*auditiva", r"feedback.*auditiv",
-            r"som.*ambiental", r"sons.*bem.*escolhido",
-            r"audio.*response", r"sound.*design",
-            r"boa.*resposta.*auditiva",
-        ],
-    },
-    {
         "label": "Suggestion: more audio feedback / dialogue",
         "patterns": [
             r"mais.*feedback.*auditivo", r"feedback.*auditivo.*errar",
@@ -248,42 +145,7 @@ THEMES: list[dict] = [
         ],
     },
 
-    # ------------------------------------------------------------------
-    # IMMERSION & ENVIRONMENT
-    # ------------------------------------------------------------------
-    {
-        "label": "Positive reaction to immersion / environment",
-        "patterns": [
-            r"imersiv", r"immersi", r"ambiente.*diferente",
-            r"cenário.*bem", r"som.*ambiental", r"fair.*3d",
-            r"truly.*seeing.*fair",
-            r"ambiente.*jogo", r"envolvência",
-            r"realistic.*movement", r"realistic.*task",
-        ],
-    },
 
-    # ------------------------------------------------------------------
-    # GAMES – GENERAL POSITIVES
-    # ------------------------------------------------------------------
-    {
-        "label": "Game praised as fun / engaging / intuitive",
-        "patterns": [
-            r"divertid", r"fun", r"engag", r"intuitiv",
-            r"simples.*acessiv", r"fácil.*compreender",
-            r"easy.*understand", r"easy.*use",
-            r"simplicit", r"vibrant",
-            r"genuinely.*having fun", r"really.*fun",
-            r"muito.*bem.*concebido",
-            r"interessante.*mesmo.*ao.*longo",
-            r"mantém.*interessante", r"interativo",
-            r"conceito.*interessante",
-            r"acessível.*dinâmico",
-            r"duração.*adequada",
-            r"instruções.*faceis.*entender",
-            r"jogos.*em.*si",
-            r"sistema.*intuitivo.*fácil",
-        ],
-    },
 
     # ------------------------------------------------------------------
     # MORE MINI-GAMES / CONTENT
@@ -356,29 +218,6 @@ THEMES: list[dict] = [
         ],
     },
 
-    # ------------------------------------------------------------------
-    # REHABILITATION CONTEXT
-    # ------------------------------------------------------------------
-    {
-        "label": "Mentioned rehabilitation / therapeutic value",
-        "patterns": [
-            r"reabilita", r"rehabilit", r"terapêutic", r"therapeut",
-            r"stroke", r"acidente.*vascular",
-            r"útil.*reabilita", r"reabilita.*divertid",
-        ],
-    },
-
-    # ------------------------------------------------------------------
-    # GRAPHICS / VISUALS
-    # ------------------------------------------------------------------
-    {
-        "label": "Negative comment on graphics / visuals",
-        "patterns": [
-            r"didn.t.*liked.*graphic", r"graphics.*bad",
-            r"graphic.*not.*great", r"visual.*poor",
-            r"didnt.*liked.*graphic",
-        ],
-    },
 ]
 
 UNCATEGORIZED_LABEL = "Other / uncategorized"
@@ -516,6 +355,7 @@ def analyse(file_path: str) -> tuple[pd.DataFrame, int]:
     total_with_response = int(df.apply(has_real_response, axis=1).sum())
 
     theme_to_participants: dict[str, set] = defaultdict(set)
+    theme_to_responses: dict[str, list[tuple[int, str]]] = defaultdict(list)
 
     for idx, row in df.iterrows():
         responses = collect_responses(row, text_cols)
@@ -525,17 +365,21 @@ def analyse(file_path: str) -> tuple[pd.DataFrame, int]:
         for response in responses:
             for theme_label in match_themes(response):
                 themes_for_participant.add(theme_label)
+                theme_to_responses[theme_label].append((int(idx) + 1, response))
         for theme_label in themes_for_participant:
             theme_to_participants[theme_label].add(idx)
 
     records = []
     for theme_label, participants in theme_to_participants.items():
+        if theme_label == UNCATEGORIZED_LABEL:
+            continue
         count = len(participants)
         pct = round(count / total_with_response * 100, 1)
         records.append({
             "Theme": theme_label,
             "Participants": count,
             "Percentage (%)": pct,
+            "Responses": theme_to_responses[theme_label],
         })
 
     summary = pd.DataFrame(records)
@@ -545,13 +389,28 @@ def analyse(file_path: str) -> tuple[pd.DataFrame, int]:
     return summary, total_with_response
 
 
+def _wrap_print(text: str, indent: str = "    ") -> None:
+    W = 62
+    words = text.split()
+    line = indent
+    for word in words:
+        if len(line) + len(word) + 1 > W + 8:
+            print(line)
+            line = indent + word
+        else:
+            line += (" " if line.strip() else "") + word
+    if line.strip():
+        print(line)
+
+
 def print_report(summary: pd.DataFrame, total: int) -> None:
-    """Pretty-print the full summary table to stdout."""
-    print(f"\n{'='*62}")
-    print(f"  SUGGESTION / FEEDBACK THEME ANALYSIS")
+    """Pretty-print the full summary table followed by per-theme responses."""
+    W = 62
+    print(f"\n{chr(61)*W}")
+    print(f"  SUGGESTION THEME ANALYSIS — Questions 21 & 22")
     print(f"  (out of {total} participants with at least one response)")
-    print(f"{'='*62}")
-    print(f"{'#':<4} {'Theme':<50} {'n':>4}  {'%':>6}")
+    print(f"{chr(61)*W}")
+    print(f"{chr(35):<4} {chr(84)+'heme':<50} {'n':>4}  {'%':>6}")
     print(f"{'-'*4} {'-'*50} {'-'*4}  {'-'*6}")
 
     for i, row in summary.iterrows():
@@ -566,7 +425,17 @@ def print_report(summary: pd.DataFrame, total: int) -> None:
             else:
                 print(f"{'':4} {part:<50}")
 
-    print(f"{'='*62}\n")
+    print(f"\n{'─'*W}")
+    print(f"  Respostas por categoria")
+    print(f"{'─'*W}")
+
+    for _, row in summary.iterrows():
+        print(f"\n  >> {row['Theme']}")
+        for participant, response in row["Responses"]:
+            print(f"\n     Participante #{participant}")
+            _wrap_print(response)
+
+    print(f"\n{chr(61)*W}\n")
 
 
 # ---------------------------------------------------------------------------
