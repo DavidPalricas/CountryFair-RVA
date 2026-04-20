@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Connects to a TCP server to listen for emoji commands.
@@ -11,10 +12,17 @@ using System;
 public class ServerListener : MonoBehaviour
 {
     [Header("Server Connection Settings")]
-    [SerializeField] private string serverIP = "172.20.10.2";
-    [SerializeField] private int serverPort = 50050;
-    [SerializeField] private EmojiDisplay emojiDisplay;
-    [SerializeField] private SliderDisplay sliderDisplay;
+    [SerializeField] 
+    private string serverIP = "172.20.10.2";
+    [SerializeField]
+     private int serverPort = 50050;
+    [SerializeField] 
+    private ExpressionDisplay emojiDisplay;
+    [SerializeField] 
+    private SliderDisplay sliderDisplay;
+
+    [SerializeField]
+    private ExpressionDisplay faceDisplay;
 
     [Header("Update Rate")]
     [Tooltip("Interval in seconds between processing received messages")]
@@ -34,12 +42,13 @@ public class ServerListener : MonoBehaviour
     public enum DISPLAYMODE
     {
         EMOJI,
+        FACE,
         SLIDER
     }
 
     private void Awake()
     {
-        if (sliderDisplay == null || emojiDisplay == null)
+        if (sliderDisplay == null || emojiDisplay == null || faceDisplay == null)
         {
             Debug.LogError("One or more types of emotion display are missing in ServerListener");
             return;
@@ -150,49 +159,56 @@ public class ServerListener : MonoBehaviour
     }
 
     private void SetCurrentDisplayMode()
-    {
+    {  
         float randomValue = Utils.RandomValueInRange(0f, 1f);
 
-
-        if (randomValue < 0.5f)
+        if (randomValue <= 0.33f)
         {
-            DisplayEmotionsInEmoji();
+           faceDisplay.gameObject.SetActive(false);
+           sliderDisplay.gameObject.SetActive(false);
+
+           _currentDisplayMode = emojiDisplay;
 
             return;
         }
 
-        DisplayEmotionsInSlider();
-    }
+        if (randomValue <= 0.66f)
+        {     
+            emojiDisplay.gameObject.SetActive(false);
+            faceDisplay.gameObject.SetActive(false);
 
+            _currentDisplayMode = sliderDisplay;
 
-    private void DisplayEmotionsInEmoji()
-    {   
-        _currentDisplayMode = emojiDisplay;
-
-        emojiDisplay.gameObject.SetActive(true);
-
-        sliderDisplay.gameObject.SetActive(false);
-    }
-
-    private void DisplayEmotionsInSlider()
-    {
-        _currentDisplayMode = sliderDisplay;
-
-        sliderDisplay.gameObject.SetActive(true);
+            return;
+        }
 
         emojiDisplay.gameObject.SetActive(false);
+        sliderDisplay.gameObject.SetActive(false);
+
+        _currentDisplayMode = faceDisplay;
     }
 
-
     public void UpdateDisplayMode(DISPLAYMODE newMode)
-    {
+    {   
+        _currentDisplayMode.gameObject.SetActive(false);
+
         if (newMode == DISPLAYMODE.SLIDER)
-        {
-            DisplayEmotionsInSlider();
+        {   
+            _currentDisplayMode = sliderDisplay;
+            _currentDisplayMode.gameObject.SetActive(true);
+
+            return;
+        }
+
+        if (newMode == DISPLAYMODE.FACE)
+        {   
+            _currentDisplayMode = faceDisplay;
+            _currentDisplayMode.gameObject.SetActive(true);
 
             return;
         }
         
-        DisplayEmotionsInEmoji();
+       _currentDisplayMode = emojiDisplay;
+        _currentDisplayMode.gameObject.SetActive(true);
     }
 }
