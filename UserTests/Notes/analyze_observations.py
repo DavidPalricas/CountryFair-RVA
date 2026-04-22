@@ -518,6 +518,7 @@ def analyse(csv_path: str) -> tuple[pd.DataFrame, int]:
 
     # Map theme_label -> set of participant IDs that triggered it
     theme_to_users: dict[str, set] = defaultdict(set)
+    theme_to_responses: dict[str, list[tuple[str, str]]] = defaultdict(list)
 
     for _, row in df.iterrows():
         participant = row["Participant_ID"].strip()
@@ -526,6 +527,7 @@ def analyse(csv_path: str) -> tuple[pd.DataFrame, int]:
         for obs in observations:
             theme = match_theme(obs)
             theme_to_users[theme].add(participant)
+            theme_to_responses[theme].append((participant, obs))
 
     records = []
     for theme_label, users in theme_to_users.items():
@@ -535,6 +537,7 @@ def analyse(csv_path: str) -> tuple[pd.DataFrame, int]:
             "Theme": theme_label,
             "Participants": count,
             "Percentage (%)": pct,
+            "Responses": theme_to_responses[theme_label],
         })
 
     summary = pd.DataFrame(records)
@@ -544,11 +547,26 @@ def analyse(csv_path: str) -> tuple[pd.DataFrame, int]:
     return summary, total_participants
 
 
+def _wrap_print(text: str, indent: str = "    ", width: int = 70) -> None:
+    """Word-wrap text to width, printing with indent."""
+    words = text.split()
+    line = indent
+    for word in words:
+        if len(line) + len(word) + 1 > width:
+            print(line)
+            line = indent + word
+        else:
+            line += (" " if line.strip() else "") + word
+    if line.strip():
+        print(line)
+
+
 def print_report(summary: pd.DataFrame, total: int) -> None:
-    """Pretty-print the full summary table to stdout."""
-    print(f"\n{'='*62}")
+    """Pretty-print the summary table followed by per-theme response breakdown."""
+    W = 62
+    print(f"\n{'='*W}")
     print(f"  OBSERVATION THEME ANALYSIS  (out of {total} participants)")
-    print(f"{'='*62}")
+    print(f"{'='*W}")
     print(f"{'#':<4} {'Theme':<50} {'n':>4}  {'%':>6}")
     print(f"{'-'*4} {'-'*50} {'-'*4}  {'-'*6}")
 
@@ -564,7 +582,18 @@ def print_report(summary: pd.DataFrame, total: int) -> None:
             else:
                 print(f"{'':4} {part:<50}")
 
-    print(f"{'='*62}\n")
+    # ── Per-theme response breakdown ────────────────────────────────────────
+    print(f"\n{'─'*W}")
+    print(f"  Observações por categoria")
+    print(f"{'─'*W}")
+
+    for _, row in summary.iterrows():
+        print(f"\n  >> {row['Theme']}")
+        for participant, observation in row["Responses"]:
+            print(f"\n     Participante {participant}")
+            _wrap_print(observation)
+
+    print(f"\n{'='*W}\n")
 
 
 # ---------------------------------------------------------------------------
