@@ -781,7 +781,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3579536194487567233, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 33.1
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 3579536194487567233, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -897,7 +897,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6005198600495511706, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 33.08942
+      value: 25.2
       objectReference: {fileID: 0}
     - target: {fileID: 6005198600495511706, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -917,7 +917,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6074126792979215036, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 20.8
+      value: 14.4
       objectReference: {fileID: 0}
     - target: {fileID: 6074126792979215036, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -930,6 +930,10 @@ PrefabInstance:
     - target: {fileID: 6123460026014959597, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_LocalPosition.y
       value: -354.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6123460026014959597, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -18.5
       objectReference: {fileID: 0}
     - target: {fileID: 6330216161884065514, guid: ba4d4d6cd09bc5f4197349ed272f9b5c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4557,7 +4561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.047058824, g: 0.19215687, b: 0.20784314, a: 0.78431374}
+  m_Color: {r: 0.047058824, g: 0.19215687, b: 0.20784314, a: 0.19607843}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4778,8 +4782,8 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.5566037, g: 0.42042163, b: 0.24895811, a: 0.35}
-    - _Color: {r: 0.5566037, g: 0.42042446, b: 0.24896094, a: 0.35}
+    - _BaseColor: {r: 0.5566037, g: 0.42041117, b: 0.24894765, a: 0.35}
+    - _Color: {r: 0.5566037, g: 0.42041352, b: 0.24895, a: 0.35}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -13631,7 +13635,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -197, y: 8.2}
+  m_AnchoredPosition: {x: -226, y: 8.2}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1664032619
@@ -16150,7 +16154,6 @@ GameObject:
   - component: {fileID: 1987086192}
   - component: {fileID: 1987086191}
   - component: {fileID: 1987086190}
-  - component: {fileID: 1987086194}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -16209,7 +16212,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 2135016406}
-  m_PlaneDistance: 0.5
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 1
@@ -16241,22 +16244,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1987086194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1987086189}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e546917f88ea395458ab64994099fa65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HeadLockedUI
-  _cameraTransform: {fileID: 2135016405}
-  _distance: 7
-  _followSpeed: 5
-  _offset: {x: -3, y: 0, z: 0}
 --- !u!1 &2011074874
 GameObject:
   m_ObjectHideFlags: 0
@@ -17014,7 +17001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7738016394275872087, guid: 316faa56be726824192d355461c86468, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8194829019654467593, guid: 316faa56be726824192d355461c86468, type: 3}
       propertyPath: heightOffset
