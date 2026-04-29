@@ -2,7 +2,12 @@
 get_sus.py
 ----------
 Calculates the System Usability Scale (SUS) score for each participant
-from the Wave 2 user test results CSV.
+from the Wave 2 user test results CSV, and generates both a bar chart
+and a box plot of the scores.
+
+Output:
+    - SUS_Scores_Barchart.png  — per-participant bar chart
+    - SUS_Boxplot.png          — distribution box plot
 
 SUS scoring (Brooke, 1996):
   - Odd questions  (positive): contribution = response_value - 1
@@ -30,7 +35,8 @@ from matplotlib.lines import Line2D
 
 SUS_RESULTS_FILE = "UserTestResultsWave2.csv"
 GRAPH_DIR = "Graphs"
-SUS_GRAPH_FILE = "SUS_Scores.png"
+SUS_GRAPH_FILE = "SUS_Scores_Barchart.png"
+SUS_BOXPLOT_FILE = "SUS_Boxplot.png"
 
 # Maps Likert response labels to their numeric value (1–5)
 LIKERT_MAP = {
@@ -219,6 +225,80 @@ def get_sus_results():
     return results
 
 
+def gen_sus_boxplot(results):
+    """Generate and save a SUS score box plot showing the score distribution.
+
+    Parameters
+    ----------
+    results : list[dict]
+        Output of :func:`get_sus_results`.  Only entries with a valid SUS
+        score are included in the plot.
+    """
+    scores = [r["SUS"] for r in results if r["SUS"] is not None]
+
+    if not scores:
+        print("No valid SUS scores found. Box plot was not generated.")
+        return
+
+    avg = int(sum(scores) / len(scores))
+    avg_grade, avg_adjective = get_sus_grade(avg)
+
+    _, ax = plt.subplots(figsize=(6, 7))
+
+    bp = ax.boxplot(
+        scores,
+        patch_artist=True,
+        notch=False,
+        widths=0.4,
+        medianprops=dict(color="#F39C12", linewidth=2.5),
+        whiskerprops=dict(linewidth=1.5),
+        capprops=dict(linewidth=1.5),
+        flierprops=dict(marker="o", markersize=6, linestyle="none",
+                        markerfacecolor="#5B9BD5", markeredgecolor="#5B9BD5"),
+    )
+
+    bp["boxes"][0].set_facecolor("#5B9BD5")
+    bp["boxes"][0].set_alpha(0.75)
+
+    ax.axhline(avg, color="#F39C12", linestyle="--", linewidth=2)
+
+    ax.set_xticks([1])
+    ax.set_xticklabels(["SUS Score"], fontsize=12)
+    ax.set_ylabel("SUS Score", fontsize=12)
+    ax.set_ylim(0, 105)
+    ax.set_title(
+        "System Usability Scale (SUS) — Score Distribution",
+        fontsize=14,
+        fontweight="bold",
+        pad=15,
+    )
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+    legend_elements = [
+        Patch(facecolor="#5B9BD5", alpha=0.75, label="SUS Scores"),
+        Line2D([0], [0], color="#F39C12", lw=2.5, linestyle="--",
+               label=f"Average ({avg}, {avg_grade}, {avg_adjective})"),
+    ]
+    ax.legend(
+        handles=legend_elements,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.02),
+        ncol=2,
+        fontsize=10,
+    )
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    graph_dir = os.path.join(script_dir, GRAPH_DIR)
+    os.makedirs(graph_dir, exist_ok=True)
+
+    graph_path = os.path.join(graph_dir, SUS_BOXPLOT_FILE)
+    plt.tight_layout()
+    plt.savefig(graph_path, dpi=150)
+    plt.close()
+    print(f"Saved graph: {graph_path}")
+
+
 def main():
     """Print SUS results table and generate a SUS score graph."""
 
@@ -243,6 +323,7 @@ def main():
         print(f"{'Avg':<6} {avg:>7}  {avg_grade:<4}  {avg_adjective}")
 
     gen_sus_graph(sus)
+    gen_sus_boxplot(sus)
 
 if __name__ == "__main__":
     main()
