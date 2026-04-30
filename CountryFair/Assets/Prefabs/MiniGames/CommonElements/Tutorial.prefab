@@ -145,7 +145,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2514052153917355855}
-  - component: {fileID: 8194829019654467593}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -170,57 +169,6 @@ Transform:
   - {fileID: 5841738734838277535}
   m_Father: {fileID: 1112736893632832592}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8194829019654467593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2377762922086900076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cb6b4ff4272cf84ca8dee44f93210d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tutorial
-  centerEyeTransform: {fileID: 0}
-  distanceFromPlayer: 12
-  heightOffset: 1
-  horizontalOffset: 7
-  dialogueBoxGameObject: {fileID: 5757763422182818401}
-  dialogueBoxText: {fileID: 3866530826254779555}
-  tutorialCompleted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FrisbeeGameManager, Assembly-CSharp
-        m_MethodName: TutorialCompleted
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Landed, Assembly-CSharp
-        m_MethodName: set_TutorialActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  videoScreen: {fileID: 9204777700519121405}
-  miniGameVideo: {fileID: 0}
-  miniGameProp: {fileID: 0}
-  practiceElements: {fileID: 2723779426521911518}
-  tutorialButton: {fileID: 6457992072635077231}
-  postTutorialElements: {fileID: 0}
 --- !u!1 &2723779426521911518
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +412,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1112736893632832592}
+  - component: {fileID: 8267223960734963794}
   m_Layer: 0
   m_Name: Tutorial
   m_TagString: Untagged
@@ -489,6 +438,65 @@ Transform:
   - {fileID: 2299546372221246605}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8267223960734963794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7738016394275872087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb6b4ff4272cf84ca8dee44f93210d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Tutorial
+  dialogueBoxGameObject: {fileID: 5757763422182818401}
+  dialogueBoxText: {fileID: 3866530826254779555}
+  tutorialCompleted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ArcheryGameManager, Assembly-CSharp
+        m_MethodName: TutorialCompleted
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Arrow, Assembly-CSharp
+        m_MethodName: set_IsTutorialActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CarnyWise, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  videoScreen: {fileID: 9204777700519121405}
+  miniGameVideo: {fileID: 1734110149491692014}
+  miniGameProp: {fileID: 0}
+  practiceElements: {fileID: 2723779426521911518}
+  tutorialButton: {fileID: 6457992072635077231}
+  postTutorialElements: {fileID: 0}
 --- !u!1 &9204777700519121405
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,10 +735,6 @@ PrefabInstance:
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1279439000019667242}
-    - target: {fileID: 7516989854015812293, guid: d2d6934a666a18d46b8b7a3864dc9f63, type: 3}
-      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 8194829019654467593}
     - target: {fileID: 7516989854015812293, guid: d2d6934a666a18d46b8b7a3864dc9f63, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2

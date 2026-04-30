@@ -8,7 +8,6 @@ public class Tutorial : UIDialog
     [SerializeField]
     private UnityEvent tutorialCompleted;
 
-
     [Header("Practise Elements")]
     [SerializeField]
     private GameObject videoScreen;
@@ -41,7 +40,7 @@ public class Tutorial : UIDialog
         if (TutorialWasCompleted())
         {
             tutorialCompleted.Invoke();
-            Destroy(transform.parent.gameObject);
+            Destroy(gameObject);
             return;
         }
 
@@ -146,8 +145,9 @@ public class Tutorial : UIDialog
 
     public override void NextStep()
     {
-        // Proteção: Se o jogador clicar antes do JSON carregar
-        if (_tutorialData == null) return;
+        if (_tutorialData == null){
+             return;
+        }
 
         if (_finishedPracticing)
         {
@@ -173,7 +173,7 @@ public class Tutorial : UIDialog
             GameManager.GetInstance().ArcheryTutorialCompleted = true;
         }
 
-        Destroy(transform.parent.gameObject);
+        Destroy(gameObject);
     }
 
     private void ShowGameRule()

@@ -199,6 +199,9 @@ public class ExpressionDisplay : EmotionDisplay
             expression.SetActive(false);
         }
 
-        if (_expressions.ContainsKey("neutral")) _currentExpressionActive = _expressions["neutral"];
+        if (_expressions.ContainsKey("neutral"))
+        {
+            _currentExpressionActive = _expressions["neutral"];
+        } 
     }
 }

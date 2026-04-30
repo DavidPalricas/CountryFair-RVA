@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 public class CarnyWiseDiffFeedback : UIDialog
-{
+{    
     [Header("Display Configuration")]
     [SerializeField]
     private float displayDuration = 6f;
@@ -14,9 +14,14 @@ public class CarnyWiseDiffFeedback : UIDialog
     [SerializeField]
     private GameObject decreaseDiffExpression;
 
+
+    [Header("CarnyWise UI")]
+    [SerializeField]
+    private GameObject carnyUI;
+
     [Header("Sound Feedback")]
     [SerializeField]
-    private UnityEvent <AudioManager.GameSoundEffects, GameObject> soundFeedback;
+    private UnityEvent <AudioManager.GameSoundEffects> soundFeedback;
 
     private DiffcultyFeedBackData _feedbackData;
 
@@ -35,9 +40,13 @@ public class CarnyWiseDiffFeedback : UIDialog
             return;
         }
 
-        dialogueBoxGameObject.SetActive(false);
-        increaseDiffExpression.SetActive(false);
-        decreaseDiffExpression.SetActive(false);
+        if (carnyUI == null)
+        {
+            Debug.LogError("ERROR: Carny Wise UI GameObject is not assigned.");
+            return;
+        }
+
+        carnyUI.SetActive(false);
     }
 
 
@@ -70,7 +79,7 @@ public class CarnyWiseDiffFeedback : UIDialog
 
 
     public void ShowNewDiffFeedback(bool isToIncrease)
-    {
+    {   
         if (_feedbackData == null)
         {
             Debug.LogWarning($"[WARNING] Request received before load finished. Storing in queue... (Increase: {isToIncrease})");
@@ -78,32 +87,27 @@ public class CarnyWiseDiffFeedback : UIDialog
             return; 
         }
 
-        PositionInFrontOfPlayer();
+        carnyUI.SetActive(true);
 
         List<string> feedbackTexts;
 
         AudioManager.GameSoundEffects soundToPlay;
 
-        GameObject currentExpression;
+        increaseDiffExpression.SetActive(isToIncrease);
+        decreaseDiffExpression.SetActive(!isToIncrease);
 
         if (isToIncrease)
         {
-            increaseDiffExpression.SetActive(true);
-            currentExpression = increaseDiffExpression;
             feedbackTexts = _feedbackData.IncreaseDiff;
             soundToPlay = _increaseDiffSound;
         }
         else
         {
-            decreaseDiffExpression.SetActive(true);
-            currentExpression = decreaseDiffExpression;
             feedbackTexts = _feedbackData.DecreaseDiff;
             soundToPlay = _decreaseDiffSound;
         }
 
-        soundFeedback.Invoke(soundToPlay, currentExpression);
-
-        dialogueBoxGameObject.SetActive(true);
+        soundFeedback.Invoke(soundToPlay);
 
         if (feedbackTexts != null && feedbackTexts.Count > 0)
         {
@@ -118,10 +122,9 @@ public class CarnyWiseDiffFeedback : UIDialog
         CancelInvoke(nameof(HideFeedback));
         Invoke(nameof(HideFeedback), displayDuration);
     }
+
     private  void HideFeedback()
-        {
-            dialogueBoxGameObject.SetActive(false);
-            increaseDiffExpression.SetActive(false);
-            decreaseDiffExpression.SetActive(false);
-        }
+    {
+        carnyUI.SetActive(false);
+    }
 }

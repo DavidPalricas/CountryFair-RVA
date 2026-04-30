@@ -85,10 +85,7 @@ public class SliderDisplay: EmotionDisplay
             return;
         }
 
-       
-
         StartAsNeutral();
-
     }
 
     
@@ -124,6 +121,8 @@ public class SliderDisplay: EmotionDisplay
     {   
        string categoryName = newCategory.ToString();
 
+       slider.gameObject.SetActive(true);
+
         if (!Enum.TryParse(categoryName.ToUpper(), out EMOJI_CATEGORY category))
         {
             Debug.LogError($"Invalid emoji category: {categoryName}");
@@ -156,6 +155,8 @@ public class SliderDisplay: EmotionDisplay
         slider.value = 0.5f;
         fillImage.color = neutralColor;
 
+        slider.gameObject.SetActive(false);
+
     }
 
     private void UpdateEmojiVisual()
@@ -178,7 +179,7 @@ public class SliderDisplay: EmotionDisplay
             return;
         }
 
-            handleImage.sprite = neutralEmoji;
+        handleImage.sprite = neutralEmoji;
         fillImage.color = neutralColor;
     }
 

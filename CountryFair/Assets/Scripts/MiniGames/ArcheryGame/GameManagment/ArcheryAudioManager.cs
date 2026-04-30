@@ -3,12 +3,8 @@ using FMODUnity;
 
 public class ArcheryAudioManager :MiniGameAudioManager
 {  
-
     [SerializeField]
     private EventReference balloonPopSound;
-
-    [SerializeField]
-    private EventReference cheerSound;
 
     [SerializeField]
     private EventReference arrowShotSound;
@@ -20,13 +16,6 @@ public class ArcheryAudioManager :MiniGameAudioManager
         if (balloonPopSound.IsNull)
         {
             Debug.LogError("Balloon pop sound EventReference is not assigned in ArcheryAudioManager.");
-
-            return;
-        }
-
-        if (cheerSound.IsNull)
-        {
-            Debug.LogError("Cheer sound EventReference is not assigned in ArcheryAudioManager.");
 
             return;
         }
@@ -49,24 +38,12 @@ public class ArcheryAudioManager :MiniGameAudioManager
 
         switch (soundEffect)
         {  
-            case GameSoundEffects.CARNYWISE_INCREASE_DIFF:
-                eventToPlay = carnyWiseIncreaseDiffSound;
-                break;
-
-             case GameSoundEffects.CARNYWISE_DECREASE_DIFF:
-                eventToPlay = carnyWiseDecreaseDiffSound;
-                break;
-    
            case GameSoundEffects.BUTTON_PRESSED:
                 eventToPlay = buttonPressedSound;
                 break;
 
            case GameSoundEffects.BALLOON_POP:
                 eventToPlay = balloonPopSound;
-                break;
-
-            case GameSoundEffects.CHEER_SOUND_EFFECT:
-                eventToPlay = cheerSound;
                 break;
 
             case GameSoundEffects.ARROW_SHOT:
@@ -79,5 +56,28 @@ public class ArcheryAudioManager :MiniGameAudioManager
         }
 
         RuntimeManager.PlayOneShotAttached(eventToPlay, target);
+    }
+
+
+    public override void PlaySoundEffect(GameSoundEffects soundEffect)
+    {
+        EventReference eventToPlay;
+
+        switch (soundEffect)
+        {  
+          case GameSoundEffects.CARNYWISE_INCREASE_DIFF:
+                eventToPlay = carnyWiseIncreaseDiffSound;
+                break;
+
+            case GameSoundEffects.CARNYWISE_DECREASE_DIFF:
+                eventToPlay = carnyWiseDecreaseDiffSound;
+                break;
+
+            default:
+                Debug.LogError("Invalid sound effect: " + soundEffect);
+                return;
+        }
+
+        RuntimeManager.PlayOneShot(eventToPlay);
     }
 }

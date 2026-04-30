@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using System.IO;
 using TMPro;
 
-public class UIDialog : DisplayInPlayerFront
+public class UIDialog : MonoBehaviour 
 {
     [Header("Dialogue Box")]
     [SerializeField]
@@ -17,9 +17,8 @@ public class UIDialog : DisplayInPlayerFront
     protected JSONData _data;
     protected string _jsonFileName;
 
-    protected override void Awake()
+    protected virtual void Awake()
     {   
-       base.Awake();
        SetJSONFileName();
 
        if (dialogueBoxGameObject == null || dialogueBoxText == null)
@@ -65,6 +64,7 @@ public class UIDialog : DisplayInPlayerFront
         else 
         {
             string filePath = Path.Combine(Application.streamingAssetsPath, "DialogFiles", _jsonFileName);
+            
             if (File.Exists(filePath))
             {
                 jsonContent = File.ReadAllText(filePath);
