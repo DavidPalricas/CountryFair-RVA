@@ -88,14 +88,6 @@ public class FrisbeeAudioManager : MiniGameAudioManager
 
         switch (soundEffect)
         {   
-            case GameSoundEffects.CARNYWISE_INCREASE_DIFF:
-                eventToPlay = carnyWiseIncreaseDiffSound;
-                break;
-
-                case GameSoundEffects.CARNYWISE_DECREASE_DIFF:
-                eventToPlay = carnyWiseDecreaseDiffSound;
-                break;
-
             case GameSoundEffects.BUTTON_PRESSED:
                 eventToPlay = buttonPressedSound;
                 break;
@@ -133,7 +125,15 @@ public class FrisbeeAudioManager : MiniGameAudioManager
         EventReference eventToPlay;
        
         switch (soundEffect)
-        {
+        {   
+            case GameSoundEffects.CARNYWISE_INCREASE_DIFF:
+                eventToPlay = carnyWiseIncreaseDiffSound;
+                break;
+
+            case GameSoundEffects.CARNYWISE_DECREASE_DIFF:
+                eventToPlay = carnyWiseDecreaseDiffSound;
+                break;
+
             case GameSoundEffects.POINT_SCORED:
                 eventToPlay = pointScoredSound;
                 break;
