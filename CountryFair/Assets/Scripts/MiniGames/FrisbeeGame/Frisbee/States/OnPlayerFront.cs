@@ -224,8 +224,6 @@ public class OnPlayerFront : FrisbeeState
     {   
         ResetTransform();
 
-        gameObject.SetActive(true);
-
         _rigidbody.useGravity = false;
         _rigidbody.isKinematic = false;
         _rigidbody.linearVelocity = Vector3.zero;

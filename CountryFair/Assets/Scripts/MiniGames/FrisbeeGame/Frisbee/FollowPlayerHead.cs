@@ -1,11 +1,29 @@
 using UnityEngine;
 
 [DefaultExecutionOrder(1000)]
-public class FollowPlayerHead : DisplayInPlayerFront
-{
-    protected override void Awake()
+public class FollowPlayerHead : MonoBehaviour
+{   
+    [SerializeField] 
+    private Transform centerEyeTransform;
+    
+    [Header("Positioning Settings")]
+    [SerializeField]
+     private float distanceFromPlayer = 2.0f; // Ajustado para valor realista
+    
+    [SerializeField] 
+    private float heightOffset = -0.5f;      // Ajustado para valor realista
+    
+    [SerializeField] 
+    private float horizontalOffset = 0f;
+    
+    private void Awake()
     {
-        base.Awake();
+           if (centerEyeTransform == null)
+        {
+            Debug.LogError("Center Eye Transform is not assigned in the inspector.");
+            return;
+        }
+
         transform.SetPositionAndRotation(CalculateBaseTarget(), Quaternion.identity);
     }
 
@@ -16,10 +34,8 @@ public class FollowPlayerHead : DisplayInPlayerFront
 
     private void HandlePosition()
     {
-        // Posição instantânea — sem lag. O ATW do Quest trata da suavidade visual.
         transform.position = CalculateBaseTarget();
     }
-
 
     private Vector3 CalculateBaseTarget()
     {

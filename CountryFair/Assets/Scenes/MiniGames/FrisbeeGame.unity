@@ -20372,6 +20372,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1312361772106625692}
     - target: {fileID: 8267223960734963794, guid: 316faa56be726824192d355461c86468, type: 3}
+      propertyPath: practiceElements
+      value: 
+      objectReference: {fileID: 1676481960}
+    - target: {fileID: 8267223960734963794, guid: 316faa56be726824192d355461c86468, type: 3}
       propertyPath: postTutorialElements
       value: 
       objectReference: {fileID: 476691671}
@@ -20766,7 +20770,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7724761647319537216, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
       propertyPath: changeDifficulty.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7724761647319537216, guid: 6f6ab0cc342376441891b286a09a552b, type: 3}
       propertyPath: changeDifficulty.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -21604,16 +21608,24 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerMissed.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 6
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerMissed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -21630,19 +21642,19 @@ PrefabInstance:
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 187110039}
+      objectReference: {fileID: 8229344247421322366}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 8229344247421322366}
+      objectReference: {fileID: 4786872874757885023}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 4786872874757885023}
+      objectReference: {fileID: 4335083379616336532}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 4335083379616336532}
+      objectReference: {fileID: 187110039}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerMissed.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: PlayerMissed
@@ -21653,14 +21665,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlayerScored
-      objectReference: {fileID: 0}
-    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
-      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: set_IsToChooseNewTarget
       objectReference: {fileID: 0}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayerScored
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: PlayerScored
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
       value: PlayerScored
       objectReference: {fileID: 0}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
@@ -21672,8 +21688,32 @@ PrefabInstance:
       value: CarnyWise, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GoToTarget, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: CarnyWise, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: DogIdle, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: ScoreAndStreakSystem, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: playerMissed.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529546117364615329, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
+      propertyPath: playerScored.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8893022311393291258, guid: 1edc10d79b4c65c4d94adfcb0e4cafa3, type: 3}
       propertyPath: m_Name
@@ -22146,6 +22186,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -166.86563
       objectReference: {fileID: 0}
+    - target: {fileID: 6158268702081495465, guid: 9331c9cb940cd224b9264874b2583091, type: 3}
+      propertyPath: frisbee
+      value: 
+      objectReference: {fileID: 7903971523121746712}
     - target: {fileID: 6158268702081495465, guid: 9331c9cb940cd224b9264874b2583091, type: 3}
       propertyPath: playerTransform
       value: 

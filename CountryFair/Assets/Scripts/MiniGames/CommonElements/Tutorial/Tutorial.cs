@@ -201,7 +201,7 @@ public class Tutorial : UIDialog
         dialogueBoxText.text = _tutorialData.Guide;
     }
 
-    private void Completed()
+    private void PractiseCompleted()
     {
         dialogueBoxText.text = _tutorialData.End;
 
@@ -217,7 +217,7 @@ public class Tutorial : UIDialog
 
         if (_currentTasksCompleted >= _numberOfTasks)
         {
-            Completed();
+            PractiseCompleted();
         }
     }
 }

@@ -1,10 +1,10 @@
 {
-    "Rules":["Neste jogo voce tem de lancar um frisbee\npara a area laranja a volta do cao\npara fazer pontos.\n\n\tPressione no Botao Para Continuar.",
-              "Voce pode lancar o frisbee para as outras\nareas laranjas, que o cao ira apanhar o frisbee.\n Mas nao ira marcar tantos pontos\n\n\tPressione no Botao Para Continuar.",
-              "Mas tenha em atencao a medida que vai progredindo,\n Estas areas podem girar, desaparecer ou ate os 2!\n\n\tPressione no Botao Para Continuar.",
+    "Rules":["Neste jogo, tem de lancar o frisbee\npara a area laranja a volta do cao\npara fazer pontos.\n\n\tPressione no Botao Para Continuar.",
+              "Pode lancar o frisbee para as outras\nareas laranjas, e o cao ira apanha-lo.\nMas nao ira marcar tantos pontos.\n\n\tPressione no Botao Para Continuar.",
+              "Mas tenha em atencao: a medida que vai progredindo,\nestas areas podem girar, desaparecer\nou as duas coisas em simultaneo!\n\n\tPressione no Botao Para Continuar.",
               "Quando estiver pronto para praticar o\nlancamento do frisbee,\n\n\t Pressione no Botao Para Continuar."],
     
-    "Guide": "Antes de chamar o cao para aqui,\nexperimente lancar o frisbee para esses alvos\nComo no video apresentado em cima.",
+    "Guide": "Antes de chamar o cao para aqui,\nexperimente lancar o frisbee para esses alvos,\ncomo no video apresentado em cima.",
 
-    "End": "Otimo trabalho! Agora voce este pronto para jogar\n com o cao! Voce ainda vai virar\n um jogador professional! Quando estiver pronto,\n\n\tPressione o botao para comecar o jogo."
+    "End": "Otimo trabalho! Agora esta pronto para jogar\ncom o cao! Ainda se vai tornar\nnum jogador profissional! Quando estiver pronto,\n\n\tPressione o botao para comecar o jogo."
 }

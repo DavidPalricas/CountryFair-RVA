@@ -19,6 +19,10 @@ public class GiveFrisbeeToPlayer : DogState
    /// </summary>
    [SerializeField]
     private GameObject frisbeeInDogMouth;
+
+    [SerializeField]
+    private GameObject frisbee;
+
     
     [Header("Events")]
     /// <summary>
@@ -49,6 +53,12 @@ public class GiveFrisbeeToPlayer : DogState
         {
             Debug.LogError("Frisbee reference not set in ChooseNewPosition state.");
 
+            return;
+        }
+
+        if (frisbee == null)
+        {
+            Debug.LogError("Frisbee reference not set in ChooseNewPosition state.");
             return;
         }
 
@@ -129,5 +139,6 @@ public class GiveFrisbeeToPlayer : DogState
         base.Exit();
 
         frisbeeInDogMouth.SetActive(false);
+        frisbee.SetActive(true);
     }
 }

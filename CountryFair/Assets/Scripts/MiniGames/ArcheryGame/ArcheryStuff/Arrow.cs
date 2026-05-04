@@ -74,16 +74,20 @@ public class Arrow : MonoBehaviour
                     playerScored.Invoke(scoreValue);
 
                     _crowd.Cheer();
+
+                    return;
                 }
-                else
-                {
-                    playerMissed.Invoke();
-                }
+               
+                playerMissed.Invoke();
+
+                return;   
             }
+
+            return;
         }
 
         // --- SE BATER NO CHÃO ---
-        if (col.gameObject.CompareTag("Ground"))
+        if (col.gameObject.CompareTag("Ground") || col.gameObject.CompareTag("OutOfBounds"))
         {
             playerMissed.Invoke();
             SetArrowToOrginalPosition();
