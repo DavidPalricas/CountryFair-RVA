@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
 
 public class ArcheryGameManager : MiniGameManager
 {   
@@ -33,6 +34,13 @@ public class ArcheryGameManager : MiniGameManager
     [Tooltip("Movement duration in highest difficulty (Smaller is faster). Ex: 1s" )]
     [SerializeField] 
     private float fastMoveDuration = 1.5f;
+
+
+    [Header("Color to Score Animation Settings")]
+    [SerializeField] 
+    private float punchScale = 1.2f;
+    [SerializeField] 
+    private float punchDuration = 0.5f;
 
     private Dictionary<GameObject, int> balloonTypesCount;
     private GameObject _balloonPrefabToScore;
@@ -239,17 +247,20 @@ public class ArcheryGameManager : MiniGameManager
         switch (colorToScore)
         {
             case "red": 
-                balloonColorToScoreText.text = "Cor para fazer pontos: Vermelho"; 
+                balloonColorToScoreText.text = "Vermelho"; 
+                balloonColorToScoreText.color = Color.red;
                 _balloonPrefabToScore = redBalloonPrefab; 
                 break;
 
             case "blue": 
-                balloonColorToScoreText.text = "Cor para fazer pontos: Azul"; 
+                balloonColorToScoreText.text = "Azul"; 
+                balloonColorToScoreText.color = Color.blue;
                 _balloonPrefabToScore = blueBalloonPrefab; 
                 break;
 
             case "yellow": 
-                balloonColorToScoreText.text = "Cor para fazer pontos: Amarelo"; 
+                balloonColorToScoreText.text = "Amarelo"; 
+                balloonColorToScoreText.color = Color.yellow;
                 _balloonPrefabToScore = yellowBalloonPrefab; 
                 break;
 
@@ -257,6 +268,13 @@ public class ArcheryGameManager : MiniGameManager
                 Debug.LogError("Invalid balloon color selected for scoring.");
                 return;
         }
+
+        balloonColorToScoreText.transform.DOKill();
+
+        
+        balloonColorToScoreText.transform.DOPunchScale(Vector3.one * punchScale, punchDuration, 5, 0.5f);
+
+
         PlayerPrefs.SetString("BalloonColorToScore", colorToScore); 
     }
 
