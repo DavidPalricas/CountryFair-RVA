@@ -3,36 +3,47 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Manages the Frisbee mini-game: spawns score areas around the player, applies DDA difficulty settings
+/// for dog distance, target count, movement ratio, and visibility ratio.
+/// Inherits target lifecycle from <see cref="MiniGameManager"/>.
+/// </summary>
 public class FrisbeeGameManager : MiniGameManager
-{ 
+{
     [Header("Dog Settings")]
-   
+    /// <summary>Distance in meters added to the baseline dog distance per difficulty level.</summary>
     [SerializeField]
-    private float distanceIncrement = 2.5f;   
-    
+    private float distanceIncrement = 2.5f;
+
+    /// <summary>Maximum dog distance cap in meters, regardless of difficulty level.</summary>
     [SerializeField]
-    private float maxDogDistance = 20f;       
+    private float maxDogDistance = 20f;
 
     [Header("Complexity Curves")]
+    /// <summary>AnimationCurve controlling the fraction of score areas that move at a given difficulty saturation.</summary>
     [SerializeField]
-    private AnimationCurve movingRatioCurve;   
+    private AnimationCurve movingRatioCurve;
+    /// <summary>AnimationCurve controlling the fraction of score areas that blink at a given difficulty saturation.</summary>
     [SerializeField]
-    private AnimationCurve visibilityRatioCurve; 
+    private AnimationCurve visibilityRatioCurve;
 
     [Header("Game Specific References")]
-    [SerializeField] 
+    /// <summary>Prefab instantiated for each score area target.</summary>
+    [SerializeField]
     private GameObject scoreAreaPrefab;
-    [SerializeField] 
+    /// <summary>Collider defining the valid spawn region for score areas around the player.</summary>
+    [SerializeField]
     private Collider dogAreaCollider;
 
+    /// <summary>Collider marking the elevated dog-score area; score area spawns are excluded from this zone.</summary>
     [SerializeField]
     private Collider dogScoreAreaCollider;
 
+    /// <summary>Player transform used to calculate dog distance and score-area placement relative to the player.</summary>
     [SerializeField]
-    // Estado Interno
     private Transform playerTransform;
 
-
+    /// <summary>Fired when difficulty changes (after the first level), signaling the dog AI to reposition.</summary>
     [SerializeField]
     private UnityEvent difficultyHasChanged;
     
@@ -200,11 +211,19 @@ public class FrisbeeGameManager : MiniGameManager
     }
 
 
+    /// <summary>
+    /// Spawns or removes score areas to match the current desired count for the active difficulty level.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo evento frisbeeScored do Dog AI quando uma nova ronda começa.</remarks>
     public void SpawnScoreAreas()
     {
         SyncTargets(_currentDesiredCount);
     }
 
+    /// <summary>
+    /// Destroys all active score areas and clears the spawned-targets list.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo evento difficultyHasChanged para limpar áreas antes de um respawn.</remarks>
     public void RemoveScoreAreas()
     {
        if (_spawnedTargets.Count > 0)

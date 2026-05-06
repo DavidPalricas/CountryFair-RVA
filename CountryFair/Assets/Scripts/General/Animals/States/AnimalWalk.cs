@@ -1,11 +1,16 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Animal state that navigates to a random nearby NavMesh position and reduces boredom.
+/// Uses a <see cref="NavMeshAgent"/> with a randomized avoidance priority so herded animals don't all cluster.
+/// Transitions to the next state once the destination is reached.
+/// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-
 public class AnimalWalk: AnimalState
-{   
+{
     [Header("Recovery Stats Rates")]
+    /// <summary>Amount boredom decreases each time the animal enters the walk state (0–1).</summary>
     [SerializeField]
     [Range(0f, 1f)]
     private float boredomRecoveryRate = 0.01f;

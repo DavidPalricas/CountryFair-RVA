@@ -3,29 +3,40 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
+/// <summary>
+/// Drives the mini-game tutorial flow: presents rule slides from JSON, launches a practice phase,
+/// and fires <c>tutorialCompleted</c> when the player is ready to play for real.
+/// Skips itself immediately if <see cref="GameManager"/> reports the tutorial was already completed.
+/// </summary>
 public class Tutorial : UIDialog
 {
+    /// <summary>Fired when the tutorial ends — wired to <see cref="MiniGameManager.TutorialCompleted"/>.</summary>
     [SerializeField]
     private UnityEvent tutorialCompleted;
 
     [Header("Practise Elements")]
+    /// <summary>Video screen container shown during the practice phase.</summary>
     [SerializeField]
     private GameObject videoScreen;
-   
-   [SerializeField]
+
+    /// <summary>Video player object shown on the screen during practice.</summary>
+    [SerializeField]
     private GameObject  miniGameVideo;
 
+    /// <summary>Mini-game prop (bow or frisbee) revealed at the start of the practice phase.</summary>
     [SerializeField]
     private GameObject miniGameProp;
 
-
+    /// <summary>Root container that holds all interactive practice score areas.</summary>
     [SerializeField]
     private GameObject practiceElements;
 
     [Header("Game Elements")]
+    /// <summary>Button the player presses to advance through rule slides and to confirm practice completion.</summary>
     [SerializeField]
     private GameObject tutorialButton;
 
+    /// <summary>UI elements activated after the tutorial completes (e.g. score display).</summary>
     [SerializeField]
     private GameObject postTutorialElements;
 
@@ -143,6 +154,10 @@ public class Tutorial : UIDialog
         _jsonFileName = _isFromFrisbeGame ? "frisbee_tutorial.json" : "archery_tutorial.json";
     }
 
+    /// <summary>
+    /// Advances to the next rule slide; transitions to the "ready to play" confirmation once practice ends.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo botão de avanço no ecrã de tutorial.</remarks>
     public override void NextStep()
     {
         if (_tutorialData == null){
@@ -158,6 +173,11 @@ public class Tutorial : UIDialog
         ShowGameRule();
     }
 
+    /// <summary>
+    /// Activates the mini-game prop and post-tutorial UI, fires <c>tutorialCompleted</c>, marks the tutorial
+    /// complete in <see cref="GameManager"/>, and destroys this tutorial object.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo botão "Estou Pronto" no final do tutorial.</remarks>
     public void ReadyToPlay()
     {
         miniGameProp.SetActive(true);
@@ -211,6 +231,10 @@ public class Tutorial : UIDialog
         _finishedPracticing = true;
     }
 
+    /// <summary>
+    /// Records one completed practice task; starts the end-of-practice dialogue when all tasks are done.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelos eventos taskCompleted das score areas de prática.</remarks>
     public void TaskCompleted()
     {
         _currentTasksCompleted++;

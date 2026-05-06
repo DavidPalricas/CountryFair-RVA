@@ -1,16 +1,23 @@
 using UnityEngine;
 
+/// <summary>
+/// Animal state that plays the eating animation and reduces hunger.
+/// Runs for a random duration, then calls <see cref="AnimalUtility.DecideNextAction"/> to choose the next state.
+/// </summary>
 public class AnimalEat: AnimalState
-{   
+{
     [Header("Recovery Stats Rates")]
+    /// <summary>Amount hunger decreases each time the animal enters the eating state (0–1).</summary>
     [SerializeField]
     [Range(0f, 1f)]
     private float hungerRecoveryRate = 0.1f;
-    
+
     [Header("Eating Time Settings")]
+    /// <summary>Minimum eating duration in seconds.</summary>
     [SerializeField]
     private float minTimeToEat = 30f;
 
+    /// <summary>Maximum eating duration in seconds.</summary>
     [SerializeField]
     private float maxTimeToEat = 60f;
 

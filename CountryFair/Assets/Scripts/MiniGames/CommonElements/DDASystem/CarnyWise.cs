@@ -3,22 +3,38 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Dynamic Difficulty Adjustment (DDA) system that monitors player performance and
+/// fires difficulty change events based on precision thresholds and consecutive-attempt counters.
+/// </summary>
+/// <remarks>
+/// Precision per task = 1 / attempts_until_score. Three consecutive high-precision tasks trigger
+/// an increase; three consecutive low-precision tasks trigger a decrease. If the player misses
+/// <see cref="failingConsecutiveThreshold"/> times in a row, difficulty drops immediately.
+/// At session end, <see cref="SessionGoalReached"/> marks the session complete in <see cref="GameManager"/>
+/// and returns to the hub scene.
+/// </remarks>
 [RequireComponent(typeof(CarnyWiseDiffFeedback))]
 public class CarnyWise : MonoBehaviour
 {
+    /// <summary>Wired in Inspector to <see cref="MiniGameManager.ChangeDifficulty"/>.</summary>
     [SerializeField]
     private UnityEvent <bool> changeDifficulty;
 
-    [Header("Adaptation Configuration")] 
+    [Header("Adaptation Configuration")]
+    /// <summary>Precision ratio at or above which a task counts as excelling (triggers potential increase).</summary>
     [SerializeField, Range(0f, 1f)]
-    private float precisionThresholdToIncreaseDiff = 0.7f; 
+    private float precisionThresholdToIncreaseDiff = 0.7f;
 
+    /// <summary>Precision ratio at or below which a task counts as struggling (triggers potential decrease).</summary>
     [SerializeField, Range(0f, 1f)]
-    private float precisionThresholdToDecreaseDiff = 0.3f; 
+    private float precisionThresholdToDecreaseDiff = 0.3f;
 
+    /// <summary>Number of consecutive excelling or struggling tasks required to change difficulty.</summary>
     [SerializeField]
-    private int thresholdToChangeDiff = 3; 
+    private int thresholdToChangeDiff = 3;
 
+    /// <summary>Number of consecutive misses that immediately trigger a difficulty decrease.</summary>
     [SerializeField]
     private int failingConsecutiveThreshold = 4;
 
@@ -69,6 +85,10 @@ public class CarnyWise : MonoBehaviour
         Debug.LogError("Invalid scene"); 
     }
 
+    /// <summary>
+    /// Starts the per-task completion timer. Safe to call multiple times; only the first call sets the start time.
+    /// </summary>
+    /// <remarks>Invocado via Inspector quando o jogador começa uma tarefa (ex: ao ativar uma score area).</remarks>
     public void StartTaskTimer()
     {   // If the timer already started, do not reset
         if (_taskStartTime <= 0f)
@@ -77,6 +97,10 @@ public class CarnyWise : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Records a miss attempt. If consecutive misses exceed <see cref="failingConsecutiveThreshold"/>, immediately decreases difficulty.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo evento playerMissed do mini-jogo.</remarks>
     public void PlayerMissed()
     {
         _currentAttemptsForTask++;
@@ -89,8 +113,12 @@ public class CarnyWise : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Records a successful score, calculates task precision, and evaluates whether to change difficulty.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo evento playerScored do mini-jogo.</remarks>
     public void PlayerScored()
-    {   
+    {
         _currentAttemptsForTask++;
 
         // Debug.Log($"Player Scored! Current Attempts: {_currentAttemptsForTask}");
@@ -198,6 +226,11 @@ public class CarnyWise : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Called when the player reaches the session score goal.
+    /// Flags the session as complete in <see cref="GameManager"/> and loads the hub scene after a short delay.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo evento sessionGoalReached do <see cref="ScoreAndStreakSystem"/>.</remarks>
     public void SessionGoalReached()
     {
        // SaveSessionData();

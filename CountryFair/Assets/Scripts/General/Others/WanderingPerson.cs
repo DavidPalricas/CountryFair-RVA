@@ -2,12 +2,18 @@
 using UnityEngine.AI;
 using UnityEngine;
 
+/// <summary>
+/// Makes an NPC wander the NavMesh by repeatedly picking random destinations within a fixed radius.
+/// Used for ambient crowd NPCs in the CountryFair hub world.
+/// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
 public class WanderingPerson: MonoBehaviour
-{   
+{
+    /// <summary>Radius in world units within which random walk destinations are sampled.</summary>
     [SerializeField]
     private float walkRadius = 10f;
-    
+
+    /// <summary>Animator component; avoidance priority is randomized on Awake to prevent agents from clustering.</summary>
     [SerializeField]
     private Animator animator;
 

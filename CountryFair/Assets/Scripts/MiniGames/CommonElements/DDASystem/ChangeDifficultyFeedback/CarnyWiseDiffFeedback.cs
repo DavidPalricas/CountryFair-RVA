@@ -2,9 +2,15 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
+/// <summary>
+/// Displays a Carny Wise feedback message and expression when the difficulty changes.
+/// Loads feedback lines from <c>change_difficulty.json</c> via <see cref="UIDialog"/>.
+/// Requests that arrive before the JSON loads are queued and replayed after loading completes.
+/// </summary>
 public class CarnyWiseDiffFeedback : UIDialog
-{    
+{
     [Header("Display Configuration")]
+    /// <summary>Duration in seconds the feedback panel stays visible before auto-hiding.</summary>
     [SerializeField]
     private float displayDuration = 6f;
 
@@ -78,8 +84,13 @@ public class CarnyWiseDiffFeedback : UIDialog
     }
 
 
+    /// <summary>
+    /// Shows the Carny Wise feedback panel with a random line and the appropriate facial expression.
+    /// If JSON data is not yet loaded, queues the request for replay once loading completes.
+    /// </summary>
+    /// <param name="isToIncrease">True to show an encouraging increase-difficulty message; false for a supportive decrease message.</param>
     public void ShowNewDiffFeedback(bool isToIncrease)
-    {   
+    {
         if (_feedbackData == null)
         {
             Debug.LogWarning($"[WARNING] Request received before load finished. Storing in queue... (Increase: {isToIncrease})");

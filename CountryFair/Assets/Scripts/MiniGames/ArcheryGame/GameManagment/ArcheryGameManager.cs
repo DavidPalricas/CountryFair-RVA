@@ -6,40 +6,55 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
 
+/// <summary>
+/// Manages the Archery mini-game: spawns colored balloons inside the spawn area, applies DDA difficulty
+/// curves for movement and transparency ratios, and randomly selects the scoring balloon color each round.
+/// Inherits target lifecycle from <see cref="MiniGameManager"/>.
+/// </summary>
 public class ArcheryGameManager : MiniGameManager
-{   
+{
     [Header("Game Specific References")]
+    /// <summary>TMP text displaying the balloon color that scores; its text and color are set to match the target balloon.</summary>
     [SerializeField] private TextMeshProUGUI balloonColorToScoreText;
+    /// <summary>Collider defining the 3D volume within which balloons are spawned.</summary>
     [SerializeField] private Collider balloonSpawnArea;
 
     [Header("Balloons Prefabs")]
+    /// <summary>Prefab for a blue balloon.</summary>
     [SerializeField]
      private GameObject blueBalloonPrefab;
-    [SerializeField] 
+    /// <summary>Prefab for a red balloon.</summary>
+    [SerializeField]
     private GameObject redBalloonPrefab;
-    [SerializeField] 
+    /// <summary>Prefab for a yellow balloon.</summary>
+    [SerializeField]
     private GameObject yellowBalloonPrefab;
 
     [Header("Complexity Curves")]
-    [SerializeField] 
+    /// <summary>AnimationCurve controlling the fraction of balloons that move at a given difficulty saturation.</summary>
+    [SerializeField]
     private AnimationCurve movingRatioCurve;
-    [SerializeField] 
+    /// <summary>AnimationCurve controlling the fraction of balloons that become transparent at a given difficulty saturation.</summary>
+    [SerializeField]
     private AnimationCurve transparencyRatioCurve;
 
     [Header("Speed Progression")]
+    /// <summary>Balloon movement duration in seconds at the easiest difficulty — larger value means slower movement.</summary>
     [Tooltip("Movement duration in lowest difficulty (Bigger is slower). Ex: 4s")]
-    [SerializeField] 
+    [SerializeField]
     private float slowMoveDuration = 6.0f;
 
+    /// <summary>Balloon movement duration in seconds at the hardest difficulty — smaller value means faster movement.</summary>
     [Tooltip("Movement duration in highest difficulty (Smaller is faster). Ex: 1s" )]
-    [SerializeField] 
+    [SerializeField]
     private float fastMoveDuration = 1.5f;
 
-
     [Header("Color to Score Animation Settings")]
-    [SerializeField] 
+    /// <summary>Punch scale multiplier applied to the balloon-color text on each color-change animation.</summary>
+    [SerializeField]
     private float punchScale = 1.2f;
-    [SerializeField] 
+    /// <summary>Duration in seconds of the DOPunchScale animation on the balloon-color text.</summary>
+    [SerializeField]
     private float punchDuration = 0.5f;
 
     private Dictionary<GameObject, int> balloonTypesCount;

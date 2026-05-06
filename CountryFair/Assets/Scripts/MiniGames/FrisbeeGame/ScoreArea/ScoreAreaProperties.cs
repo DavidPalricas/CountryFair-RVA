@@ -2,28 +2,38 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 
+/// <summary>
+/// Score area target in the Frisbee mini-game. Supports three area types: NORMAL (can move and blink,
+/// score multipliers apply), DOG (fixed elevated area worth 8 points), and TUTORIAL (fires task-complete event).
+/// Movement uses a circular DOTween path; visibility uses a timed blink sequence.
+/// </summary>
 [RequireComponent(typeof(Renderer))]
 [RequireComponent(typeof(Collider))]
 public class ScoreAreaProperties : MonoBehaviour
-{   
+{
+    /// <summary>Determines behavior and base score value; only NORMAL areas support movement/blinking modifiers.</summary>
     [SerializeField]
     private AreaType areaType = AreaType.NORMAL;
 
+    /// <summary>Fired in tutorial mode when the player scores here — notifies <see cref="Tutorial"/> that a task completed.</summary>
     [SerializeField]
     private UnityEvent tutorialTaskCompleted;
 
-
     [Header("Movement Settings")]
-    [SerializeField] 
+    /// <summary>Circular orbit speed expressed as seconds per full revolution.</summary>
+    [SerializeField]
     private float moveSpeed = 2f;
-    [SerializeField] 
+    /// <summary>Radius of the circular orbit path.</summary>
+    [SerializeField]
     private float radius = 0.5f;
 
     [Header("Visibility Settings")]
-    [SerializeField] 
-    private float timeVisible = 3f;  
-    [SerializeField] 
-    private float timeInvisible = 2f; 
+    /// <summary>Time in seconds the area stays visible during each blink cycle.</summary>
+    [SerializeField]
+    private float timeVisible = 3f;
+    /// <summary>Time in seconds the area stays invisible during each blink cycle.</summary>
+    [SerializeField]
+    private float timeInvisible = 2f;
 
     private Vector3 _initialPosition = Vector3.zero;
     private Renderer _renderer;
@@ -69,8 +79,13 @@ public class ScoreAreaProperties : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts or stops the circular orbit tween on NORMAL areas. Moving areas double their score value.
+    /// Has no effect on DOG or TUTORIAL area types.
+    /// </summary>
+    /// <param name="isToMove">True to begin orbiting; false to return to the initial position.</param>
     public void AdjustMovement(bool isToMove)
-    {   
+    {
         if (areaType != AreaType.NORMAL)
         {
             Debug.LogWarning("Movement adjustment is only applicable for NORMAL area type.");
@@ -86,6 +101,11 @@ public class ScoreAreaProperties : MonoBehaviour
         StopMoving();
     }
 
+    /// <summary>
+    /// Starts or stops the periodic blink sequence on NORMAL areas. Blinking areas triple their score value.
+    /// Has no effect on DOG or TUTORIAL area types.
+    /// </summary>
+    /// <param name="canChangeVisibility">True to start blinking; false to restore permanent visibility.</param>
     public void AdjustVisibility(bool canChangeVisibility)
     {  if (areaType != AreaType.NORMAL)
         {
@@ -184,6 +204,13 @@ public class ScoreAreaProperties : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when the frisbee enters this score area.
+    /// TUTORIAL areas fire <c>tutorialTaskCompleted</c> and self-destroy.
+    /// NORMAL areas delegate destruction to <see cref="FrisbeeGameManager.DestroyTarget"/>.
+    /// DOG areas simply deactivate themselves.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo evento playerScored da ScoreArea ao detectar o frisbee.</remarks>
     public void OnPlayerScore(){
         if (areaType == AreaType.TUTORIAL)
         {

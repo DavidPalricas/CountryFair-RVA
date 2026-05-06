@@ -2,6 +2,11 @@ using UnityEngine;
 using Unity.Netcode;
 using System.Linq;
 
+/// <summary>
+/// Abstract base class for networked emotion display components.
+/// Defines the <see cref="_messageSeparator"/> convention and the
+/// <see cref="ProcessServerString"/> contract used by <c>ServerListener</c> to push server-sent emotion updates.
+/// </summary>
 public abstract class EmotionDisplay: NetworkBehaviour
 {
     protected bool _isUpdatingFromNetwork = false;

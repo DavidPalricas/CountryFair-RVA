@@ -5,12 +5,24 @@ using Newtonsoft.Json;
 using System.IO;
 using TMPro;
 
-public class UIDialog : MonoBehaviour 
+/// <summary>
+/// Abstract base class for all in-game dialogue UIs.
+/// Loads a JSON file from <c>StreamingAssets/DialogFiles/</c> at runtime and drives a step-by-step dialogue flow.
+/// Uses <see cref="UnityWebRequest"/> on Android (required for Quest StreamingAssets) and
+/// <see cref="System.IO.File"/> on PC.
+/// </summary>
+/// <remarks>
+/// Subclasses must override <see cref="SetJSONFileName"/>, <see cref="GetJSONDataType"/>,
+/// <see cref="OnDataLoaded"/>, and <see cref="NextStep"/> to implement specific dialogue behaviour.
+/// </remarks>
+public class UIDialog : MonoBehaviour
 {
     [Header("Dialogue Box")]
+    /// <summary>Root GameObject of the dialogue bubble; shown/hidden by subclass logic.</summary>
     [SerializeField]
     protected GameObject dialogueBoxGameObject;
 
+    /// <summary>Text component inside the dialogue bubble where lines are displayed.</summary>
     [SerializeField]
     protected TextMeshProUGUI dialogueBoxText;
 

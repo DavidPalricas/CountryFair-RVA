@@ -1,76 +1,97 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Implements hand-tracking bow mechanics for the Archery mini-game.
+/// Detects pinch gestures (or right-controller trigger as fallback) to grab, pull, and release the arrow;
+/// deforms the bow string via a three-point <see cref="LineRenderer"/>; and shows a parabolic trajectory
+/// preview while the string is drawn back.
+/// </summary>
 [ExecuteAlways]
 public class BowHandTracking : MonoBehaviour
-{   
-
+{
+    /// <summary>Fired when the player first closes their hand on the string — used to start the CarnyWise task timer.</summary>
     [SerializeField]
     private UnityEvent playerStartedPulling;
 
     [Header("References")]
+    /// <summary>Root transform of the bow used as the reference frame for pull-distance calculations.</summary>
     [SerializeField]
-    private Transform bowRoot;  
+    private Transform bowRoot;
 
+    /// <summary>Bow mesh renderer source for reading and writing the bow material color during aim.</summary>
     [SerializeField]
-    private Transform bowModel;                
+    private Transform bowModel;
 
-    [SerializeField]   
+    /// <summary>Arrow component managed by this bow.</summary>
+    [SerializeField]
     private Arrow arrow;
 
+    /// <summary>Trajectory visualizer shown when <see cref="Arrow.readyToLaunch"/> is true.</summary>
     [SerializeField]
     private TrajectoryLine trajectoryLine;
 
     [Header("Right Hand Override")]
+    /// <summary>OVRHand for the right (pulling) hand; used for finger pinch strength queries when hand tracking is active.</summary>
     [SerializeField]
-    private OVRHand pullingHand;    
-    
-               // opcional (se existir hand tracking)
-         // mão OU controlador (fallback automático)
+    private OVRHand pullingHand;
 
     [Header("Line Renderer / String")]
+    /// <summary>LineRenderer with three points (top, mid, bottom) that deforms as the string is pulled back.</summary>
     [SerializeField]
     private LineRenderer bowString;
 
+    /// <summary>Dynamically repositioned midpoint of the string that follows the pulling hand.</summary>
     [SerializeField]
     private Transform stringMidPoint;
 
+    /// <summary>Local-space anchor for the top of the bow string.</summary>
     [SerializeField]
     private Vector3 topLocalPos = new (0f, 0.15f, 0f);
 
+    /// <summary>Local-space anchor for the bottom of the bow string.</summary>
     [SerializeField]
     private Vector3 bottomLocalPos = new (0f, -0.15f, 0f);
 
     [Header("Pull Settings")]
+    /// <summary>Maximum hand-backward distance mapped to a pull value of 1.0.</summary>
     [SerializeField]
     private float maxPullDistance = 0.35f;
-    
+
+    /// <summary>Maximum world-space backward offset of the string midpoint at full pull.</summary>
     [SerializeField]
     private float maxStringBackward = 0.25f;
 
+    /// <summary>Exponential smoothing factor (0–1) for the pull value.</summary>
     [Range(0f, 1f)]
-     [SerializeField] 
+     [SerializeField]
      private float pullSmooth = 0.2f;
 
     [Header("Force")]
+    /// <summary>Minimum launch force applied at zero pull.</summary>
     [SerializeField]
     private float minForce = 5f;
+    /// <summary>Maximum launch force applied at full pull.</summary>
     [SerializeField]
     private float maxForce = 60f;
 
     [Header("Finger Detection")]
+    /// <summary>Pinch strength above which the hand is considered closed (grabbing).</summary>
     [SerializeField]
     private float closeThreshold = 0.25f;
+    /// <summary>Pinch strength below which the hand is considered open (releasing).</summary>
     [SerializeField]
     private float openThreshold = 0.10f;
 
-
     [Header("Arrow Grab Detection")]
+    /// <summary>World-space point on the bow that the hand must be near to initiate pulling.</summary>
     [SerializeField]
-    private Transform arrowGrabPoint;     // ponto que a mão tem de tocar
+    private Transform arrowGrabPoint;
+    /// <summary>Radius around <see cref="arrowGrabPoint"/> within which the hand counts as grabbing.</summary>
     [SerializeField]
-    private float grabRadius = 0.05f;     // raio da zona de deteção
+    private float grabRadius = 0.05f;
 
+    /// <summary>Fired on arrow release with the shot sound effect and the bow GameObject as the spatial audio source.</summary>
     public UnityEvent<AudioManager.GameSoundEffects, GameObject> arrowShot;
     
 

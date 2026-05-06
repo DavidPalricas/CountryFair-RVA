@@ -1,14 +1,19 @@
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// Archery-specific cheat code handler. Extends <see cref="MiniGameCheatCodes"/> with miss/score
+/// cheats that operate on the <see cref="Arrow"/> component — launching the arrow with zero force
+/// (miss) or teleporting it onto the correct balloon (score).
+/// </summary>
 public class ArcheryCheatCodes : MiniGameCheatCodes
-{   
+{
     [Header("Arrow Dependencies")]
-
+    /// <summary>Transform used to reposition the arrow during the score cheat.</summary>
     [SerializeField]
     private Transform arrowTransform = null;
 
-
+    /// <summary>Arrow component used to trigger launches via cheat commands.</summary>
     [SerializeField]
     private Arrow arrowComponent = null;
 

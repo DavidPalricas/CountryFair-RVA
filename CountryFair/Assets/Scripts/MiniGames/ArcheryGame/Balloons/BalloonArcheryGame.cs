@@ -3,12 +3,19 @@ using UnityEngine.Events;
 using DG.Tweening;
 
 
+/// <summary>
+/// Individual archery-game balloon target. Manages looping movement (DOTween yoyo), periodic transparency
+/// (fade-in/fade-out cycle with collider toggling), score-value multipliers, pop effects, and integration
+/// with <see cref="ArcheryGameManager"/> for target lifecycle management.
+/// Score value is multiplied by 2 when moving and by 3 when transparent.
+/// </summary>
 [RequireComponent(typeof(Renderer))]
 [RequireComponent(typeof(Collider))]
 public class BalloonArcheryGame : MonoBehaviour
 {
     public enum Colors { RED, BLUE, YELLOW }
 
+    /// <summary>The prefab this balloon was instantiated from; stored for lifecycle management in <see cref="ArcheryGameManager"/>.</summary>
     public GameObject OriginalPrefab { get; set; }
 
     [SerializeField] private Colors color = Colors.RED;
@@ -108,6 +115,10 @@ public class BalloonArcheryGame : MonoBehaviour
         }
     }
  
+    /// <summary>
+    /// Starts or stops the looping movement tween. Moving balloons award double score points.
+    /// </summary>
+    /// <param name="shouldMove">True to begin movement; false to return to the initial spawn position.</param>
     public void AdjustMovement(bool shouldMove)
     {
         if (shouldMove)
@@ -121,6 +132,11 @@ public class BalloonArcheryGame : MonoBehaviour
         StopMovement();
     }
 
+    /// <summary>
+    /// Starts or stops the periodic fade-in/fade-out cycle. Transparent balloons award triple score points.
+    /// The collider is disabled during the invisible phase so the arrow cannot hit them.
+    /// </summary>
+    /// <param name="shouldFade">True to start blinking; false to restore full opacity.</param>
     public void AdjustTransparency(bool shouldFade)
     {
         if (shouldFade)
@@ -225,6 +241,11 @@ public class BalloonArcheryGame : MonoBehaviour
 
     // --- LÓGICA DE JOGO ---
 
+    /// <summary>
+    /// Kills all running tweens, spawns the pop particle effect tinted in the balloon color, plays the pop sound,
+    /// and delegates destruction to <see cref="ArcheryGameManager.DestroyTarget"/>.
+    /// Tutorial balloons fire <c>taskCompleted</c> instead.
+    /// </summary>
     public void Pop()
     {
         // Mata todos os tweens deste objeto específico
@@ -255,19 +276,28 @@ public class BalloonArcheryGame : MonoBehaviour
         _archeryGameManager.DestroyTarget(transform.parent.gameObject, OriginalPrefab);
     }
 
+    /// <summary>
+    /// Returns the accumulated score value if this balloon's color matches the current scoring color
+    /// (<c>PlayerPrefs "BalloonColorToScore"</c>), or 0 otherwise.
+    /// </summary>
     public int GetScoreValue()
-    {   
+    {
         string colorToScore = PlayerPrefs.GetString("BalloonColorToScore", "red").ToLower();
 
         return _colorName == colorToScore ? _scoreValue : 0;
     }
 
+    /// <summary>Returns the lowercase color name of this balloon (e.g. <c>"red"</c>, <c>"blue"</c>, <c>"yellow"</c>).</summary>
     public string GetBalloonColorName()
     {
         return _colorName;
     }
 
 
+    /// <summary>
+    /// Updates the movement tween duration. If the balloon is currently moving, restarts the tween with the new duration.
+    /// </summary>
+    /// <param name="duration">New movement cycle duration in seconds.</param>
     public void SetMoveDuration(float duration)
     {
         moveDuration = duration;

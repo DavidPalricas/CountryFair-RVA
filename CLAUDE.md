@@ -41,7 +41,7 @@ CountryFair/
 │   │   │   ├── DataManagment/        # DataFileManager, SessionData, MiniGameData (JSON structure)
 │   │   │   ├── Animals/              # Animal AI system (AnimalUtility, AnimalState, AnimalWalk, AnimalEat, AnimalIdle)
 │   │   │   ├── Balloons/             # BalloonSpawner, PopBalloon
-│   │   │   ├── DisplayInPlayerFront/ # UI positioning in front of player (VR)
+│   │   │   ├── DisplayInPlayerFront/ # (folder kept, DisplayInPlayerFront.cs removed)
 │   │   │   ├── Others/               # Utility behaviors (WanderingPerson, AnimatableState, TextAnim, ButtonPressed)
 │   │   │   └── UIDialog/             # JSON-driven dialogue system base class
 │   │   ├── CountryFair/              # Hub world (central fair area)
@@ -64,7 +64,7 @@ CountryFair/
 │   │   │   └── FrisbeeGame/          # Frisbee mini-game module
 │   │   │       ├── GameManagment/    # FrisbeeGameManager, FrisbeeAudioManager, FrisbeeCheatCodes
 │   │   │       ├── Dog/              # Dog AI (DogState base, GoToTarget, DogIdle, Jump, CatchFrisbee, GiveFrisbeeToPlayer)
-│   │   │       ├── Frisbee/          # Physics (FrisbeeTrajectory, FrisbeeState base, Landed, OnPlayerFront, OnMovement)
+│   │   │       ├── Frisbee/          # Physics (FrisbeeTrajectory, FrisbeeState base, Landed, OnPlayerFront, OnMovement, FollowPlayerHead)
 │   │   │       └── ScoreArea/        # Scoring zones (ScoreAreaProperties, ScoreAreaAnimations)
 │   │   └── Utils/                    # Core utilities
 │   │       ├── FSM/                  # Finite State Machine (FSM, State, AnimatableState, Transition)
@@ -268,6 +268,16 @@ CarnyWise (in CommonElements/DDASystem/)
 
 ---
 
+### 6b. Balloon Color Indicator (Archery)
+
+**Location:** `MiniGames/ArcheryGame/GameManagment/ArcheryGameManager.cs`
+
+The UI text indicating which balloon color scores points shows only the color name (e.g. "Vermelho") with its text color set to match the balloon color. On each update a DOTween `DOPunchScale` animation plays on the text to draw attention.
+
+**Miss Conditions (`Arrow.cs`):** An arrow triggers `playerMissed` when hitting objects tagged `Ground` **or** `OutOfBounds`.
+
+---
+
 ### 7. Hand Tracking (Archery)
 
 **Location:** `MiniGames/ArcheryGame/ArcheryStuff/BowHandTracking.cs`
@@ -310,6 +320,8 @@ _shootForce = Mathf.Lerp(minForce (5f), maxForce (60f), _currentPull);
 - Distance from player scales with difficulty level
 - Random angle in 180° arc in front of player
 - NavMesh validation with recursive retry (see optimization doc for issues)
+
+**Frisbee Activation Flow:** `GiveFrisbeeToPlayer.Exit()` calls `frisbee.SetActive(true)` to re-enable the frisbee. `OnPlayerFront` no longer calls `SetActive(true)` itself — activation is exclusively managed by the dog state on handoff.
 
 ---
 
@@ -412,9 +424,8 @@ Player Action → CarnyWise.PlayerScored() / PlayerMissed()
 | Component | Purpose |
 |-----------|---------|
 | `FoveatedRenderingController.cs` | Sets OVRManager.foveatedRenderingLevel |
-| `DisplayInPlayerFront.cs` | Positions UI in front of player eyes |
+| `FollowPlayerHead.cs` | Dynamically tracks UI in front of player eyes every `LateUpdate` (replaces the deleted static `DisplayInPlayerFront.cs`). Located in `FrisbeeGame/Frisbee/`. |
 | `BowHandTracking.cs` | Hand pinch detection, controller fallback |
-| `FollowPlayerHead.cs` | Billboard objects towards player |
 
 ---
 
@@ -454,4 +465,12 @@ public static GameManager GetInstance() {
 PlayerPrefs.GetInt("FrisbeeDifficultyLevel", 0);
 PlayerPrefs.SetFloat("DogDistance", 20f);
 PlayerPrefs.SetString("BalloonColorToScore", "red");
+```
+
+### GameManager Session Defaults
+All session flags in `GameManager.cs` default to `false` (intro and both tutorials must be completed in order):
+```csharp
+public bool IntroCompleted { get; set; } = false;
+public bool FrisbeeTutorialCompleted { get; set; } = false;
+public bool ArcheryTutorialCompleted { get; set; } = false;
 ```

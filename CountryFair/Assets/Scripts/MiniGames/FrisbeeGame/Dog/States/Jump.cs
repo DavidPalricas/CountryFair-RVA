@@ -1,14 +1,21 @@
 using UnityEngine;
 using DG.Tweening;
 
+/// <summary>
+/// Dog FSM state that performs a DOTween jump animation, then transitions to <c>CatchFrisbee</c>
+/// once the jump animation clip starts playing.
+/// </summary>
 public class Jump: DogState
-{  
+{
     [Header("Jumps Settings")]
+    /// <summary>Total duration of the jump sequence in seconds.</summary>
     [SerializeField]
     private float jumpDuration = 1.6f;
 
+    /// <summary>Height of the jump arc.</summary>
     [SerializeField]
     private float jumpPower = 0.3f;
+    /// <summary>Number of bounces during the jump sequence.</summary>
     [SerializeField]
     private int jumpNumbers = 2;
 

@@ -1,19 +1,26 @@
 using Oculus.Platform;
 using UnityEngine;
 
+/// <summary>
+/// Abstract base class for animal behavior states (Eat, Walk, Idle).
+/// On each entry it increments the stats that this activity worsens, then lets
+/// <see cref="AnimalUtility.DecideNextAction"/> pick the next state when activity ends.
+/// </summary>
 [RequireComponent(typeof(AnimalUtility))]
-
 public class AnimalState: AnimatableState
-{   
+{
     [Header("Increase Stats Rates")]
+    /// <summary>Rate at which hunger increases every time this state is entered (0–1).</summary>
     [SerializeField]
     [Range(0f, 1f)]
     private float hungerIncreaseRate = 0.1f;
-    
+
+    /// <summary>Rate at which boredom increases every time this state is entered (0–1).</summary>
     [SerializeField]
     [Range(0f, 1f)]
     private float boredomIncreaseRate = 0.01f;
 
+    /// <summary>Rate at which fatigue increases every time this state is entered (0–1).</summary>
     [SerializeField]
     [Range(0f, 1f)]
     private float fatigueIncreaseRate = 0.01f;

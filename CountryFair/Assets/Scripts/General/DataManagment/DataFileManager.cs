@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json; 
 
-public class DataFileManager 
+/// <summary>
+/// Singleton that loads and saves the patient's persistent JSON save file (<c>survivorData.json</c>).
+/// On Android (Quest) the file lives in <see cref="Application.persistentDataPath"/>; in the Editor it is placed at the project root.
+/// </summary>
+public class DataFileManager
 {
-    // Nome do ficheiro
     private const string SAVE_FILE_NAME = "survivorData.json";
 
     // Instância global (Singleton)
@@ -22,6 +25,7 @@ public class DataFileManager
         SetFilePath();
     }
 
+    /// <summary>Returns the singleton instance, creating it on first call (which triggers an immediate file load).</summary>
     public static DataFileManager GetInstance()
     {
         return _instance ??= new DataFileManager();
@@ -56,6 +60,10 @@ public class DataFileManager
         }
     }
 
+    /// <summary>
+    /// Reads and deserializes the save file into <see cref="CurrentData"/>.
+    /// Creates a new empty <see cref="DataFileRoot"/> if the file does not exist or cannot be parsed.
+    /// </summary>
     public void LoadData()
     {
 
@@ -80,6 +88,12 @@ public class DataFileManager
         }
     }
 
+    /// <summary>
+    /// Adds or updates a session record in <see cref="CurrentData"/> and immediately writes it to disk.
+    /// </summary>
+    /// <param name="newSession">Metrics to store for the session.</param>
+    /// <param name="sessionID">Timestamp key used to identify the session (e.g., "2024-01-01_10-00-00").</param>
+    /// <param name="miniGameName">"frisbee" or "archery" — determines which sub-dictionary receives the record.</param>
     public void SaveSessionData(SessionData newSession, string sessionID, string miniGameName)
     {
         // Pequena proteção para garantir que os objetos internos existem
@@ -119,6 +133,10 @@ public class DataFileManager
     }
 
 
+    /// <summary>
+    /// Replaces the Frisbee adaptive parameters dictionary and writes the file to disk.
+    /// </summary>
+    /// <param name="adaptiveParameters">New key-value map of adaptive algorithm parameters.</param>
     public void AddFrisbeeAdaptiveParameters(Dictionary<string, string> adaptiveParameters)
     {
         CurrentData.frisbeeGame.AdadaptiveParameters = adaptiveParameters;

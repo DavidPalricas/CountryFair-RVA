@@ -3,16 +3,21 @@
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Cheat code handler for the CountryFair hub scene.
+/// Provides developer shortcuts to skip the intro dialogue and jump directly into either mini-game.
+/// </summary>
 public class CountryFairCheatCodes : CheatCodes
 {
-     [SerializeField]
-     private ShowTentData archeryTentData;
+    /// <summary>Reference to the Archery tent component used to trigger scene loading via cheat.</summary>
+    [SerializeField]
+    private ShowTentData archeryTentData;
 
-
+    /// <summary>Reference to the Frisbee tent component used to trigger scene loading via cheat.</summary>
     [SerializeField]
     private ShowTentData frisbeeTentData;
 
-
+    /// <summary>Reference to the dialogue script used to skip the intro sequence via cheat.</summary>
     [SerializeField]
     private CountryFairDialogue countryFairDialogue;
 

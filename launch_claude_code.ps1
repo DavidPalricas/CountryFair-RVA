@@ -1,1 +1,0 @@
-ollama launch claude --model qwen3.5:cloud

@@ -3,9 +3,13 @@ using FMODUnity;
 using FMOD.Studio;
 
 
+/// <summary>
+/// Audio manager for the CountryFair hub scene.
+/// Starts a spatialized crowd-noise loop on top of the shared ambience music from <see cref="AudioManager"/>.
+/// </summary>
 public class CountryFairAudioManager : AudioManager
 {
-   
+    /// <summary>FMOD event reference for the crowd ambience loop spatialized to the fair area.</summary>
    [SerializeField]
    private EventReference crowdNoise;
 

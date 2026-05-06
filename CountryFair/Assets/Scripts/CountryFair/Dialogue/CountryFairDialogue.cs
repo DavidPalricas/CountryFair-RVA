@@ -3,15 +3,22 @@ using TMPro;
 using UnityEngine;
 
 
+/// <summary>
+/// Drives the hub-world dialogue flow: plays the intro sequence on first visit, or
+/// congratulates the player after completing a mini-game session.
+/// Loads dialogue content from JSON via <see cref="UIDialog"/>.
+/// Destroys itself and reveals <c>postIntroElements</c> (tent buttons, etc.) when finished.
+/// </summary>
 public class CountryFairDialogue : UIDialog
-{   
+{
     [Header("Country Fair Settings")]
-    [SerializeField] 
+    /// <summary>GameObject containing the tent buttons and other post-intro elements; hidden until dialogue is complete.</summary>
+    [SerializeField]
     private GameObject postIntroElements;
-    [SerializeField] 
+    /// <summary>Player area destroyed on Awake to prevent it from blocking the intro camera view.</summary>
+    [SerializeField]
     private GameObject playerArea;
 
-    
     [Header("Characters")]
     [SerializeField] private GameObject zeca;
     [SerializeField] private GameObject carnyWise;
@@ -102,8 +109,13 @@ public class CountryFairDialogue : UIDialog
         }
     }
 
+    /// <summary>
+    /// Advances the dialogue to the next line or section.
+    /// When all lines are consumed, reveals post-intro elements and destroys the dialogue canvas.
+    /// </summary>
+    /// <remarks>Invocado via Inspector no botão de avançar diálogo na cena CountryFair.</remarks>
     public override void NextStep()
-    {   
+    {
         if (_data == null) return;
 
         if (_currentDialogueState == DialogueState.INTRO_COMPLETED)
@@ -159,8 +171,13 @@ public class CountryFairDialogue : UIDialog
         }
     }
 
+    /// <summary>
+    /// Marks the intro as completed in <see cref="GameManager"/>, reveals post-intro elements,
+    /// and destroys this dialogue canvas.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo botão final do diálogo de introdução.</remarks>
     public void IntroComplete()
-    {   
+    {
         postIntroElements.SetActive(true);
         GameManager.GetInstance().IntroCompleted = true;
 

@@ -1,19 +1,29 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+/// <summary>
+/// Abstract base class for all mini-game managers.
+/// Provides the contract for spawning/removing targets, applying difficulty settings,
+/// and tracking the current difficulty level via PlayerPrefs.
+/// Concrete implementations: <see cref="FrisbeeGameManager"/>, <see cref="ArcheryGameManager"/>.
+/// </summary>
 [RequireComponent(typeof(MiniGameCheatCodes))]
 public class MiniGameManager : MonoBehaviour
-{      
+{
     [Header("Targets Configuration")]
-    [SerializeField ]
+    /// <summary>Base number of targets present at difficulty level 0.</summary>
+    [SerializeField]
     protected int targetsCount = 3;
 
+    /// <summary>Fractional number of extra targets added per difficulty level.</summary>
     [SerializeField]
-    protected float targetsPerLevel = 1.5f;  
+    protected float targetsPerLevel = 1.5f;
 
+    /// <summary>Number of successful actions the player must complete to finish the session.</summary>
     [SerializeField]
     protected int sessionScoreGoal = 3;
-   
+
+    /// <summary>Current difficulty level, persisted in PlayerPrefs under a game-specific key.</summary>
     public int difficultyLevel = 0;
 
     protected readonly List<GameObject> _spawnedTargets = new();
@@ -64,6 +74,11 @@ public class MiniGameManager : MonoBehaviour
         Debug.LogError("DestroyTarget should be overridden in derived classes.");
     }
 
+    /// <summary>
+    /// Called by the Tutorial system when the tutorial is fully complete.
+    /// Implementations should read the persisted difficulty level and apply initial settings.
+    /// </summary>
+    /// <remarks>Invocado via Inspector pelo evento tutorialCompleted do <see cref="Tutorial"/>.</remarks>
     public virtual void TutorialCompleted(){
         Debug.LogError("TutorialCompleted should be overridden in derived classes.");
     }
