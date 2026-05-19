@@ -17,6 +17,7 @@ TagManager:
   - BalloonSpawn
   - CrowdArcheryGame
   - Emojis
+  - TentPlaceHolder
   layers:
   - Default
   - TransparentFX

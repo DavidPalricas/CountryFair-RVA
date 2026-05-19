@@ -4,36 +4,42 @@ using System.Collections.Generic;
 public class TentsPlaceHolderManager : MonoBehaviour
 {
     [SerializeField]
-    private Transform firstTentPlaceHolderTransform;
+    private Transform tentsPlaceHolderTransform;
 
     [SerializeField]
-    private Transform secondTentPlaceHolderTransform;
-
-    [SerializeField]
-    private Transform miniGameTents;
-
+    private Transform miniGameTentsTransform;
 
     private ShowTentData[] tents;
+
+    private TentPlaceHolder[] tentsPlaceHolders;
 
     private Dictionary<ShowTentData, Transform> tentToPlaceHolderMap = new Dictionary<ShowTentData, Transform>();
     
     private void Awake(){
 
-        if (firstTentPlaceHolderTransform == null || secondTentPlaceHolderTransform == null){
-            Debug.LogError("One or more tent placeholder transforms are not assigned in the inspector.");
+        if (tentsPlaceHolderTransform == null){
+            Debug.LogError("Tents placeholder transform is not assigned in the inspector.");
             return;
         }
 
-        if (miniGameTents == null){
+        if (miniGameTentsTransform == null){
             Debug.LogError("Mini Game Tents parent transform is not assigned in the inspector.");
             return;
         }
 
-        tents = miniGameTents.GetComponentsInChildren<ShowTentData>();
+        tentsPlaceHolders = tentsPlaceHolderTransform.GetComponentsInChildren<TentPlaceHolder>();
+
+        if (tentsPlaceHolders == null){
+            Debug.LogError("No TentPlaceHolder components found in children of tentsPlaceHolderTransform.");
+            return;
+        }
+
+        TogglePlaceHolders(false);
+
+        tents = miniGameTentsTransform.GetComponentsInChildren<ShowTentData>();
 
         if (tents == null){
             Debug.LogError("No ShowTentData components found in children of miniGameTents.");
-            return;
         }
     }
 
@@ -61,19 +67,28 @@ public class TentsPlaceHolderManager : MonoBehaviour
 
     }
 
-
-    private Transform[] ShufflePlaceHolders(){
-
-        Transform[] placeHolders = new Transform[] { firstTentPlaceHolderTransform, secondTentPlaceHolderTransform };
-
-        for (int i = placeHolders.Length - 1; i > 0; i--)
+    private Transform[] ShufflePlaceHolders()
+    {
+        for (int i = tentsPlaceHolders.Length - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);
-            Transform temp = placeHolders[i];
-            placeHolders[i] = placeHolders[j];
-            placeHolders[j] = temp;
+            (tentsPlaceHolders[i], tentsPlaceHolders[j]) = (tentsPlaceHolders[j], tentsPlaceHolders[i]);
         }
 
-        return placeHolders;
+        Transform[] transforms = new Transform[tentsPlaceHolders.Length];
+
+        for (int i = 0; i < tentsPlaceHolders.Length; i++){
+            transforms[i] = tentsPlaceHolders[i].transform;
+        }
+            
+        return transforms;
+    }
+
+
+    private void TogglePlaceHolders(bool isActive){
+        foreach (TentPlaceHolder placeHolder in  tentsPlaceHolders)
+        {
+            placeHolder.gameObject.SetActive(isActive);
+        }
     }
 }
