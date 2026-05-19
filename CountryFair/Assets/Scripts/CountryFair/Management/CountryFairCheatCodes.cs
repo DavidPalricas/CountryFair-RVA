@@ -22,6 +22,10 @@ public class CountryFairCheatCodes : CheatCodes
     private CountryFairDialogue countryFairDialogue;
 
 
+    [SerializeField]
+    private TentsPlaceHolderManager tentsPlaceHolderManager;
+
+
     private bool _introCompleted = false;
 
     private void Awake()
@@ -47,6 +51,13 @@ public class CountryFairCheatCodes : CheatCodes
             return;
         }
 
+        if (tentsPlaceHolderManager == null)
+        {
+            Debug.LogError("Tents PlaceHolder Manager reference is not assigned in the inspector.");
+
+            return;
+        }
+
 
         _introCompleted = GameManager.GetInstance().IntroCompleted;
 
@@ -59,6 +70,7 @@ public class CountryFairCheatCodes : CheatCodes
     protected override void RegisterBaseCheats()
     {
         RegisterCheat("intro", () => CompleteIntro());
+        RegisterCheat("tents",() => ShuffleTents());
         RegisterCheat("frisbee", () => GoToMiniGame(true));
         RegisterCheat("archery", () => GoToMiniGame(false));
     }
@@ -103,6 +115,17 @@ public class CountryFairCheatCodes : CheatCodes
         }
 
          archeryTentData.GoToMiniGame();
+    }
+
+
+    private void ShuffleTents(){
+        if (!_introCompleted)
+        {  
+            Debug.LogWarning("Intro must be completed to shuffle tents. Finish the intro first");
+            return;
+        }
+
+        tentsPlaceHolderManager.SetPlaceHolderForTent();
     }
 }
    

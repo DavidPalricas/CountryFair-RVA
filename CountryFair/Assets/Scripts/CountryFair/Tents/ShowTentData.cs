@@ -82,8 +82,6 @@ public class ShowTentData : MonoBehaviour
     /// </remarks>
     private void Awake()
     {
-        textBox.SetActive(false);
-
         textBox.GetComponentInChildren<TextMeshProUGUI>().text = textToShow;
 
         if (redButton == null)
@@ -134,10 +132,6 @@ public class ShowTentData : MonoBehaviour
         {
             bool isToShowData = hitInfo.collider == gameObject.GetComponent<Collider>();
 
-            textBox.SetActive(isToShowData);
-
-            miniGameObject.SetActive(isToShowData);
-
            redButton.SetActive(isToShowData);
         }
     }
@@ -157,7 +151,7 @@ public class ShowTentData : MonoBehaviour
     {
         miniGameObject = Instantiate(miniGameObjectPrefab, placeHolderTransform.position + placeHolderTransform.up * 0.1f, miniGameObjectPrefab.transform.rotation);
 
-        miniGameObject.SetActive(false);
+        miniGameObject.transform.parent = transform;
     }
 
     /// <summary>
