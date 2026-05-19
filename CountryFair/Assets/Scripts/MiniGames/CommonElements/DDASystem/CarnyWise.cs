@@ -151,7 +151,7 @@ public class CarnyWise : MonoBehaviour
         {
             _excelCounter++;
 
-            _struggleCounter = Mathf.Max(0, _struggleCounter--);
+            _struggleCounter = Mathf.Max(0, _struggleCounter - 1);
 
             CheckToChangeDifficulty();
             return;
@@ -161,7 +161,7 @@ public class CarnyWise : MonoBehaviour
         {
             _struggleCounter++;
 
-            _excelCounter = Mathf.Max(0, _excelCounter--);
+            _excelCounter = Mathf.Max(0, _excelCounter - 1);
 
             CheckToChangeDifficulty();
 
@@ -176,8 +176,8 @@ public class CarnyWise : MonoBehaviour
     {   
        // Debug.Log("Mantaining Flow State");
 
-        _struggleCounter = Mathf.Max(0, _struggleCounter--);
-        _excelCounter = Mathf.Max(0, _excelCounter--);
+        _struggleCounter = Mathf.Max(0, _struggleCounter - 1);
+        _excelCounter = Mathf.Max(0, _excelCounter - 1);
     }
 
     private void CheckToChangeDifficulty()
