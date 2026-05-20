@@ -25,6 +25,9 @@ public class ShowTentData : MonoBehaviour
     [SerializeField]
     private GameObject textBox;
 
+   [SerializeField]
+    private TextMeshProUGUI ribbonNumber;
+
     /// <summary>
     /// Prefab for the mini-game preview object to instantiate and display.
     /// This prefab represents a visual preview of the mini-game associated with this tent.
@@ -98,6 +101,11 @@ public class ShowTentData : MonoBehaviour
             Debug.LogError("Mini Game Object is not assigned in ShowTentData script.");
 
             return;
+        }
+
+        if (ribbonNumber == null)
+        {
+            Debug.LogError("Ribbon Number Text is not assigned in ShowTentData script.");
         }
     }
 
@@ -176,5 +184,11 @@ public class ShowTentData : MonoBehaviour
         }
 
         SceneManager.LoadScene(gameName); 
+    }
+
+
+    public void SetRibbonNumber(int number)
+    {
+        ribbonNumber.text = number.ToString();
     }
 }

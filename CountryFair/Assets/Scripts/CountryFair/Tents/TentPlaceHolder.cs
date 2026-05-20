@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 public class TentPlaceHolder : MonoBehaviour
-{
+{   
     [Header("Squash & Stretch")]
     [SerializeField]
     private float bounceHeight = 0.15f;
@@ -23,6 +23,9 @@ public class TentPlaceHolder : MonoBehaviour
     private Vector3 _originalScale;
     private Vector3 _originalLocalPosition;
     private Sequence _squashStretchSequence;
+
+
+    public int tentNumber = 1;
 
     private void Awake()
     {

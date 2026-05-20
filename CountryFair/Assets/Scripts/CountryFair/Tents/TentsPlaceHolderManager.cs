@@ -47,7 +47,7 @@ public class TentsPlaceHolderManager : MonoBehaviour
 
         int miniGamesCount = tents.Length;
 
-        Transform[] placeHolders = ShufflePlaceHolders();
+        TentPlaceHolder[] placeHolders = ShufflePlaceHolders();
 
         if (miniGamesCount != placeHolders.Length){
             Debug.LogError($"The number of mini-game tents ({miniGamesCount}) does not match the number of placeholders ({placeHolders.Length}). Please ensure they are equal.");
@@ -58,16 +58,19 @@ public class TentsPlaceHolderManager : MonoBehaviour
         {
             ShowTentData tent = tents[i];
 
-            tentToPlaceHolderMap[tent] = placeHolders[i];
+            Transform placeHolderTransform = placeHolders[i].transform;
 
-            tent.transform.SetPositionAndRotation(placeHolders[i].position, placeHolders[i].rotation);
+            tentToPlaceHolderMap[tent] = placeHolderTransform;
 
-            Debug.Log($"Assigned tent '{tent.gameObject.name}' to placeholder '{placeHolders[i].name}' at position {placeHolders[i].position}."); 
+            tent.SetRibbonNumber(placeHolders[i].tentNumber);
+
+            tent.transform.SetPositionAndRotation(placeHolderTransform.position, placeHolderTransform.rotation);
+
+            Debug.Log($"Assigned tent '{tent.gameObject.name}' to placeholder '{placeHolders[i].name}' at position {placeHolderTransform.position}."); 
         }
-
     }
 
-    private Transform[] ShufflePlaceHolders()
+    private TentPlaceHolder[] ShufflePlaceHolders()
     {
         for (int i = tentsPlaceHolders.Length - 1; i > 0; i--)
         {
@@ -75,13 +78,13 @@ public class TentsPlaceHolderManager : MonoBehaviour
             (tentsPlaceHolders[i], tentsPlaceHolders[j]) = (tentsPlaceHolders[j], tentsPlaceHolders[i]);
         }
 
-        Transform[] transforms = new Transform[tentsPlaceHolders.Length];
+        TentPlaceHolder[] placeHolders = new TentPlaceHolder[tentsPlaceHolders.Length];
 
         for (int i = 0; i < tentsPlaceHolders.Length; i++){
-            transforms[i] = tentsPlaceHolders[i].transform;
+            placeHolders[i] = tentsPlaceHolders[i];
         }
             
-        return transforms;
+        return placeHolders;
     }
 
 
