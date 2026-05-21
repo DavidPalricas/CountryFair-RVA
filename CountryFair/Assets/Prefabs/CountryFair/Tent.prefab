@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 1117357189170293678}
   - component: {fileID: 7664183447918470291}
   - component: {fileID: 4659942069795526463}
+  - component: {fileID: 840556366763422452}
   m_Layer: 0
   m_Name: ISDK_DistanceHandGrabInteraction
   m_TagString: Untagged
@@ -851,6 +852,67 @@ MonoBehaviour:
   _renderer: {fileID: 0}
   _customIcon: {fileID: 2800000, guid: aa3a2b3718100f84fb5d8ff9adb8ccb7, type: 3}
   _snappiness: 1
+--- !u!114 &840556366763422452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8686341360217566508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1464721f2283eb14e94a33e812b47be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.InteractableUnityEventWrapper
+  _interactableView: {fileID: 5243659172644227141}
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7587693233035515136}
+        m_TargetAssemblyTypeName: MiniGameTent, Assembly-CSharp
+        m_MethodName: HandleGrab
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7587693233035515136}
+        m_TargetAssemblyTypeName: MiniGameTent, Assembly-CSharp
+        m_MethodName: HandleGrab
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _whenInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &337620835492411125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1152,6 +1214,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1741734048619319785, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
+      propertyPath: m_TagString
+      value: Tent
+      objectReference: {fileID: 0}
     - target: {fileID: 2107409826236812522, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
       propertyPath: m_Name
       value: Tent
@@ -1160,12 +1226,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2107409826236812522, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
+      propertyPath: m_TagString
+      value: Tent
+      objectReference: {fileID: 0}
     - target: {fileID: 3267769597563258785, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3267769597563258785, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -3970243614316841892, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
       insertIndex: -1
@@ -1201,7 +1272,36 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2107409826236812522, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2251249296151103297}
+    - targetCorrespondingSourceObject: {fileID: 1741734048619319785, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8231860121932166353}
   m_SourcePrefab: {fileID: 3150474306388093854, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
+--- !u!1 &1409829938722482771 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1741734048619319785, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
+  m_PrefabInstance: {fileID: 845367484569353146}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &8231860121932166353
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409829938722482771}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1318.4954, y: 790.0539, z: 1265.3636}
+  m_Center: {x: 163.82803, y: 394.97314, z: -103.00665}
 --- !u!1 &1622526415983916880 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2107409826236812522, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
@@ -1241,12 +1341,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopText
   textBox: {fileID: 1448700047613741873}
-  ribbonNumber: {fileID: 0}
+  ribbon: {fileID: 5033254606814458644}
+  ribbonNumber: {fileID: 7611961536375056674}
+  currentPlaceHolder: {fileID: 0}
   miniGameObjectPrefab: {fileID: 0}
   redButton: {fileID: 0}
   placeHolderTransform: {fileID: 1745718729246412483}
   gameName: Game 1
   textToShow: 
+  OnTentSelectionChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1983996949729198993
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1448,6 +1553,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a42d4b6f5beff6a4a918cbef10e287f2, type: 3}
+--- !u!1 &5033254606814458644 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a42d4b6f5beff6a4a918cbef10e287f2, type: 3}
+  m_PrefabInstance: {fileID: 5267205728989023813}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5661700696609024430 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a42d4b6f5beff6a4a918cbef10e287f2, type: 3}

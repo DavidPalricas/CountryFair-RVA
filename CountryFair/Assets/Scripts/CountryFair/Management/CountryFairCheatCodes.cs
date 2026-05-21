@@ -11,20 +11,15 @@ public class CountryFairCheatCodes : CheatCodes
 {
     /// <summary>Reference to the Archery tent component used to trigger scene loading via cheat.</summary>
     [SerializeField]
-    private ShowTentData archeryTentData;
+    private MiniGameTent archeryTentData;
 
     /// <summary>Reference to the Frisbee tent component used to trigger scene loading via cheat.</summary>
     [SerializeField]
-    private ShowTentData frisbeeTentData;
+    private MiniGameTent frisbeeTentData;
 
     /// <summary>Reference to the dialogue script used to skip the intro sequence via cheat.</summary>
     [SerializeField]
     private CountryFairDialogue countryFairDialogue;
-
-
-    [SerializeField]
-    private TentsPlaceHolderManager tentsPlaceHolderManager;
-
 
     private bool _introCompleted = false;
 
@@ -51,14 +46,6 @@ public class CountryFairCheatCodes : CheatCodes
             return;
         }
 
-        if (tentsPlaceHolderManager == null)
-        {
-            Debug.LogError("Tents PlaceHolder Manager reference is not assigned in the inspector.");
-
-            return;
-        }
-
-
         _introCompleted = GameManager.GetInstance().IntroCompleted;
 
         RegisterBaseCheats();
@@ -70,7 +57,6 @@ public class CountryFairCheatCodes : CheatCodes
     protected override void RegisterBaseCheats()
     {
         RegisterCheat("intro", () => CompleteIntro());
-        RegisterCheat("tents",() => ShuffleTents());
         RegisterCheat("frisbee", () => GoToMiniGame(true));
         RegisterCheat("archery", () => GoToMiniGame(false));
     }
@@ -115,17 +101,6 @@ public class CountryFairCheatCodes : CheatCodes
         }
 
          archeryTentData.GoToMiniGame();
-    }
-
-
-    private void ShuffleTents(){
-        if (!_introCompleted)
-        {  
-            Debug.LogWarning("Intro must be completed to shuffle tents. Finish the intro first");
-            return;
-        }
-
-        tentsPlaceHolderManager.SetPlaceHolderForTent();
     }
 }
    

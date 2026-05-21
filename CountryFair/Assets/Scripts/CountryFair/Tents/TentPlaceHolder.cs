@@ -86,4 +86,41 @@ public class TentPlaceHolder : MonoBehaviour
         _squashStretchSequence?.Kill();
         transform.DOKill();
     }
+
+
+
+    private void OnTriggerEnter(Collider other){
+        if (other.gameObject.CompareTag("Tent")){
+            /* The collider for the tent is a child (the model) of the tent GameObject with the script
+                because this gameobject has the collider that detects the distance grabb interaction
+            */
+            MiniGameTent tent = other.transform.parent.gameObject.GetComponent<MiniGameTent>();
+
+            if (tent == null){
+                Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
+
+                return;
+            }
+
+            tent.UpdateTentPlaceHolder(this);
+        }
+    }
+     
+    
+      private void OnTriggerExit(Collider other){
+        if (other.gameObject.CompareTag("Tent")){
+            /* The collider for the tent is a child (the model) of the tent GameObject with the script
+                because this gameobject has the collider that detects the distance grabb interaction
+            */
+            MiniGameTent tent = other.transform.parent.gameObject.GetComponent<MiniGameTent>();
+
+            if (tent == null){
+                Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
+
+                return;
+            }
+
+            tent.UpdateTentPlaceHolder(null);
+        }
+    }
 }

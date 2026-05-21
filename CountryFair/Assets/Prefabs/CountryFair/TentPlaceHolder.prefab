@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &22631802619930134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9150300137602934840}
+  m_Layer: 0
+  m_Name: ButtonPlaceHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9150300137602934840
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22631802619930134}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2428417345983106560}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1617288904832865445
 GameObject:
   m_ObjectHideFlags: 0
@@ -15,7 +46,7 @@ GameObject:
   - component: {fileID: 1978763338767684977}
   m_Layer: 7
   m_Name: TentPlaceHolder
-  m_TagString: ScoreArea
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,7 +63,8 @@ Transform:
   m_LocalPosition: {x: 12.496588, y: -13.76873, z: 4.5827713}
   m_LocalScale: {x: 5, y: 0.42123806, z: 5}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 9150300137602934840}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -150, z: 0}
 --- !u!33 &8159435206780190205
@@ -110,8 +142,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.80972826, y: 2.0000038, z: 0.7825466}
-  m_Center: {x: 0.00000013609313, y: 0.00000050493384, z: -0.00000012961249}
+  m_Size: {x: 1.1934794, y: 8.100035, z: 1.1337118}
+  m_Center: {x: 0.04961667, y: 3.050012, z: -0.027625468}
 --- !u!114 &1978763338767684977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +159,4 @@ MonoBehaviour:
   bounceHeight: 0.25
   bounceDuration: 2
   squashAmount: 0.1
-  waveAngle: 8
-  waveDuration: 0.8
-  wavePhaseOffset: 0
+  tentNumber: 1

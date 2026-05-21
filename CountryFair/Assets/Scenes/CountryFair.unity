@@ -3853,6 +3853,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1780520573}
     m_Modifications:
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenUnselect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1409829938722482771, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -9458,7 +9466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2428417345983106560, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.82
+      value: 9.46748
       objectReference: {fileID: 0}
     - target: {fileID: 2428417345983106560, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9492,6 +9500,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9150300137602934840, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.2539
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150300137602934840, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150300137602934840, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.3561
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9502,6 +9522,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2428417345983106560, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
   m_PrefabInstance: {fileID: 748558076}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &748558078 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1978763338767684977, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
+  m_PrefabInstance: {fileID: 748558076}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6b9a508b68a0b469388f09af455c7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountryFair.Tents.TentPlaceHolder
 --- !u!4 &759110864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4673847769149175721, guid: e43abe863bdaa9042892d65904f22930, type: 3}
@@ -12197,6 +12228,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1780520573}
     m_Modifications:
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenUnselect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1409829938722482771, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -13382,6 +13421,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1780520573}
     m_Modifications:
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenUnselect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1409829938722482771, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -13532,6 +13579,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1780520573}
     m_Modifications:
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenUnselect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1409829938722482771, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -15481,13 +15536,17 @@ PrefabInstance:
       propertyPath: number
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1978763338767684977, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
+      propertyPath: tentNumber
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2428417345983106560, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.89217
       objectReference: {fileID: 0}
     - target: {fileID: 2428417345983106560, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.82
+      value: 9.46748
       objectReference: {fileID: 0}
     - target: {fileID: 2428417345983106560, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15521,6 +15580,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9150300137602934840, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.084
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150300137602934840, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.008
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15531,6 +15598,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2428417345983106560, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
   m_PrefabInstance: {fileID: 1270389554}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1270389556 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1978763338767684977, guid: 61502b20ecced114294d7d87f4c67d9b, type: 3}
+  m_PrefabInstance: {fileID: 1270389554}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6b9a508b68a0b469388f09af455c7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountryFair.Tents.TentPlaceHolder
 --- !u!1001 &1279197838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17638,7 +17716,6 @@ MonoBehaviour:
   archeryTentData: {fileID: 543233387694203530}
   frisbeeTentData: {fileID: 1546124252}
   countryFairDialogue: {fileID: 1289485912}
-  tentsPlaceHolderManager: {fileID: 1728798950}
 --- !u!1001 &1412849571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18459,6 +18536,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1780520573}
     m_Modifications:
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenUnselect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1409829938722482771, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -18938,6 +19023,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1780520573}
     m_Modifications:
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenUnselect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1409829938722482771, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -19091,6 +19184,18 @@ PrefabInstance:
     - target: {fileID: 355929690481757124, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenHover.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenHover.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenHover.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1409829938722482771, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
@@ -19305,9 +19410,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4023597304502530659, guid: 1c51f23fe9b90cd41b9981af568a10a6, type: 3}
     - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: currentPlaceHolder
+      value: 
+      objectReference: {fileID: 1270389556}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: miniGameObjectPrefab
       value: 
       objectReference: {fileID: 495728589920066737, guid: 98b4112b4da0492458c36f58451ec24f, type: 3}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1728798950}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleTentSelection
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TentsPlaceHolderManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7611961536375056674, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_text
       value: 2
@@ -21808,7 +21941,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665744dfab678ef4f8c76601304e8b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TentsPlaceHolderManager
-  tentsPlaceHolderTransform: {fileID: 1723157299}
   miniGameTentsTransform: {fileID: 1387632062}
 --- !u!1 &1731794204
 GameObject:
@@ -25372,6 +25504,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1780520573}
     m_Modifications:
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenUnselect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1409829938722482771, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -27223,6 +27363,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1780520573}
     m_Modifications:
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 840556366763422452, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: _whenUnselect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1409829938722482771, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -27811,9 +27959,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 199173467855146484, guid: 89ce57b79f968984ca2b2ee788251938, type: 3}
     - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: currentPlaceHolder
+      value: 
+      objectReference: {fileID: 748558078}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: miniGameObjectPrefab
       value: 
       objectReference: {fileID: 4425362018096994360, guid: 01569bf784932d64199a9ae3852be027, type: 3}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1728798950}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleTentSelection
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TentsPlaceHolderManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587693233035515136, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
+      propertyPath: OnTentSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7853941498031000941, guid: c6b4df8164f770c4f84d0b0ffbeab2c0, type: 3}
       propertyPath: m_Layer
       value: 7

@@ -1,97 +1,124 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class TentsPlaceHolderManager : MonoBehaviour
 {
     [SerializeField]
-    private Transform tentsPlaceHolderTransform;
-
-    [SerializeField]
     private Transform miniGameTentsTransform;
 
-    private ShowTentData[] tents;
+    private Dictionary<MiniGameTent, TentPlaceHolder>  _tentsMap = new Dictionary<MiniGameTent, TentPlaceHolder>();
 
-    private TentPlaceHolder[] tentsPlaceHolders;
-
-    private Dictionary<ShowTentData, Transform> tentToPlaceHolderMap = new Dictionary<ShowTentData, Transform>();
-    
     private void Awake(){
-
-        if (tentsPlaceHolderTransform == null){
-            Debug.LogError("Tents placeholder transform is not assigned in the inspector.");
-            return;
-        }
-
         if (miniGameTentsTransform == null){
             Debug.LogError("Mini Game Tents parent transform is not assigned in the inspector.");
             return;
         }
+    }
 
-        tentsPlaceHolders = tentsPlaceHolderTransform.GetComponentsInChildren<TentPlaceHolder>();
+     private void Start(){
+        MiniGameTent[] tents = miniGameTentsTransform.GetComponentsInChildren<MiniGameTent>();
 
-        if (tentsPlaceHolders == null){
-            Debug.LogError("No TentPlaceHolder components found in children of tentsPlaceHolderTransform.");
-            return;
+        if (tents.Length == 0){
+            Debug.LogError("No MiniGameTent components found in children of miniGameTents.");
+        }
+
+        foreach (MiniGameTent tent in tents)
+        {
+            _tentsMap.Add(tent, tent.GetCurrentPlaceHolder());
         }
 
         TogglePlaceHolders(false);
-
-        tents = miniGameTentsTransform.GetComponentsInChildren<ShowTentData>();
-
-        if (tents == null){
-            Debug.LogError("No ShowTentData components found in children of miniGameTents.");
-        }
     }
-
-    public void SetPlaceHolderForTent(){
-
-        int miniGamesCount = tents.Length;
-
-        TentPlaceHolder[] placeHolders = ShufflePlaceHolders();
-
-        if (miniGamesCount != placeHolders.Length){
-            Debug.LogError($"The number of mini-game tents ({miniGamesCount}) does not match the number of placeholders ({placeHolders.Length}). Please ensure they are equal.");
-            return;
-        }
-
-        for (int i = 0; i < miniGamesCount; i++)
-        {
-            ShowTentData tent = tents[i];
-
-            Transform placeHolderTransform = placeHolders[i].transform;
-
-            tentToPlaceHolderMap[tent] = placeHolderTransform;
-
-            tent.SetRibbonNumber(placeHolders[i].tentNumber);
-
-            tent.transform.SetPositionAndRotation(placeHolderTransform.position, placeHolderTransform.rotation);
-
-            Debug.Log($"Assigned tent '{tent.gameObject.name}' to placeholder '{placeHolders[i].name}' at position {placeHolderTransform.position}."); 
-        }
-    }
-
-    private TentPlaceHolder[] ShufflePlaceHolders()
-    {
-        for (int i = tentsPlaceHolders.Length - 1; i > 0; i--)
-        {
-            int j = Random.Range(0, i + 1);
-            (tentsPlaceHolders[i], tentsPlaceHolders[j]) = (tentsPlaceHolders[j], tentsPlaceHolders[i]);
-        }
-
-        TentPlaceHolder[] placeHolders = new TentPlaceHolder[tentsPlaceHolders.Length];
-
-        for (int i = 0; i < tentsPlaceHolders.Length; i++){
-            placeHolders[i] = tentsPlaceHolders[i];
-        }
-            
-        return placeHolders;
-    }
-
 
     private void TogglePlaceHolders(bool isActive){
-        foreach (TentPlaceHolder placeHolder in  tentsPlaceHolders)
+        TentPlaceHolder[] tentsPlaceHolders = _tentsMap.Values.ToArray();
+
+        foreach (TentPlaceHolder placeHolder in tentsPlaceHolders)
         {
             placeHolder.gameObject.SetActive(isActive);
         }
+    }
+
+    public void TentSelected(MiniGameTent selectedTent)
+    {   
+        MiniGameTent[] tents = _tentsMap.Keys.ToArray();
+
+        int tentIndex = System.Array.IndexOf(tents, selectedTent);
+
+        if (tentIndex == -1){
+            Debug.LogError($"Selected tent '{selectedTent.gameObject.name}' is not registered.");
+            return;
+        }
+
+        for (int i = 0; i < tents.Length; i++)
+        {
+            if (i != tentIndex){
+                tents[i].gameObject.SetActive(false);
+            } 
+        }
+
+        TogglePlaceHolders(true);
+
+        _tentsMap[selectedTent].gameObject.SetActive(false);
+    }
+
+    private void TentUnselected(MiniGameTent unselectedTent)
+    {   
+        MiniGameTent[] tents = _tentsMap.Keys.ToArray();
+
+        int tentIndex = System.Array.IndexOf(tents, unselectedTent);
+
+        if (tentIndex == -1){
+            Debug.LogError($"Selected tent '{unselectedTent.gameObject.name}' is not registered.");
+            return;
+        }
+
+        UpdateTentsPosition(unselectedTent);
+
+        for (int i = 0; i < tents.Length; i++)
+        {
+            tents[i].gameObject.SetActive(true);       
+        }
+
+        TogglePlaceHolders(false);
+    }
+
+    
+    private void UpdateTentsPosition(MiniGameTent unselectedTent)
+    {
+       TentPlaceHolder previousUnselectedTentPlaceHolder = _tentsMap[unselectedTent];
+
+       TentPlaceHolder currentUnselectedTentPlaceHolder = unselectedTent.GetCurrentPlaceHolder();
+
+       foreach (MiniGameTent tent in _tentsMap.Keys)
+       {
+            if (_tentsMap[tent] == currentUnselectedTentPlaceHolder)
+            {    
+                _tentsMap[tent] = previousUnselectedTentPlaceHolder;
+                _tentsMap[unselectedTent] = currentUnselectedTentPlaceHolder;
+
+
+                Debug.Log($"Tent '{tent.gameObject.name}' updated its place holder to '{previousUnselectedTentPlaceHolder.gameObject.name}'");
+
+                tent.UpdateTentPlaceHolder(previousUnselectedTentPlaceHolder);
+
+                tent.UpdateTentPosition();
+
+                return;
+            }
+       }   
+    }
+
+    public void HandleTentSelection(bool isTentSelected, MiniGameTent tent)
+    {
+        if (isTentSelected)
+        {
+            TentSelected(tent);
+
+            return;
+        }
+
+        TentUnselected(tent);
     }
 }
