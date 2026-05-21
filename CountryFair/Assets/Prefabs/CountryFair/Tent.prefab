@@ -787,12 +787,12 @@ MonoBehaviour:
   _slippiness: 0
   _supportedGrabTypes: 1
   _pinchGrabRules:
-    _thumbRequirement: 0
+    _thumbRequirement: 2
     _indexRequirement: 2
     _middleRequirement: 0
     _ringRequirement: 0
     _pinkyRequirement: 0
-    _unselectMode: 1
+    _unselectMode: 0
   _palmGrabRules:
     _thumbRequirement: 1
     _indexRequirement: 2
