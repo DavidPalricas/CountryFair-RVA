@@ -13,11 +13,11 @@ using System.Collections;
 /// - Handling transitions to mini-game scenes when the user selects a tent
 /// - Snapping the tent to a placeholder position when released after a Distance Grab
 /// </summary>
-[RequireComponent(typeof(Rigidbody))]
+
 public class MiniGameTent : MonoBehaviour
 {
     [Header("Game Tent Data")]
-    [SerializeField] private GameObject textBox;
+    [SerializeField] private TextMeshProUGUI textBox;
     [SerializeField] private GameObject ribbon;
     [SerializeField] private TextMeshProUGUI ribbonNumber;
     [SerializeField] private TentPlaceHolder currentPlaceHolder;
@@ -30,18 +30,18 @@ public class MiniGameTent : MonoBehaviour
 
     [SerializeField] private UnityEvent<bool, MiniGameTent> OnTentSelectionChanged;
 
+
+    [SerializeField]
+    private Rigidbody distanceGrabRb;
+
     private GameObject miniGameObject;
     private bool isSelected = false;
-    private Rigidbody rb;
-
-
+   
     private TentPlaceHolder _previousPlaceHolder;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-
-        textBox.GetComponentInChildren<TextMeshProUGUI>().text = textToShow;
+        textBox.text = textToShow;
 
         if (redButton == null)
         {
@@ -71,6 +71,8 @@ public class MiniGameTent : MonoBehaviour
         _previousPlaceHolder = currentPlaceHolder;
 
         SetRibbonNumber(currentPlaceHolder.tentNumber);
+
+        SnapToCurrentPlaceHolder();
     }
 
     private void Start()
@@ -152,26 +154,24 @@ public class MiniGameTent : MonoBehaviour
         OnTentSelectionChanged.Invoke(false, this);
     }
 
-    private void SnapToCurrentPlaceHolder()
+   private void SnapToCurrentPlaceHolder()
     {
         // Kill any residual throw velocity the ISDK applied on release.
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        distanceGrabRb.linearVelocity = Vector3.zero;
+        distanceGrabRb.angularVelocity = Vector3.zero;
+        distanceGrabRb.isKinematic = true;
 
-        // Write through the Rigidbody, not the Transform, so the physics engine
-        // does not overwrite us on the next simulation step.
-        rb.position = currentPlaceHolder.transform.position;
-        rb.rotation = currentPlaceHolder.transform.rotation;
+        Transform interactorPlaceHolder = currentPlaceHolder.placeHolderForInteractors;
 
-        // Keep the transform in sync for any code that reads it this frame.
+        // Move the parent (Rigidbody root) to the placeholder.
+        // Use Rigidbody.Move-equivalent via transform since it's kinematic now.
+        distanceGrabRb.transform.SetPositionAndRotation(interactorPlaceHolder.position,interactorPlaceHolder.rotation);
 
-        Debug.Log("Place Holder Rotation: " + currentPlaceHolder.transform.rotation);
+        Transform PlaceHolderTransform = currentPlaceHolder.transform;
 
-
-        transform.SetPositionAndRotation(currentPlaceHolder.transform.position, currentPlaceHolder.transform.rotation);
+        transform.SetPositionAndRotation(PlaceHolderTransform.position, PlaceHolderTransform.rotation);
 
         SetRibbonNumber(currentPlaceHolder.tentNumber);
-
         _previousPlaceHolder = currentPlaceHolder;
     }
 

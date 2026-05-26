@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class TentPlaceHolder : MonoBehaviour
 {   
+    public Transform placeHolderForInteractors;
+
     [Header("Squash & Stretch")]
     [SerializeField]
     private float bounceHeight = 0.15f;
     [SerializeField]
      private float bounceDuration = 1.2f;
-
     [Range(0f, 0.5f)]
     [SerializeField]
     private float squashAmount = 0.12f;
@@ -28,7 +29,13 @@ public class TentPlaceHolder : MonoBehaviour
     public int tentNumber = 1;
 
     private void Awake()
-    {
+    {    
+
+        if (placeHolderForInteractors == null){
+            Debug.LogError("Place Holder for Interactors is not assigned in the inspector.");
+
+            return;
+        }
         _originalScale = transform.localScale;
         _originalLocalPosition = transform.localPosition;
     }
@@ -94,13 +101,7 @@ public class TentPlaceHolder : MonoBehaviour
             /* The collider for the tent is a child (the model) of the tent GameObject with the script
                 because this gameobject has the collider that detects the distance grabb interaction
             */
-            MiniGameTent tent = other.transform.parent.gameObject.GetComponent<MiniGameTent>();
-
-            if (tent == null){
-                Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
-
-                return;
-            }
+            MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
 
             tent.UpdateTentPlaceHolder(this);
         }
@@ -112,7 +113,7 @@ public class TentPlaceHolder : MonoBehaviour
             /* The collider for the tent is a child (the model) of the tent GameObject with the script
                 because this gameobject has the collider that detects the distance grabb interaction
             */
-            MiniGameTent tent = other.transform.parent.gameObject.GetComponent<MiniGameTent>();
+            MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
 
             if (tent == null){
                 Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");

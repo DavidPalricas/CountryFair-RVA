@@ -4,27 +4,23 @@ using System.Linq;
 
 public class TentsPlaceHolderManager : MonoBehaviour
 {
-    [SerializeField]
-    private Transform miniGameTentsTransform;
-
     private Dictionary<MiniGameTent, TentPlaceHolder>  _tentsMap = new Dictionary<MiniGameTent, TentPlaceHolder>();
 
-    private void Awake(){
-        if (miniGameTentsTransform == null){
-            Debug.LogError("Mini Game Tents parent transform is not assigned in the inspector.");
-            return;
-        }
-    }
-
      private void Start(){
-        MiniGameTent[] tents = miniGameTentsTransform.GetComponentsInChildren<MiniGameTent>();
-
+        MiniGameTent[] tents = GameObject.FindGameObjectsWithTag("Tent")
+            .Select(tentObj => tentObj.GetComponent<MiniGameTent>())
+            .Where(tent => tent != null)
+            .ToArray();
+         
+        Debug.Log($"Found {tents.Length} tents with 'Tent' tag in the scene.");
         if (tents.Length == 0){
             Debug.LogError("No MiniGameTent components found in children of miniGameTents.");
+
+            return;
         }
 
         foreach (MiniGameTent tent in tents)
-        {
+        {    
             _tentsMap.Add(tent, tent.GetCurrentPlaceHolder());
         }
 

@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6b9a508b68a0b469388f09af455c7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CountryFair.Tents.TentPlaceHolder
+  placeHolderForInteractors: {fileID: 9150300137602934840}
   bounceHeight: 0.25
   bounceDuration: 2
   squashAmount: 0.1
