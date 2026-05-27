@@ -20,19 +20,28 @@ public class MiniGameTent : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textBox;
     [SerializeField] private GameObject ribbon;
     [SerializeField] private TextMeshProUGUI ribbonNumber;
-    [SerializeField] private TentPlaceHolder currentPlaceHolder;
+
+
+    [Header("PlaceHolders")]
+    [SerializeField] 
+    private TentPlaceHolder currentPlaceHolder;
+    [SerializeField] 
+    private Transform placeHolderTransform;
+
     [SerializeField] private GameObject miniGameObjectPrefab;
     [SerializeField] private GameObject redButton;
-    [SerializeField] private Transform placeHolderTransform;
+  
 
     [SerializeField] private string gameName = string.Empty;
     [SerializeField] private string textToShow = string.Empty;
 
+    [SerializeField]    
+    public Rigidbody distanceGrabRb;
+
     [SerializeField] private UnityEvent<bool, MiniGameTent> OnTentSelectionChanged;
 
 
-    [SerializeField]
-    private Rigidbody distanceGrabRb;
+  
 
     private GameObject miniGameObject;
     private bool isSelected = false;
@@ -63,9 +72,9 @@ public class MiniGameTent : MonoBehaviour
             return;
         }
 
-        if (currentPlaceHolder == null)
+        if (currentPlaceHolder == null || placeHolderTransform == null)
         {
-            Debug.LogError("Current Place Holder is not assigned. A default one must be assigned.");
+            Debug.LogError("One or more required transforms are not assigned in MiniGameTent script.");
         }
 
         _previousPlaceHolder = currentPlaceHolder;
@@ -129,15 +138,16 @@ public class MiniGameTent : MonoBehaviour
     private void TentSelected()
     {
         redButton.SetActive(false);
-        ribbon.SetActive(false);
+        ToggleRibbonStuff(false);
         OnTentSelectionChanged.Invoke(true, this);
     }
 
     private void TentUnselected()
     {
         redButton.SetActive(true);
-        ribbon.SetActive(true);
-   
+
+        ToggleRibbonStuff(true);
+
         // Defer the snap to the next FixedUpdate so the ISDK has fully released
         // control of the Rigidbody before we reposition it.
         StartCoroutine(SnapToPlaceHolderNextFixedUpdate());
@@ -154,22 +164,30 @@ public class MiniGameTent : MonoBehaviour
         OnTentSelectionChanged.Invoke(false, this);
     }
 
-   private void SnapToCurrentPlaceHolder()
+    private void ToggleRibbonStuff(bool isActive)
+    {
+        ribbon.SetActive(isActive);
+        ribbonNumber.gameObject.SetActive(isActive);
+    }
+
+   public void SnapToCurrentPlaceHolder()
     {
         // Kill any residual throw velocity the ISDK applied on release.
         distanceGrabRb.linearVelocity = Vector3.zero;
         distanceGrabRb.angularVelocity = Vector3.zero;
         distanceGrabRb.isKinematic = true;
 
-        Transform interactorPlaceHolder = currentPlaceHolder.placeHolderForInteractors;
+        Transform distanceGrabPlaceHolderTransform = currentPlaceHolder.distanceGrabPlaceHolderTransform;
 
-        // Move the parent (Rigidbody root) to the placeholder.
-        // Use Rigidbody.Move-equivalent via transform since it's kinematic now.
-        distanceGrabRb.transform.SetPositionAndRotation(interactorPlaceHolder.position,interactorPlaceHolder.rotation);
+        distanceGrabRb.transform.SetPositionAndRotation(distanceGrabPlaceHolderTransform.position, distanceGrabPlaceHolderTransform.rotation);
 
         Transform PlaceHolderTransform = currentPlaceHolder.transform;
 
         transform.SetPositionAndRotation(PlaceHolderTransform.position, PlaceHolderTransform.rotation);
+
+        Transform redButtonPlaceHolderTransform = currentPlaceHolder.redButtonPlaceHolderTransform;
+
+        redButton.transform.SetPositionAndRotation(redButtonPlaceHolderTransform.position, redButtonPlaceHolderTransform.rotation);
 
         SetRibbonNumber(currentPlaceHolder.tentNumber);
         _previousPlaceHolder = currentPlaceHolder;
@@ -197,11 +215,6 @@ public class MiniGameTent : MonoBehaviour
         }
 
         currentPlaceHolder = newPlaceHolder;
-    }
-
-    public void UpdateTentPosition()
-    {
-        SnapToCurrentPlaceHolder();
     }
 
     public TentPlaceHolder GetCurrentPlaceHolder()

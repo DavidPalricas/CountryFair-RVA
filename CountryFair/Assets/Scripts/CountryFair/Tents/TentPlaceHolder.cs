@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class TentPlaceHolder : MonoBehaviour
 {   
-    public Transform placeHolderForInteractors;
+    public Transform redButtonPlaceHolderTransform;
+
+    public Transform distanceGrabPlaceHolderTransform;
 
     [Header("Squash & Stretch")]
     [SerializeField]
@@ -30,12 +32,13 @@ public class TentPlaceHolder : MonoBehaviour
 
     private void Awake()
     {    
-
-        if (placeHolderForInteractors == null){
-            Debug.LogError("Place Holder for Interactors is not assigned in the inspector.");
+        if (redButtonPlaceHolderTransform == null || distanceGrabPlaceHolderTransform == null)
+        {
+            Debug.LogError("One or more required transforms are not assigned in TentPlaceHolder script.");
 
             return;
         }
+        
         _originalScale = transform.localScale;
         _originalLocalPosition = transform.localPosition;
     }

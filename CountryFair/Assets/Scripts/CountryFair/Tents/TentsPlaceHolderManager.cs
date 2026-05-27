@@ -50,7 +50,8 @@ public class TentsPlaceHolderManager : MonoBehaviour
         for (int i = 0; i < tents.Length; i++)
         {
             if (i != tentIndex){
-                tents[i].gameObject.SetActive(false);
+                // Since the distance grab gameobject is the father of the tent gameobject,just need to it deactivate only  
+                tents[i].distanceGrabRb.gameObject.SetActive(false);
             } 
         }
 
@@ -73,8 +74,9 @@ public class TentsPlaceHolderManager : MonoBehaviour
         UpdateTentsPosition(unselectedTent);
 
         for (int i = 0; i < tents.Length; i++)
-        {
-            tents[i].gameObject.SetActive(true);       
+        {  
+          // Since the distance grab gameobject is the father of the tent gameobject,just need to it activate only
+          tents[i].distanceGrabRb.gameObject.SetActive(true);      
         }
 
         TogglePlaceHolders(false);
@@ -94,12 +96,9 @@ public class TentsPlaceHolderManager : MonoBehaviour
                 _tentsMap[tent] = previousUnselectedTentPlaceHolder;
                 _tentsMap[unselectedTent] = currentUnselectedTentPlaceHolder;
 
-
-                Debug.Log($"Tent '{tent.gameObject.name}' updated its place holder to '{previousUnselectedTentPlaceHolder.gameObject.name}'");
-
                 tent.UpdateTentPlaceHolder(previousUnselectedTentPlaceHolder);
 
-                tent.UpdateTentPosition();
+                tent.SnapToCurrentPlaceHolder();
 
                 return;
             }

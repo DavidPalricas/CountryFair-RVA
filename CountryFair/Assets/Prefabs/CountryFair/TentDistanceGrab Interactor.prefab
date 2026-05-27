@@ -392,11 +392,12 @@ MonoBehaviour:
   ribbon: {fileID: 5095609820523065955}
   ribbonNumber: {fileID: 7695973263277598805}
   currentPlaceHolder: {fileID: 0}
+  placeHolderTransform: {fileID: 1969341499035897780}
   miniGameObjectPrefab: {fileID: 4425362018096994360, guid: 01569bf784932d64199a9ae3852be027, type: 3}
   redButton: {fileID: 8039002754966272010}
-  placeHolderTransform: {fileID: 1969341499035897780}
   gameName: ArcheryGame
   textToShow: Carregue no botao para jogar arco e flecha
+  distanceGrabRb: {fileID: 3357962929272345292}
   OnTentSelectionChanged:
     m_PersistentCalls:
       m_Calls:
@@ -412,7 +413,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  distanceGrabRb: {fileID: 3357962929272345292}
 --- !u!65 &3898872401156983312
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1153,7 +1153,7 @@ MonoBehaviour:
     _pinkyRequirement: 1
     _unselectMode: 0
   _movementProvider: {fileID: 7010255143914679803}
-  _handAligment: 1
+  _handAligment: 0
   _handGrabPoses: []
 --- !u!114 &7505082769446363096
 MonoBehaviour:
