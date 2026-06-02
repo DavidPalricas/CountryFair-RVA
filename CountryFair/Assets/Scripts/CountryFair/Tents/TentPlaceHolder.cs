@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class TentPlaceHolder : MonoBehaviour
 {   
-    [Header("PlaceHolder Transforms")]
     public Transform redButtonPlaceHolderTransform;
-
-    public Transform distanceGrabPlaceHolderTransform;
-
     [Header("Squash & Stretch")]
     
     [SerializeField]
@@ -36,7 +32,7 @@ public class TentPlaceHolder : MonoBehaviour
 
     private void Awake()
     {    
-        if (redButtonPlaceHolderTransform == null || distanceGrabPlaceHolderTransform == null || modelTransform == null)
+        if (redButtonPlaceHolderTransform == null || modelTransform == null)
         {
             Debug.LogError("One or more required transforms are not assigned in TentPlaceHolder script.");
 
@@ -102,24 +98,22 @@ public class TentPlaceHolder : MonoBehaviour
     }
 
 
-
     private void OnTriggerEnter(Collider other){
         if (other.gameObject.CompareTag("Tent")){
-            /* The collider for the tent is a child (the model) of the tent GameObject with the script
-                because this gameobject has the collider that detects the distance grabb interaction
-            */
             MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
+
+            if (tent == null){
+                Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
+
+                return;
+            }
 
             tent.UpdateTentPlaceHolder(this);
         }
     }
      
-    
-      private void OnTriggerExit(Collider other){
+    private void OnTriggerExit(Collider other){
         if (other.gameObject.CompareTag("Tent")){
-            /* The collider for the tent is a child (the model) of the tent GameObject with the script
-                because this gameobject has the collider that detects the distance grabb interaction
-            */
             MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
 
             if (tent == null){

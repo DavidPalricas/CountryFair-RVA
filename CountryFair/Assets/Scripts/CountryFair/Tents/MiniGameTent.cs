@@ -35,8 +35,6 @@ public class MiniGameTent : MonoBehaviour
     [SerializeField] private string gameName = string.Empty;
     [SerializeField] private string textToShow = string.Empty;
 
-    [SerializeField]    
-    public Rigidbody distanceGrabRb;
 
     [SerializeField] private UnityEvent<bool, MiniGameTent> OnTentSelectionChanged;
 
@@ -141,15 +139,14 @@ public class MiniGameTent : MonoBehaviour
     }
 
     private void TentUnselected()
-    {
+    {   
+        Debug.Log("Tent Unselected");
         redButton.SetActive(true);
 
         textBox.gameObject.SetActive(true);
 
         ToggleRibbonStuff(true);
 
-        // Defer the snap to the next FixedUpdate so the ISDK has fully released
-        // control of the Rigidbody before we reposition it.
         StartCoroutine(SnapToPlaceHolderNextFixedUpdate());
     }
 
@@ -163,7 +160,7 @@ public class MiniGameTent : MonoBehaviour
 
         OnTentSelectionChanged.Invoke(false, this);
     }
-
+ 
     private void ToggleRibbonStuff(bool isActive)
     {
         ribbon.SetActive(isActive);
@@ -171,24 +168,15 @@ public class MiniGameTent : MonoBehaviour
     }
 
    public void SnapToCurrentPlaceHolder()
-    {
-        // Kill any residual throw velocity the ISDK applied on release.
-        distanceGrabRb.linearVelocity = Vector3.zero;
-        distanceGrabRb.angularVelocity = Vector3.zero;
-        distanceGrabRb.isKinematic = true;
-
-        Transform distanceGrabPlaceHolderTransform = currentPlaceHolder.distanceGrabPlaceHolderTransform;
-
-        distanceGrabRb.transform.SetPositionAndRotation(distanceGrabPlaceHolderTransform.position, distanceGrabPlaceHolderTransform.rotation);
-
+    {    
         Transform PlaceHolderTransform = currentPlaceHolder.transform;
 
         transform.SetPositionAndRotation(PlaceHolderTransform.position, PlaceHolderTransform.rotation);
-
+        
         Transform redButtonPlaceHolderTransform = currentPlaceHolder.redButtonPlaceHolderTransform;
 
         redButton.transform.SetPositionAndRotation(redButtonPlaceHolderTransform.position, redButtonPlaceHolderTransform.rotation);
-
+        
         SetRibbonNumber(currentPlaceHolder.tentNumber);
         _previousPlaceHolder = currentPlaceHolder;
     }
