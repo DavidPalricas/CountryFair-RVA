@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class TentPlaceHolder : MonoBehaviour
 {   
+    [Header("PlaceHolder Transforms")]
     public Transform redButtonPlaceHolderTransform;
 
     public Transform distanceGrabPlaceHolderTransform;
 
     [Header("Squash & Stretch")]
+    
+    [SerializeField]
+    private Transform modelTransform;
     [SerializeField]
     private float bounceHeight = 0.15f;
     [SerializeField]
@@ -32,15 +36,15 @@ public class TentPlaceHolder : MonoBehaviour
 
     private void Awake()
     {    
-        if (redButtonPlaceHolderTransform == null || distanceGrabPlaceHolderTransform == null)
+        if (redButtonPlaceHolderTransform == null || distanceGrabPlaceHolderTransform == null || modelTransform == null)
         {
             Debug.LogError("One or more required transforms are not assigned in TentPlaceHolder script.");
 
             return;
         }
-        
-        _originalScale = transform.localScale;
-        _originalLocalPosition = transform.localPosition;
+
+        _originalScale = modelTransform.localScale;
+        _originalLocalPosition = modelTransform.localPosition;
     }
 
     private void Start()
@@ -67,25 +71,25 @@ public class TentPlaceHolder : MonoBehaviour
 
             // Rise: body elongates and narrows
         _squashStretchSequence.Append(
-            transform.DOLocalMoveY(_originalLocalPosition.y + bounceHeight, halfDuration)
+            modelTransform.DOLocalMoveY(_originalLocalPosition.y + bounceHeight, halfDuration)
                 .SetEase(Ease.OutSine));
 
         _squashStretchSequence.Join(
-            transform.DOScale(stretchScale, halfDuration)
+            modelTransform.DOScale(stretchScale, halfDuration)
                 .SetEase(Ease.OutSine));
 
             // Fall: body flattens and widens
         _squashStretchSequence.Append(
-            transform.DOLocalMoveY(_originalLocalPosition.y, halfDuration)
+            modelTransform.DOLocalMoveY(_originalLocalPosition.y, halfDuration)
                 .SetEase(Ease.InSine));
 
         _squashStretchSequence.Join(
-            transform.DOScale(squashScale, halfDuration)
+            modelTransform.DOScale(squashScale, halfDuration)
                 .SetEase(Ease.InSine));
 
             // Recover: body returns to original scale
         _squashStretchSequence.Append(
-            transform.DOScale(_originalScale, recoverDuration)
+            modelTransform.DOScale(_originalScale, recoverDuration)
                 .SetEase(Ease.InSine));
 
         _squashStretchSequence.SetLoops(INFINITE_LOOPS, LoopType.Restart);
@@ -94,7 +98,7 @@ public class TentPlaceHolder : MonoBehaviour
     private void OnDestroy()
     {
         _squashStretchSequence?.Kill();
-        transform.DOKill();
+        modelTransform?.DOKill();
     }
 
 

@@ -40,9 +40,6 @@ public class MiniGameTent : MonoBehaviour
 
     [SerializeField] private UnityEvent<bool, MiniGameTent> OnTentSelectionChanged;
 
-
-  
-
     private GameObject miniGameObject;
     private bool isSelected = false;
    
@@ -138,6 +135,7 @@ public class MiniGameTent : MonoBehaviour
     private void TentSelected()
     {
         redButton.SetActive(false);
+        textBox.gameObject.SetActive(false);
         ToggleRibbonStuff(false);
         OnTentSelectionChanged.Invoke(true, this);
     }
@@ -145,6 +143,8 @@ public class MiniGameTent : MonoBehaviour
     private void TentUnselected()
     {
         redButton.SetActive(true);
+
+        textBox.gameObject.SetActive(true);
 
         ToggleRibbonStuff(true);
 
