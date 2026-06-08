@@ -11,31 +11,30 @@ public class CountryFairCheatCodes : CheatCodes
 {
     /// <summary>Reference to the Archery tent component used to trigger scene loading via cheat.</summary>
     [SerializeField]
-    private ShowTentData archeryTentData;
+    private MiniGameTent archeryTent;
 
     /// <summary>Reference to the Frisbee tent component used to trigger scene loading via cheat.</summary>
     [SerializeField]
-    private ShowTentData frisbeeTentData;
+    private MiniGameTent frisbeeTent;
 
     /// <summary>Reference to the dialogue script used to skip the intro sequence via cheat.</summary>
     [SerializeField]
     private CountryFairDialogue countryFairDialogue;
 
-
     private bool _introCompleted = false;
 
     private void Awake()
     {
-       if (archeryTentData == null)
+       if (archeryTent == null)
         {
-            Debug.LogError("Archery Tent Data reference is not assigned in the inspector.");
+            Debug.LogError("Archery Tent  reference is not assigned in the inspector.");
 
             return;
         }
 
-        if (frisbeeTentData == null)
+        if (frisbeeTent == null)
         {
-            Debug.LogError("Frisbee Tent Data reference is not assigned in the inspector.");
+            Debug.LogError("Frisbee Tent  reference is not assigned in the inspector.");
 
             return;
         }
@@ -46,7 +45,6 @@ public class CountryFairCheatCodes : CheatCodes
 
             return;
         }
-
 
         _introCompleted = GameManager.GetInstance().IntroCompleted;
 
@@ -98,11 +96,11 @@ public class CountryFairCheatCodes : CheatCodes
        
        if (isFrisbee)
         {
-            frisbeeTentData.GoToMiniGame();
+            frisbeeTent.GoToMiniGame();
             return;
         }
 
-         archeryTentData.GoToMiniGame();
+         archeryTent.GoToMiniGame();
     }
 }
    
