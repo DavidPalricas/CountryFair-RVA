@@ -16,65 +16,74 @@ using System.Collections;
 
 public class MiniGameTent : MonoBehaviour
 {
-    [Header("Game Tent Data")]
-    [SerializeField] private TextMeshProUGUI textBox;
-    [SerializeField] private GameObject ribbon;
-    [SerializeField] private TextMeshProUGUI ribbonNumber;
+    [Header("Text elements")]
+    [SerializeField] 
+    private TextMeshProUGUI tentText;
 
+    [SerializeField] 
+    private TextMeshProUGUI tentNumber;
 
     [Header("PlaceHolders")]
     [SerializeField] 
-    private TentPlaceHolder currentPlaceHolder;
+    private TentPlaceHolder currentTentPlaceHolder;
     [SerializeField] 
-    private Transform placeHolderTransform;
+    private Transform miniGamePropPlaceHolderTransform;
+    
+    [Header("Tent Objects")]
+    [SerializeField] 
+    private GameObject miniGamePropPrefab;
+    [SerializeField] 
+    private GameObject buttonToPlayMiniGame;
 
-    [SerializeField] private GameObject miniGameObjectPrefab;
-    [SerializeField] private GameObject redButton;
+    [SerializeField] 
+    private GameObject ribbon;
   
+    [Header("Info to Display")]
+    [SerializeField] 
+    private string miniGameName = string.Empty;
+    [SerializeField] 
+    private string textToShow = string.Empty;
 
-    [SerializeField] private string gameName = string.Empty;
-    [SerializeField] private string textToShow = string.Empty;
+    [SerializeField] 
+    private UnityEvent<bool, MiniGameTent> OnTentSelectionChanged;
 
-
-    [SerializeField] private UnityEvent<bool, MiniGameTent> OnTentSelectionChanged;
-
-    private GameObject miniGameObject;
-    private bool isSelected = false;
+    private GameObject _miniGameProp;
+    private bool _isSelected = false;
    
     private TentPlaceHolder _previousPlaceHolder;
 
     private void Awake()
     {
-        textBox.text = textToShow;
+        tentText.text = textToShow;
 
-        if (redButton == null)
+        if (buttonToPlayMiniGame == null)
         {
             Debug.LogError("Red Button is not assigned in MiniGameTent script.");
             return;
         }
 
-        redButton.SetActive(false);
+        buttonToPlayMiniGame.SetActive(false);
 
-        if (miniGameObjectPrefab == null)
+        if (miniGamePropPrefab == null)
         {
             Debug.LogError("Mini Game Object is not assigned in MiniGameTent script.");
             return;
         }
 
-        if (ribbonNumber == null)
+        if (tentNumber == null)
         {
             Debug.LogError("Ribbon Number Text is not assigned in MiniGameTent script.");
             return;
         }
 
-        if (currentPlaceHolder == null || placeHolderTransform == null)
+        if (currentTentPlaceHolder == null || miniGamePropPlaceHolderTransform == null)
         {
             Debug.LogError("One or more required transforms are not assigned in MiniGameTent script.");
         }
 
-        _previousPlaceHolder = currentPlaceHolder;
+        _previousPlaceHolder = currentTentPlaceHolder;
 
-        SetRibbonNumber(currentPlaceHolder.tentNumber);
+        SetTentNumber(currentTentPlaceHolder.tentNumber);
 
         SnapToCurrentPlaceHolder();
     }
@@ -86,7 +95,7 @@ public class MiniGameTent : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!isSelected)
+        if (!_isSelected)
         {
             CheckIfPlayerWantsToGoToMiniGame();
         }
@@ -99,41 +108,41 @@ public class MiniGameTent : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
         {
             bool isToShowData = hitInfo.collider == GetComponent<Collider>();
-            redButton.SetActive(isToShowData);
+            buttonToPlayMiniGame.SetActive(isToShowData);
         }
     }
 
     private void AddMiniGameObject()
     {
-        miniGameObject = Instantiate(
-            miniGameObjectPrefab,
-            placeHolderTransform.position + placeHolderTransform.up * 0.1f,
-            miniGameObjectPrefab.transform.rotation
+        _miniGameProp = Instantiate(
+            miniGamePropPrefab,
+            miniGamePropPlaceHolderTransform.position + miniGamePropPlaceHolderTransform.up * 0.1f,
+            miniGamePropPrefab.transform.rotation
         );
 
-        miniGameObject.transform.parent = transform;
+        _miniGameProp.transform.parent = transform;
     }
 
     public void GoToMiniGame()
     {
-        if (SceneManager.GetSceneByName(gameName) == null)
+        if (SceneManager.GetSceneByName(miniGameName) == null)
         {
-            Debug.LogError("Scene " + gameName + " not found. Make sure the scene is added to the build settings.");
+            Debug.LogWarning("Scene " + miniGameName + " not found. Make sure the scene is added to the build settings.");
             return;
         }
 
-        SceneManager.LoadScene(gameName);
+        SceneManager.LoadScene(miniGameName);
     }
 
-    private void SetRibbonNumber(int number)
+    private void SetTentNumber(int number)
     {
-        ribbonNumber.text = number.ToString();
+        tentNumber.text = number.ToString();
     }
 
     private void TentSelected()
     {
-        redButton.SetActive(false);
-        textBox.gameObject.SetActive(false);
+        buttonToPlayMiniGame.SetActive(false);
+        tentText.gameObject.SetActive(false);
         ToggleRibbonStuff(false);
         OnTentSelectionChanged.Invoke(true, this);
     }
@@ -141,9 +150,9 @@ public class MiniGameTent : MonoBehaviour
     private void TentUnselected()
     {   
         Debug.Log("Tent Unselected");
-        redButton.SetActive(true);
+        buttonToPlayMiniGame.SetActive(true);
 
-        textBox.gameObject.SetActive(true);
+         tentText.gameObject.SetActive(true);
 
         ToggleRibbonStuff(true);
 
@@ -164,26 +173,26 @@ public class MiniGameTent : MonoBehaviour
     private void ToggleRibbonStuff(bool isActive)
     {
         ribbon.SetActive(isActive);
-        ribbonNumber.gameObject.SetActive(isActive);
+        tentText.gameObject.SetActive(isActive);
     }
 
    public void SnapToCurrentPlaceHolder()
     {    
-        Transform PlaceHolderTransform = currentPlaceHolder.transform;
+        Transform PlaceHolderTransform = currentTentPlaceHolder.transform;
 
         transform.SetPositionAndRotation(PlaceHolderTransform.position, PlaceHolderTransform.rotation);
         
-        Transform redButtonPlaceHolderTransform = currentPlaceHolder.redButtonPlaceHolderTransform;
+        Transform buttonToPlayMiniGamePlaceHolderTransform = currentTentPlaceHolder.miniGameButtonPlaceHolderTransform;
 
-        redButton.transform.SetPositionAndRotation(redButtonPlaceHolderTransform.position, redButtonPlaceHolderTransform.rotation);
+        buttonToPlayMiniGame.transform.SetPositionAndRotation(buttonToPlayMiniGamePlaceHolderTransform.position, buttonToPlayMiniGamePlaceHolderTransform.rotation);
         
-        SetRibbonNumber(currentPlaceHolder.tentNumber);
-        _previousPlaceHolder = currentPlaceHolder;
+        SetTentNumber(currentTentPlaceHolder.tentNumber);
+        _previousPlaceHolder = currentTentPlaceHolder;
     }
 
     public void HandleGrab(bool isGrabbed)
     {
-        isSelected = isGrabbed;
+        _isSelected = isGrabbed;
 
         if (isGrabbed)
         {
@@ -197,16 +206,16 @@ public class MiniGameTent : MonoBehaviour
     public void UpdateTentPlaceHolder(TentPlaceHolder newPlaceHolder)
     {   
         if (newPlaceHolder == null){
-            currentPlaceHolder = _previousPlaceHolder;
+            currentTentPlaceHolder = _previousPlaceHolder;
 
             return;
         }
 
-        currentPlaceHolder = newPlaceHolder;
+        currentTentPlaceHolder = newPlaceHolder;
     }
 
     public TentPlaceHolder GetCurrentPlaceHolder()
     {
-        return currentPlaceHolder;
+        return currentTentPlaceHolder;
     }
 }

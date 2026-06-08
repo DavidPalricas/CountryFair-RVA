@@ -547,7 +547,7 @@ GameObject:
   - component: {fileID: 8214322074871234744}
   - component: {fileID: 3506030923973466825}
   m_Layer: 0
-  m_Name: PlaceHolder
+  m_Name: MiniGamePropPlaceHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -814,14 +814,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4a250fe0b9a1b44aa7fe700e594b2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopText
-  textBox: {fileID: 3596917416150404703}
+  tentText: {fileID: 3596917416150404703}
+  tentNumber: {fileID: 7352726266872265547}
+  currentTentPlaceHolder: {fileID: 0}
+  miniGamePropPlaceHolderTransform: {fileID: 6839398699251963092}
+  miniGamePropPrefab: {fileID: 0}
+  buttonToPlayMiniGame: {fileID: 3600738284315101235}
   ribbon: {fileID: 6632847624679459000}
-  ribbonNumber: {fileID: 7352726266872265547}
-  currentPlaceHolder: {fileID: 0}
-  placeHolderTransform: {fileID: 6839398699251963092}
-  miniGameObjectPrefab: {fileID: 4425362018096994360, guid: 01569bf784932d64199a9ae3852be027, type: 3}
-  redButton: {fileID: 3600738284315101235}
-  gameName: ArcheryGame
+  miniGameName: 
   textToShow: Carregue no botao para jogar arco e flecha
   OnTentSelectionChanged:
     m_PersistentCalls:
@@ -1317,7 +1317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125640, guid: d2d6934a666a18d46b8b7a3864dc9f63, type: 3}
       propertyPath: m_Name
-      value: BigRedButton
+      value: ButtonToPlayMiniGame
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125640, guid: d2d6934a666a18d46b8b7a3864dc9f63, type: 3}
       propertyPath: m_Layer

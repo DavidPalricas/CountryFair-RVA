@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TentPlaceHolder : MonoBehaviour
 {   
-    public Transform redButtonPlaceHolderTransform;
+    public Transform miniGameButtonPlaceHolderTransform;
     [Header("Squash & Stretch")]
     
     [SerializeField]
@@ -32,7 +32,7 @@ public class TentPlaceHolder : MonoBehaviour
 
     private void Awake()
     {    
-        if (redButtonPlaceHolderTransform == null || modelTransform == null)
+        if (miniGameButtonPlaceHolderTransform == null || modelTransform == null)
         {
             Debug.LogError("One or more required transforms are not assigned in TentPlaceHolder script.");
 
