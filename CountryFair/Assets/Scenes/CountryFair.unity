@@ -5995,6 +5995,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FishTent
       objectReference: {fileID: 0}
+    - target: {fileID: 6839398699251963092, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 506
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -28166,8 +28170,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
+      propertyPath: textToShow
+      value: Carregue no botao para jogar o jogo do pato
+      objectReference: {fileID: 0}
+    - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: miniGameName
-      value: archery
+      value: duck
       objectReference: {fileID: 0}
     - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: distanceGrabRb
@@ -28184,7 +28192,7 @@ PrefabInstance:
     - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: miniGamePropPrefab
       value: 
-      objectReference: {fileID: 4425362018096994360, guid: 01569bf784932d64199a9ae3852be027, type: 3}
+      objectReference: {fileID: 5319194762821552515, guid: 0283159d65e61fb4d90b109da1e592a0, type: 3}
     - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: buttonToPlayMiniGame
       value: 
@@ -28203,7 +28211,11 @@ PrefabInstance:
       objectReference: {fileID: 1728798950}
     - target: {fileID: 5781190689584395527, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: m_Name
-      value: ArcheryTent (2)
+      value: DuckTent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6839398699251963092, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
