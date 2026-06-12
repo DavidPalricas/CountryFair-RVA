@@ -142,8 +142,12 @@ public class MiniGameTent : MonoBehaviour
     private void TentSelected()
     {
         buttonToPlayMiniGame.SetActive(false);
+
         tentText.gameObject.SetActive(false);
+        tentNumber.gameObject.SetActive(false);
+
         ToggleRibbonStuff(false);
+
         OnTentSelectionChanged.Invoke(true, this);
     }
 
@@ -152,7 +156,8 @@ public class MiniGameTent : MonoBehaviour
         Debug.Log("Tent Unselected");
         buttonToPlayMiniGame.SetActive(true);
 
-         tentText.gameObject.SetActive(true);
+        tentText.gameObject.SetActive(true);
+        tentNumber.gameObject.SetActive(true);
 
         ToggleRibbonStuff(true);
 
