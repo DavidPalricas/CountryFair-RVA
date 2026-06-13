@@ -1,18 +1,30 @@
 using DG.Tweening;
 using UnityEngine;
 
-
+/// <summary>
+/// Marks a slot where a <see cref="MiniGameTent"/> can be placed and plays a looping
+/// squash-and-stretch bounce animation to make the empty slot visible to the player.
+/// Trigger collider callbacks inform the active tent which placeholder it is hovering over.
+/// </summary>
 public class TentPlaceHolder : MonoBehaviour
-{   
+{
+    /// <summary>Transform used to position the tent's play button when a tent snaps to this slot.</summary>
     public Transform miniGameButtonPlaceHolderTransform;
+
     [Header("Squash & Stretch")]
-    
+    /// <summary>Child transform that carries the visual model being animated.</summary>
     [SerializeField]
     private Transform modelTransform;
+
+    /// <summary>How high the model rises above its rest position during the bounce, in local units.</summary>
     [SerializeField]
     private float bounceHeight = 0.15f;
+
+    /// <summary>Total duration of one full bounce cycle (rise + fall + recover), in seconds.</summary>
     [SerializeField]
-     private float bounceDuration = 1.2f;
+    private float bounceDuration = 1.2f;
+
+    /// <summary>Intensity of the squash and stretch deformation (0 = none, 0.5 = maximum).</summary>
     [Range(0f, 0.5f)]
     [SerializeField]
     private float squashAmount = 0.12f;
@@ -27,11 +39,12 @@ public class TentPlaceHolder : MonoBehaviour
     private Vector3 _originalLocalPosition;
     private Sequence _squashStretchSequence;
 
-
+    /// <summary>Slot number displayed on the tent ribbon when a tent occupies this placeholder.</summary>
     public int tentNumber = 1;
 
+    /// <summary>Caches the model's original scale and local position as the animation baseline.</summary>
     private void Awake()
-    {    
+    {
         if (miniGameButtonPlaceHolderTransform == null || modelTransform == null)
         {
             Debug.LogError("One or more required transforms are not assigned in TentPlaceHolder script.");
@@ -43,11 +56,16 @@ public class TentPlaceHolder : MonoBehaviour
         _originalLocalPosition = modelTransform.localPosition;
     }
 
+    /// <summary>Starts the looping squash-and-stretch bounce sequence.</summary>
     private void Start()
     {
         StartSquashStretch();
     }
 
+    /// <summary>
+    /// Builds and plays the DOTween Sequence that cycles through rise (stretch), fall (squash),
+    /// and recover phases on an infinite loop.
+    /// </summary>
     private void StartSquashStretch()
     {
         float halfDuration = bounceDuration * HALF_DURATION_RATIO;
@@ -91,14 +109,19 @@ public class TentPlaceHolder : MonoBehaviour
         _squashStretchSequence.SetLoops(INFINITE_LOOPS, LoopType.Restart);
     }
 
+    /// <summary>Kills the bounce sequence and any stray tweens on the model to prevent callbacks after destruction.</summary>
     private void OnDestroy()
     {
         _squashStretchSequence?.Kill();
         modelTransform?.DOKill();
     }
 
-
-    private void OnTriggerEnter(Collider other){
+    /// <summary>
+    /// Notifies the entering tent that it is now hovering over this placeholder,
+    /// allowing it to snap here when released.
+    /// </summary>
+    private void OnTriggerEnter(Collider other)
+    {
         if (other.gameObject.CompareTag("Tent")){
             MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
 
@@ -111,8 +134,13 @@ public class TentPlaceHolder : MonoBehaviour
             tent.UpdateTentPlaceHolder(this);
         }
     }
-     
-    private void OnTriggerExit(Collider other){
+
+    /// <summary>
+    /// Notifies the exiting tent that it has left this placeholder's zone,
+    /// causing it to revert to its previous valid placeholder.
+    /// </summary>
+    private void OnTriggerExit(Collider other)
+    {
         if (other.gameObject.CompareTag("Tent")){
             MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
 
