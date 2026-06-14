@@ -157,6 +157,8 @@ Immediate decrease also fires if the player misses `failingConsecutiveThreshold`
 
 All three inherit `EmotionDisplay : NetworkBehaviour` and sync state via server-authoritative `NetworkVariable<T>`.
 
+> **Note (testing):** For testing purposes, the emotion-recognition server address in `ServerListener` was set to a static IP.
+
 ---
 
 # 🚀 Getting Started
@@ -209,35 +211,6 @@ All three inherit `EmotionDisplay : NetworkBehaviour` and sync state via server-
 
 ---
 
-# ⚙️ Configuration & Key Serialized Fields
-
-| Component | Field | Effect |
-|---|---|---|
-| `MiniGameManager` | `targetsCount` | Base number of targets at difficulty 0 |
-| `MiniGameManager` | `targetsPerLevel` | Extra targets added per difficulty level |
-| `MiniGameManager` | `sessionScoreGoal` | Successful actions needed to complete a session |
-| `CarnyWise` | `precisionThresholdToIncreaseDiff` | Precision ≥ this value counts as excelling (default 0.7) |
-| `CarnyWise` | `precisionThresholdToDecreaseDiff` | Precision ≤ this value counts as struggling (default 0.3) |
-| `CarnyWise` | `thresholdToChangeDiff` | Consecutive excel/struggle tasks needed to change difficulty (default 3) |
-| `CarnyWise` | `failingConsecutiveThreshold` | Consecutive misses that immediately decrease difficulty (default 4) |
-| `ArcheryGameManager` | `movingRatioCurve` / `transparencyRatioCurve` | AnimationCurves mapping difficulty saturation to balloon behavior |
-| `ArcheryGameManager` | `slowMoveDuration` / `fastMoveDuration` | Balloon movement duration at min/max difficulty (default 6 s / 1.5 s) |
-| `FrisbeeGameManager` | `distanceIncrement` | Meters added to dog distance per difficulty level (default 2.5 m) |
-| `FrisbeeGameManager` | `maxDogDistance` | Maximum dog distance cap (default 20 m) |
-| `ConnectionManager` | `serverIp` / `serverPort` | Unity Netcode transport endpoint (default `172.20.10.2:50050`) |
-| `ServerListener` | `serverIP` / `serverPort` | TCP emotion server endpoint (default `172.20.10.2:50050`) |
-
----
-
-# ⚠️ Known Limitations
-
-- **Duck and Fishing tents are stubs.** `MiniGameTent.MINI_GAMES` includes `DUCK` and `FISHING` enum values, but `GoToMiniGame()` returns early for both no scenes are wired to these tents yet. `DuckSwim.cs` exists but there is no `DuckGame.unity` scene.
-- **Recursive NavMesh sampling.** `FrisbeeGameManager.GetRandomTargetPosition()` and `ArcheryGameManager.GetRandomTargetPosition()` recurse until a valid position is found, which can cause a stack overflow if the spawn area is too small or fully occluded.
-- **Hardcoded server IP.** Both `ConnectionManager` and `ServerListener` default to `172.20.10.2:50050`, which must be changed in the Inspector or at build time for different network environments.
-- **`MiniGameManager` virtual methods log errors instead of throwing.** Derived classes must override `ChangeDifficulty`, `ApplyDifficultySettings`, `SyncTargets`, etc.; the base implementations call `Debug.LogError` rather than being abstract  easy to miss during early development.
-
----
-
 # 🛠️ Tools Used
 
 | Tool | Purpose |
@@ -251,12 +224,22 @@ All three inherit `EmotionDisplay : NetworkBehaviour` and sync state via server-
 
 # 🙏 Acknowledgments
 
-Some models were imported from the [Poly Pizza website](https://poly.pizza/). Here are the authors of those models:
+The following 3D assets were sourced from [Poly Pizza](https://poly.pizza/) and the Unity Asset Store:
 
-- [Google](https://poly.pizza/u/Poly%20by%20Google)
-- [Quaternius](https://poly.pizza/u/Quaternius)
-- [J-Toastie](https://poly.pizza/u/J-Toastie)
-- [sirkitree](https://poly.pizza/u/sirkitree)
+| Asset | Author | Link |
+|---|---|---|
+| Sheep Model | Google | [poly.pizza/m/dXBMV4AY2DL](https://poly.pizza/m/dXBMV4AY2DL) |
+| Ferris Wheel Model | Google | [poly.pizza/m/5KiVEnXN5Cw](https://poly.pizza/m/5KiVEnXN5Cw) |
+| Tent Model | Google | [poly.pizza/m/9Ob6OO8HMjX](https://poly.pizza/m/9Ob6OO8HMjX) |
+| Fair Animals Models and Animations (Bundle) | Quaternius | [poly.pizza/bundle/Animated-Animal-Pack-ILAPXeUYiS](https://poly.pizza/bundle/Animated-Animal-Pack-ILAPXeUYiS) |
+| Persons Models and Animations (Bundle) | J-Toastie | [poly.pizza/bundle/CUTES-Part-One-WD91WrT0gx](https://poly.pizza/bundle/CUTES-Part-One-WD91WrT0gx) |
+| Carnival Booth Model | sirkitree | [poly.pizza/m/4NizXJZsuO2](https://poly.pizza/m/4NizXJZsuO2) |
+| Merry Go-Round Model | sirkitree | [poly.pizza/m/8BliGG-e55g](https://poly.pizza/m/8BliGG-e55g) |
+| Ground Model | Adam Tomkins | [poly.pizza/m/achm-Cr9Rr3](https://poly.pizza/m/achm-Cr9Rr3) |
+| Big Tent Model | Ian MacGillivray | [poly.pizza/m/0TmXixFN81A](https://poly.pizza/m/0TmXixFN81A) |
+| Popcorn Cart Model | Don Carson | [poly.pizza/m/1T9untmohmj](https://poly.pizza/m/1T9untmohmj) |
+| Bench Model | Sammy | [poly.pizza/m/3ytbP2GLb0b](https://poly.pizza/m/3ytbP2GLb0b) |
+| SkyBox Texture | Borodar | [assetstore.unity.com — Farland Skies: Cloudy Crown](https://assetstore.unity.com/packages/2d/textures-materials/sky/farland-skies-cloudy-crown-60004) |
 
 ---
 
@@ -264,6 +247,3 @@ Some models were imported from the [Poly Pizza website](https://poly.pizza/). He
 
 - Part of this project was developed for the [Virtual And Augmented Reality](https://www.ua.pt/en/uc/12023) and [Serious Games](https://www.ua.pt/en/uc/15477) courses at the **University of Aveiro**.
 - Development period: 2025–Present.
-- Source repository: [github.com/DavidPalricas/CountryFair-VR](https://github.com/DavidPalricas/CountryFair-VR)
-
-<!-- Add your license here (e.g. MIT, Apache 2.0) -->
