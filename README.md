@@ -33,9 +33,9 @@ We propose a solution set in a VR Country Fair environment, designed to enhance 
 - **Immersive Virtual Reality** and serious mini-games to combat demotivation and increase engagement.
 - A **rule-based Dynamic Difficulty Adjustment (DDA)** system `CarnyWise` that adapts game parameters in real time based on player performance (precision and time), promoting an optimal flow state via consecutive-attempt counters and configurable thresholds.
 - **3D spatial audio** (via FMOD) to reinforce environmental immersion and provide directional feedback.
-- **Hand-tracking interaction** on Meta Quest 3 — pinch gestures detected in `BowHandTracking.cs` with controller fallback — enabling natural gesture-based gameplay without controllers.
-- **Personalized hub layout** — players can grab and rearrange mini-game tents (`MiniGameTent.cs`, `TentsPlaceHolderManager.cs`) to set their preferred play order using the Meta XR Distance Grab interaction.
-- **Networked emotion display** — a therapist-facing system streams patient emotional state in real time via TCP (`ServerListener.cs`) and Unity Netcode (`ExpressionDisplay.cs`, `SliderDisplay.cs`), with three randomly-selected display modes per session: emoji faces, facial expressions, and a cumulative mood slider.
+- **Hand-tracking interaction** on Meta Quest 3 pinch gestures detected in `BowHandTracking.cs` with controller fallback  enabling natural gesture-based gameplay without controllers.
+- **Personalized hub layout** players can grab and rearrange mini-game tents (`MiniGameTent.cs`, `TentsPlaceHolderManager.cs`) to set their preferred play order using the Meta XR Distance Grab interaction.
+- **Networked emotion display** a therapist-facing system streams patient emotional state in real time via TCP (`ServerListener.cs`) and Unity Netcode (`ExpressionDisplay.cs`, `SliderDisplay.cs`), with three randomly-selected display modes per session: emoji faces, facial expressions, and a cumulative mood slider.
 - **Score and streak system** (`ScoreAndStreakSystem.cs`) with DOTween-animated UI feedback and session goal tracking.
 - **JSON-driven dialogue system** (`UIDialog.cs`) for onboarding dialogues and tutorial flows, loading from `StreamingAssets/DialogFiles/`.
 
@@ -118,13 +118,13 @@ Three self-contained scenes connected by `SceneManager.LoadScene`:
 
 ### Communication Patterns
 
-- **`UnityEvent<T>`** — primary cross-component wiring done in Inspector (e.g., `CarnyWise.changeDifficulty` → `MiniGameManager.ChangeDifficulty`, `ScoreAndStreakSystem.sessionGoalReached` → `CarnyWise.SessionGoalReached`)
-- **`PlayerPrefs`** — cross-scene persistence for difficulty levels (`FrisbeeDifficultyLevel`, `ArcheryDifficultyLevel`), dog distance (`DogDistance`), session goal (`SessionGoal`), and scoring color (`BalloonColorToScore`)
-- **`NetworkVariable<T>`** (Unity Netcode) — server-authoritative sync for `ExpressionDisplay` and `SliderDisplay`
+- **`UnityEvent<T>`** primary cross-component wiring done in Inspector (e.g., `CarnyWise.changeDifficulty` → `MiniGameManager.ChangeDifficulty`, `ScoreAndStreakSystem.sessionGoalReached` → `CarnyWise.SessionGoalReached`)
+- **`PlayerPrefs`** cross-scene persistence for difficulty levels (`FrisbeeDifficultyLevel`, `ArcheryDifficultyLevel`), dog distance (`DogDistance`), session goal (`SessionGoal`), and scoring color (`BalloonColorToScore`)
+- **`NetworkVariable<T>`** (Unity Netcode) server-authoritative sync for `ExpressionDisplay` and `SliderDisplay`
 
 ### Finite State Machine (FSM)
 
-`FSM.cs` / `State.cs` / `Transition.cs` — a serializable FSM used by both animal ambients and mini-game actors:
+`FSM.cs` / `State.cs` / `Transition.cs` a serializable FSM used by both animal ambients and mini-game actors:
 
 ```
 State (abstract)
@@ -151,9 +151,9 @@ Immediate decrease also fires if the player misses `failingConsecutiveThreshold`
 ### Emotion Display System
 
 `ServerListener` connects via TCP to an external emotion-recognition server, polling at `pollIntervalSeconds` (default 0.5 s). One of three display modes is randomly selected per session:
-- **Emoji mode** — `ExpressionDisplay` shows one of 7 expression GameObjects (SAD, HAPPY, ANGRY, DISGUST, SURPRISE, FEAR, NEUTRAL)
-- **Face mode** — second `ExpressionDisplay` instance with a different visual set
-- **Slider mode** — `SliderDisplay` nudges a cumulative mood bar up (POSITIVE) or down (NEGATIVE)
+- **Emoji mode** `ExpressionDisplay` shows one of 7 expression GameObjects (SAD, HAPPY, ANGRY, DISGUST, SURPRISE, FEAR, NEUTRAL)
+- **Face mode** second `ExpressionDisplay` instance with a different visual set
+- **Slider mode** `SliderDisplay` nudges a cumulative mood bar up (POSITIVE) or down (NEGATIVE)
 
 All three inherit `EmotionDisplay : NetworkBehaviour` and sync state via server-authoritative `NetworkVariable<T>`.
 
@@ -192,7 +192,7 @@ All three inherit `EmotionDisplay : NetworkBehaviour` and sync state via server-
 | Draw bow | Pinch (index + middle + ring > 0.25 strength) or primary index trigger > 0.2 |
 | Release arrow | Open hand (release pinch) |
 | Throw frisbee | Wrist flick gesture detected by `FrisbeeTrajectory.cs` |
-| Cheat codes (keyboard) | Type code in Editor — see table below |
+| Cheat codes (keyboard) | Type code in Editor see table below |
 
 ### Developer Cheat Codes (all mini-game scenes)
 
@@ -231,10 +231,10 @@ All three inherit `EmotionDisplay : NetworkBehaviour` and sync state via server-
 
 # ⚠️ Known Limitations
 
-- **Duck and Fishing tents are stubs.** `MiniGameTent.MINI_GAMES` includes `DUCK` and `FISHING` enum values, but `GoToMiniGame()` returns early for both — no scenes are wired to these tents yet. `DuckSwim.cs` exists but there is no `DuckGame.unity` scene.
+- **Duck and Fishing tents are stubs.** `MiniGameTent.MINI_GAMES` includes `DUCK` and `FISHING` enum values, but `GoToMiniGame()` returns early for both no scenes are wired to these tents yet. `DuckSwim.cs` exists but there is no `DuckGame.unity` scene.
 - **Recursive NavMesh sampling.** `FrisbeeGameManager.GetRandomTargetPosition()` and `ArcheryGameManager.GetRandomTargetPosition()` recurse until a valid position is found, which can cause a stack overflow if the spawn area is too small or fully occluded.
 - **Hardcoded server IP.** Both `ConnectionManager` and `ServerListener` default to `172.20.10.2:50050`, which must be changed in the Inspector or at build time for different network environments.
-- **`MiniGameManager` virtual methods log errors instead of throwing.** Derived classes must override `ChangeDifficulty`, `ApplyDifficultySettings`, `SyncTargets`, etc.; the base implementations call `Debug.LogError` rather than being abstract — easy to miss during early development.
+- **`MiniGameManager` virtual methods log errors instead of throwing.** Derived classes must override `ChangeDifficulty`, `ApplyDifficultySettings`, `SyncTargets`, etc.; the base implementations call `Debug.LogError` rather than being abstract  easy to miss during early development.
 
 ---
 
