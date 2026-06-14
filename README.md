@@ -28,14 +28,15 @@ Traditional post-stroke rehabilitation often suffers from low patient adherence 
 
 # 💡 Our Approach
 
-We propose a solution set in a VR Country Fair environment, designed to enhance patient motivation and engagement. The system utilizes:
+We propose a solution set in a VR Country Fair environment, designed to enhance stroke survivor motivation and engagement. The system utilizes:
 
-- **Immersive Virtual Reality** and serious mini-games to combat demotivation and increase engagement.
-- A **rule-based Dynamic Difficulty Adjustment (DDA)** system `CarnyWise` that adapts game parameters in real time based on player performance (precision and time), promoting an optimal flow state via consecutive-attempt counters and configurable thresholds.
+- **Immersive Virtual Reality** and serious mini-games to combat demotivation and increase engagement among stroke survivors.
+- A **rule-based Dynamic Difficulty Adjustment (DDA)** system `CarnyWise` that adapts game parameters in real time based on stroke survivor performance (precision and time), promoting an optimal flow state via consecutive-attempt counters and configurable thresholds.
 - **3D spatial audio** (via FMOD) to reinforce environmental immersion and provide directional feedback.
-- **Hand-tracking interaction** on Meta Quest 3 pinch gestures detected in `BowHandTracking.cs` with controller fallback  enabling natural gesture-based gameplay without controllers.
-- **Personalized hub layout** players can grab and rearrange mini-game tents (`MiniGameTent.cs`, `TentsPlaceHolderManager.cs`) to set their preferred play order using the Meta XR Distance Grab interaction.
-- **Networked emotion display** a therapist-facing system streams patient emotional state in real time via TCP (`ServerListener.cs`) and Unity Netcode (`ExpressionDisplay.cs`, `SliderDisplay.cs`), with three randomly-selected display modes per session: emoji faces, facial expressions, and a cumulative mood slider.
+- **Hand-tracking interaction** on Meta Quest 3 — pinch gestures detected in `BowHandTracking.cs` with controller fallback — enabling natural gesture-based gameplay without controllers.
+- **Personalized hub layout** — healthcare professionals can grab and rearrange mini-game tents (`MiniGameTent.cs`, `TentsPlaceHolderManager.cs`) before each session to set the desired activity order for the stroke survivor, using the Meta XR Distance Grab interaction.
+- **Hybrid difficulty personalization via cheat codes** — beyond automated DDA, healthcare professionals can manually adjust the difficulty level at runtime using a keyboard cheat code system (`CheatCodes.cs`, `MiniGameCheatCodes.cs`), creating a **hybrid personalization model** that combines automatic adaptation with direct clinician control. The same system also exposes additional session management capabilities (skipping tutorial phases, triggering score/miss events, controlling the emotion display), though these fall outside the scope of personalization itself.
+- **Networked emotion display** — a therapist-facing system streams stroke survivor emotional state in real time via TCP (`ServerListener.cs`) and Unity Netcode (`ExpressionDisplay.cs`, `SliderDisplay.cs`), with three randomly-selected display modes per session: emoji faces, facial expressions, and a cumulative mood slider.
 - **Score and streak system** (`ScoreAndStreakSystem.cs`) with DOTween-animated UI feedback and session goal tracking.
 - **JSON-driven dialogue system** (`UIDialog.cs`) for onboarding dialogues and tutorial flows, loading from `StreamingAssets/DialogFiles/`.
 
@@ -100,6 +101,8 @@ CountryFair/
 ---
 
 # 🏗️ Architecture Overview
+
+![Game Architecture Diagram](GameArch/GameArch.jpg)
 
 ### Singletons / Managers
 
