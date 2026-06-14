@@ -196,18 +196,24 @@ All three inherit `EmotionDisplay : NetworkBehaviour` and sync state via server-
 | Throw frisbee | Wrist flick gesture detected by `FrisbeeTrajectory.cs` |
 | Cheat codes (keyboard) | Type code in Editor see table below |
 
-### Developer Cheat Codes (all mini-game scenes)
+### Keyboard Cheat Codes (available to healthcare professionals at runtime)
 
-| Code | Effect |
-|---|---|
-| `return` | Return to CountryFair scene |
-| `tutorial` | Skip tutorial |
-| `reset` | Reset difficulty to 0 |
-| `miss` | Trigger player-missed event |
-| `score` | Trigger player-scored event |
-| `complete` | Complete session goal |
-| `increase` / `decrease` | Manual difficulty change |
-| `happy`, `sad`, `angry`, `disgust`, `surprise`, `fear`, `neutral` | Change emotion display |
+| Input | Function | Context | Precondition |
+|---|---|---|---|
+| `intro` | Skips the fair introduction sequence | Fair Scene | Intro not completed |
+| `archery` | Loads the Archery mini-game | Fair Scene | Intro completed |
+| `frisbee` | Loads the Frisbee mini-game | Fair Scene | Intro completed |
+| `return` | Returns to the Fair Scene | Both mini-games | None |
+| `tutorial` | Skips the mini-game tutorial sequence | Both mini-games | Tutorial not completed |
+| `increase` | Signals *CarnyWise* to raise the difficulty by one level | Both mini-games | Tutorial completed |
+| `decrease` | Signals *CarnyWise* to lower the difficulty by one level | Both mini-games | Tutorial completed |
+| `reset` | Resets the difficulty to the first level | Both mini-games | Tutorial completed |
+| `e(expression_name)` | Displays the specified emotion via the emoji representation | Both mini-games | Tutorial completed |
+| `positive` / `negative` | Shifts the emotion slider right or left, triggering the slider representation | Both mini-games | Tutorial completed |
+| `f(expression_name)` | Displays the specified emotion via the facial expression representation | Both mini-games | Tutorial completed |
+| `score` | Simulates a successful player score | Both mini-games | Tutorial completed |
+| `miss` | Simulates a player miss | Both mini-games | Tutorial completed |
+| `dog` | Simulates a score by landing the frisbee in the dog's surrounding area | Frisbee only | Tutorial completed |
 
 ---
 
