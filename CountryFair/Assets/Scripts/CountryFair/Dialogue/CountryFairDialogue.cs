@@ -15,9 +15,6 @@ public class CountryFairDialogue : UIDialog
     /// <summary>GameObject containing the tent buttons and other post-intro elements; hidden until dialogue is complete.</summary>
     [SerializeField]
     private GameObject postIntroElements;
-    /// <summary>Player area destroyed on Awake to prevent it from blocking the intro camera view.</summary>
-    [SerializeField]
-    private GameObject playerArea;
 
     [Header("Characters")]
     [SerializeField] private GameObject zeca;
@@ -68,15 +65,6 @@ public class CountryFairDialogue : UIDialog
             Debug.LogError("Game Tents missing.");
             return;
         }
-
-        if (playerArea == null)
-        {
-            Debug.LogError("Player Area missing.");
-
-            return ;
-        }
-
-        Destroy(playerArea);
 
         postIntroElements.SetActive(false);
     }
