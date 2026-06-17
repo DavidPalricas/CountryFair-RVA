@@ -5915,6 +5915,10 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1000400, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1000601, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
