@@ -25,6 +25,9 @@ public class MiniGameTent : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI tentNumber;
 
+    [SerializeField]
+    private GameObject dropdownItem;
+
     [Header("PlaceHolders")]
     /// <summary>The placeholder slot this tent currently occupies; determines snap position and badge number.</summary>
     [SerializeField]
@@ -195,6 +198,7 @@ public class MiniGameTent : MonoBehaviour
 
         tentText.gameObject.SetActive(false);
         tentNumber.gameObject.SetActive(false);
+        dropdownItem.SetActive(false);
 
         ToggleRibbonStuff(false);
 
@@ -211,6 +215,7 @@ public class MiniGameTent : MonoBehaviour
 
         tentText.gameObject.SetActive(true);
         tentNumber.gameObject.SetActive(true);
+        dropdownItem.SetActive(true);
 
         ToggleRibbonStuff(true);
 
