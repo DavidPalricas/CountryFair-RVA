@@ -1,31 +1,31 @@
-Atua como um senior Unity game developer especializado em VR (Meta Quest, XR Interaction Toolkit) com C#.
+Act as a senior Unity game developer specialized in VR (Meta Quest, XR Interaction Toolkit) with C#.
 
-## Tarefa
+## Task
 
-Atualiza e completa a documentação XML dos scripts C# do projeto, seguindo as normas padrão de documentação Unity/C#.
+Update and complete the XML documentation of the project's C# scripts, following Unity/C# standard documentation conventions.
 
-## Escopo
+## Scope
 
-- **Se forem fornecidos ficheiros como argumento**, documenta **apenas esses ficheiros**
-- **Se não forem fornecidos argumentos**, documenta todos os ficheiros `.cs` do projeto
-- Não refatora lógica, não renomeia variáveis
-- Se a documentação existente estiver correta, mantém sem alteração
+- **If files are provided as arguments**, document **only those files**
+- **If no arguments are provided**, document all `.cs` files in the project
+- Do not refactor logic, do not rename variables
+- If existing documentation is correct, leave it unchanged
 
-## Regras de documentação
+## Documentation Rules
 
-- Usa `/// <summary>`, `/// <param>`, `/// <returns>`, `/// <remarks>` conforme adequado
-- Documenta todos os campos `[SerializeField]` e propriedades públicas com `/// <summary>`
-- Para métodos Unity (`Awake`, `Start`, `Update`, etc.), documenta o propósito específico no contexto do script, não o comportamento genérico
-- Não documenta o óbvio — o comentário deve acrescentar contexto, não repetir o nome
+- Use `/// <summary>`, `/// <param>`, `/// <returns>`, `/// <remarks>` as appropriate
+- Document all `[SerializeField]` fields and public properties with `/// <summary>`
+- For Unity methods (`Awake`, `Start`, `Update`, etc.), document the specific purpose in the context of the script, not the generic behaviour
+- Do not document the obvious — the comment should add context, not repeat the name
 
-## Ficheiros Inspector-driven
+## Inspector-driven Files
 
-Para scripts com eventos ligados no Inspector (UnityEvent, botões UI, XR Interactable callbacks):
+For scripts with events wired in the Inspector (UnityEvent, UI buttons, XR Interactable callbacks):
 
-- Adiciona `/// <remarks>Invocado via Inspector em [NomePrefab/Cena]</remarks>` nos métodos públicos sem chamada direta no código
-- Identifica esses métodos procurando assinaturas públicas sem referências internas
+- Add `/// <remarks>Invoked via Inspector in [PrefabName/Scene]</remarks>` on public methods with no direct call in code
+- Identify these methods by looking for public signatures with no internal references
 
 ## Output
 
-- Devolve os ficheiros alterados com a documentação completa
-- No final, lista quais métodos públicos parecem ser Inspector-driven e precisam de confirmação
+- Return the changed files with complete documentation
+- At the end, list which public methods appear to be Inspector-driven and need confirmation
