@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 /// <summary>
@@ -11,15 +12,14 @@ using UnityEngine;
 /// </summary>
 public class CountryFairDialogue : UIDialog
 {
-    [Header("Country Fair Settings")]
-    /// <summary>GameObject containing the tent buttons and other post-intro elements; hidden until dialogue is complete.</summary>
-    [SerializeField]
-    private GameObject postIntroElements;
-
     [Header("Characters")]
     [SerializeField] private GameObject zeca;
     [SerializeField] private GameObject carnyWise;
     [SerializeField] private TextMeshProUGUI characterNameText;
+
+    [Header("Events")]
+    [SerializeField]
+    private UnityEvent playerFinishedIntro;
 
     private IntroData _introData;
     private SessionCompletedData _sessionCompleteData;
@@ -59,14 +59,6 @@ public class CountryFairDialogue : UIDialog
             return;
         }
         carnyWise.SetActive(false);
-
-        if (postIntroElements == null)
-        {
-            Debug.LogError("Game Tents missing.");
-            return;
-        }
-
-        postIntroElements.SetActive(false);
     }
 
     protected override void OnDataLoaded()
@@ -108,7 +100,7 @@ public class CountryFairDialogue : UIDialog
 
         if (_currentDialogueState == DialogueState.INTRO_COMPLETED)
         {   
-            postIntroElements.SetActive(true);
+            playerFinishedIntro.Invoke();
             Destroy(transform.parent.gameObject);
             return;
         }
@@ -165,8 +157,8 @@ public class CountryFairDialogue : UIDialog
     /// </summary>
     /// <remarks>Invocado via Inspector pelo botão final do diálogo de introdução.</remarks>
     public void IntroComplete()
-    {
-        postIntroElements.SetActive(true);
+    {   
+        playerFinishedIntro.Invoke();
         GameManager.GetInstance().IntroCompleted = true;
 
         Destroy(transform.parent.gameObject);
