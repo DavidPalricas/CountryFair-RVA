@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Events;
 
 /// <summary>
 /// Orchestrates placeholder visibility and tent positioning during drag-and-drop tent rearrangement.
@@ -8,7 +9,12 @@ using System.Linq;
 /// and swaps entries when the player drops a tent into a slot already taken by another tent.
 /// </summary>
 public class TentsPlaceHolderManager : MonoBehaviour
-{
+{    
+
+    [SerializeField]
+    private UnityEvent<MiniGameTent[]> updateTentsMenu;
+
+
     /// <summary>Tracks which placeholder each tent currently occupies.</summary>
     private Dictionary<MiniGameTent, TentPlaceHolder> _tentsMap = new Dictionary<MiniGameTent, TentPlaceHolder>();
 
@@ -24,6 +30,7 @@ public class TentsPlaceHolderManager : MonoBehaviour
             .ToArray();
 
         Debug.Log($"Found {tents.Length} tents with 'Tent' tag in the scene.");
+
         if (tents.Length == 0){
             Debug.LogError("No MiniGameTent components found in children of miniGameTents.");
 
@@ -34,6 +41,8 @@ public class TentsPlaceHolderManager : MonoBehaviour
         {
             _tentsMap.Add(tent, tent.GetCurrentPlaceHolder());
         }
+
+        updateTentsMenu.Invoke(_tentsMap.Keys.OrderBy(tent => _tentsMap[tent].tentNumber).ToArray());
 
         TogglePlaceHolders(false);
     }
@@ -129,6 +138,8 @@ public class TentsPlaceHolderManager : MonoBehaviour
                 tent.UpdateTentPlaceHolder(previousUnselectedTentPlaceHolder);
 
                 tent.SnapToCurrentPlaceHolder();
+
+                updateTentsMenu.Invoke(_tentsMap.Keys.OrderBy(tent => _tentsMap[tent].tentNumber).ToArray());
 
                 return;
             }

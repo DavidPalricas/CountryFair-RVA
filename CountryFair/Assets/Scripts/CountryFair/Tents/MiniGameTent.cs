@@ -56,8 +56,8 @@ public class MiniGameTent : MonoBehaviour
     private string textToShow = string.Empty;
 
     /// <summary>Which mini-game scene this tent leads to when <see cref="GoToMiniGame"/> is called.</summary>
-    [SerializeField]
-    private MINI_GAMES miniGame = MINI_GAMES.ARCHERY;
+
+    public MINI_GAMES miniGame = MINI_GAMES.ARCHERY;
 
     /// <summary>
     /// Raised when the tent grab state changes.
