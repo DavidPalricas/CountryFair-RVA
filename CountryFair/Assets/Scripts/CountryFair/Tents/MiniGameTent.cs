@@ -55,6 +55,9 @@ public class MiniGameTent : MonoBehaviour
     [SerializeField]
     private string textToShow = string.Empty;
 
+
+    public Sprite image = null;
+
     /// <summary>Which mini-game scene this tent leads to when <see cref="GoToMiniGame"/> is called.</summary>
 
     public MINI_GAMES miniGame = MINI_GAMES.ARCHERY;
@@ -113,6 +116,15 @@ public class MiniGameTent : MonoBehaviour
         if (currentTentPlaceHolder == null || miniGamePropPlaceHolderTransform == null)
         {
             Debug.LogError("One or more required transforms are not assigned in MiniGameTent script.");
+
+            return;
+        }
+
+        if (image == null)
+        {
+            Debug.LogError("Tent Image is not assigned in MiniGameTent script.");
+
+            return;
         }
 
         _collider = GetComponent<Collider>();

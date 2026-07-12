@@ -77,8 +77,6 @@ public class TentsPlaceHolderManager : MonoBehaviour
         for (int i = 0; i < tents.Length; i++)
         {
             if (i != tentIndex){
-                // Since the distance grab gameobject is the father of the tent gameobject,just need to it deactivate only
-                // tents[i].distanceGrabRb.gameObject.SetActive(false);
                 tents[i].gameObject.SetActive(false);
             }
         }

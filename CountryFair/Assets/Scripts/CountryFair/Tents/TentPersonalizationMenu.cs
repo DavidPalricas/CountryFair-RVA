@@ -53,8 +53,6 @@ public class TentPersonalizationMenu : MonoBehaviour
                 return;
             }
         }
-
-        _tentPanels.OrderBy(panel => panel.number);
     }
 
     public void ButtonClicked()
@@ -83,7 +81,7 @@ public class TentPersonalizationMenu : MonoBehaviour
       
        for (int i = 0; i < numberOfTents; i++)
         {
-            _tentPanels[i].UpdateTentName(tents[i].miniGame);
+            _tentPanels[i].UpdateTentAtributes(tents[i].miniGame, tents[i].image);
         }
     }
 }

@@ -6058,6 +6058,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 21300000, guid: 1a409fe1aa04aef43a42a6a12abcb548, type: 3}
+    - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: gameName
       value: 
       objectReference: {fileID: 0}
@@ -21041,6 +21045,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 21300000, guid: 101bf5c3f66466143b7129c373fc5b13, type: 3}
+    - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: ribbon
       value: 
       objectReference: {fileID: 1195600865}
@@ -25695,6 +25703,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2799484147959018067, guid: f54012181eacade4ea242c65f804720f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3244417649712432580, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -28383,6 +28395,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 21300000, guid: dac4b1b1690ebe94097998a4c2a7798d, type: 3}
+    - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: gameName
       value: 
       objectReference: {fileID: 0}
@@ -30320,6 +30336,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 21300000, guid: d6889fff2822c044eb66a6d5d1d75d57, type: 3}
     - target: {fileID: 5061425256794820537, guid: 74ae356102c48d243afd34516f6c8e3d, type: 3}
       propertyPath: miniGameName
       value: archery

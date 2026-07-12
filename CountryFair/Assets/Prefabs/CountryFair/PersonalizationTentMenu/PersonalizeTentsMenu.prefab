@@ -840,7 +840,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a92dc5679bd475948933e77cbbda90e1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ceee7504a59d0b84ca0cca4fdf58c587, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -968,11 +968,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 88.499985
+      value: 198.31
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 737.25
+      value: 737.3
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalScale.x
@@ -996,7 +996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1016,11 +1016,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 12.3
+      value: -4.09
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -113
+      value: -122.6
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1048,6 +1048,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: panelNumber
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: placeHoldernumber
       value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1094,11 +1098,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 88.499985
+      value: 205.49
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 737.25
+      value: 737.3
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalScale.x
@@ -1122,7 +1126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1142,11 +1146,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 12.8
+      value: -6.55
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -308
+      value: -319.4
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1212,11 +1216,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 88.499985
+      value: 190.57
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 737.25
+      value: 737.3
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalScale.x
@@ -1240,7 +1244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1260,11 +1264,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 12
+      value: -1.25
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 88
+      value: 80.1
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1292,6 +1296,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: panelNumber
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: placeHoldernumber
       value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1338,11 +1346,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 88.499985
+      value: 179.39
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 737.25
+      value: 737.3
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalScale.x
@@ -1366,7 +1374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1386,11 +1394,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 11.5
+      value: 0.45999908
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 300
+      value: 293.5
       objectReference: {fileID: 0}
     - target: {fileID: 1589122911957050386, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1420,6 +1428,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: panelNumber
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: placeHoldernumber
       value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []

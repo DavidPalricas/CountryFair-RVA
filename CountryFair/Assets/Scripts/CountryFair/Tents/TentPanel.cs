@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TentPanel : MonoBehaviour
 {   
@@ -9,8 +10,11 @@ public class TentPanel : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI tentNumberText = null;
 
+    [SerializeField]
+    private Image tentImage = null;
 
-    public int number = 1;
+
+    public int placeHoldernumber = 1;
 
 
     private void Awake()
@@ -22,11 +26,18 @@ public class TentPanel : MonoBehaviour
             return;
         }
 
-        tentNumberText.text = number.ToString();
+        if (tentImage == null)
+        {
+            Debug.LogError("Tent Image Component is null in TentPanel");
+
+            return;
+        }
+
+        tentNumberText.text = placeHoldernumber.ToString();
     }
 
 
-    public void UpdateTentName(MiniGameTent.MINI_GAMES miniGame)
+    public void UpdateTentAtributes(MiniGameTent.MINI_GAMES miniGame, Sprite tentImage)
     {   
         string tentName = "Tenda de ";
 
@@ -54,6 +65,8 @@ public class TentPanel : MonoBehaviour
         }
 
         tentNameText.text = tentName;
+
+       this.tentImage.sprite = tentImage;
 
         Debug.Log("Boas");
     }
