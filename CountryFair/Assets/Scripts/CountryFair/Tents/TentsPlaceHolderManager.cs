@@ -16,7 +16,7 @@ public class TentsPlaceHolderManager : MonoBehaviour
 
 
     /// <summary>Tracks which placeholder each tent currently occupies.</summary>
-    private Dictionary<MiniGameTent, TentPlaceHolder> _tentsMap = new Dictionary<MiniGameTent, TentPlaceHolder>();
+    private Dictionary<MiniGameTent, TentPlaceHolder> _tentsMap = new ();
 
     /// <summary>
     /// Discovers all scene tents by tag, seeds <see cref="_tentsMap"/> with their starting slots,

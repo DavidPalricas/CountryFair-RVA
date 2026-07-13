@@ -71,12 +71,12 @@ public class TentPlaceHolder : MonoBehaviour
         float halfDuration = bounceDuration * HALF_DURATION_RATIO;
         float recoverDuration = bounceDuration * RECOVER_DURATION_RATIO;
 
-        Vector3 stretchScale = new Vector3(
+        Vector3 stretchScale = new (
             _originalScale.x * (1f - squashAmount * STRETCH_NARROW_FACTOR),
             _originalScale.y * (1f + squashAmount),
             _originalScale.z * (1f - squashAmount * STRETCH_NARROW_FACTOR));
 
-        Vector3 squashScale = new Vector3(
+        Vector3 squashScale = new(
             _originalScale.x * (1f + squashAmount),
             _originalScale.y * (1f - squashAmount * SQUASH_FLATTEN_FACTOR),
             _originalScale.z * (1f + squashAmount));
@@ -113,7 +113,7 @@ public class TentPlaceHolder : MonoBehaviour
     private void OnDestroy()
     {
         _squashStretchSequence?.Kill();
-        modelTransform?.DOKill();
+        modelTransform.DOKill();
     }
 
     /// <summary>
@@ -123,9 +123,9 @@ public class TentPlaceHolder : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Tent")){
-            MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
-
-            if (tent == null){
+            
+            if (!other.gameObject.TryGetComponent<MiniGameTent>(out var tent))
+            {
                 Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
 
                 return;
@@ -142,9 +142,9 @@ public class TentPlaceHolder : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Tent")){
-            MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
-
-            if (tent == null){
+            
+            if (!other.gameObject.TryGetComponent<MiniGameTent>(out var tent))
+            {
                 Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
 
                 return;
