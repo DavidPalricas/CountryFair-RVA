@@ -96,8 +96,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 418.50006, y: 837.25, z: 0}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 418.5001, y: 837.25, z: 575.45496}
+  m_Center: {x: 0, y: 0, z: -77.1751}
 --- !u!114 &9091585969429589370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,4 +110,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50f726861bd4ed479a2d5529a60e1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlaceHolder
-  tentNumber: 1
+  number: 1

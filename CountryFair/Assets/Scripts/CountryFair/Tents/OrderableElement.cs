@@ -21,8 +21,6 @@ public class OrderableTentElement : MonoBehaviour
 
     protected PlaceHolder _previousPlaceHolder;
 
-    protected bool _isSelected = false;
-
     [SerializeField]
     protected MINI_GAMES miniGame = MINI_GAMES.ARCHERY;
 
@@ -83,7 +81,7 @@ public class OrderableTentElement : MonoBehaviour
     /// <remarks>Invocado via Inspector nos eventos OnSelectEntered/OnSelectExited do componente XR Grab Interactable.</remarks>
     public virtual void HandleGrab(bool isGrabbed)
     {
-        _isSelected = isGrabbed;
+        Debug.LogError("HandleGrab method must be implemented in a derived class.");
     }
 
      /// <summary>

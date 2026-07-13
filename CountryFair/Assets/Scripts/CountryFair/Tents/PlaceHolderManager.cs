@@ -28,7 +28,6 @@ public class PlaceHolderManager : MonoBehaviour
         }
      }
 
-
     /// <summary>
     /// Discovers all scene tents by tag, seeds <see cref="_elementsMap"/> with their starting slots,
     /// and hides all placeholders until a grab begins.
@@ -115,7 +114,6 @@ public class PlaceHolderManager : MonoBehaviour
         }
 
         UpdateElementPosition(unselectedElement);
-
 
         for (int i = 0; i < elements.Length; i++)
         {

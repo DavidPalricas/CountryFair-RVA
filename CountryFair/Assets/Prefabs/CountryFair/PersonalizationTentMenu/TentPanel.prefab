@@ -408,7 +408,6 @@ MonoBehaviour:
   tentNumberText: {fileID: 5430850834726961185}
   tentImage: {fileID: 4100329518284213720}
   miniGameSprite: {fileID: 0}
-  placeHoldernumber: 1
 --- !u!54 &578740938854728092
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -664,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1464721f2283eb14e94a33e812b47be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.InteractableUnityEventWrapper
-  _interactableView: {fileID: 1955969167354888738}
+  _interactableView: {fileID: 8493209824496212401}
   _whenHover:
     m_PersistentCalls:
       m_Calls: []

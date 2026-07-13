@@ -53,6 +53,8 @@ public class MiniGameTent : OrderableTentElement
 
     private GameObject _miniGameProp;
 
+     private bool _isSelected = false;
+
     /// <summary>
     /// Initialises UI text, validates required references, snaps the tent to its starting placeholder,
     /// and hides the play button until the player aims at the tent.
@@ -210,7 +212,7 @@ public class MiniGameTent : OrderableTentElement
 
     public override void HandleGrab(bool isGrabbed)
     {    
-        base.HandleGrab(isGrabbed);
+       _isSelected = isGrabbed;
     
         if (isGrabbed)
         {

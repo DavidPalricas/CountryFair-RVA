@@ -85,4 +85,9 @@ public class TentPanel : OrderableTentElement
 
         tentNumberText.text = currentPlaceHolder.number.ToString();
     }
+
+    public override void HandleGrab(bool isGrabbed)
+    {
+       OnElementSelectionChanged.Invoke(isGrabbed, this);
+  }
 }
