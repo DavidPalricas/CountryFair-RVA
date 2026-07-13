@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TentPanel : MonoBehaviour
+public class TentPanel : OrderableTentElement
 {   
     [SerializeField]
     public TextMeshProUGUI tentNameText = null;
@@ -13,12 +13,13 @@ public class TentPanel : MonoBehaviour
     [SerializeField]
     private Image tentImage = null;
 
+    [SerializeField]
+    private Sprite miniGameSprite = null;
 
-    public int placeHoldernumber = 1;
+    protected override void Awake()
+    {   
+        base.Awake();
 
-
-    private void Awake()
-    {
         if (tentNameText == null || tentNumberText == null)
         {
             Debug.LogError("One or more Texts Components are null in TentPanel");
@@ -33,29 +34,40 @@ public class TentPanel : MonoBehaviour
             return;
         }
 
-        tentNumberText.text = placeHoldernumber.ToString();
+        if (miniGameSprite == null)
+        {
+            Debug.LogError("MiniGame Sprite is null in TentPanel");
+
+            return;
+        }
+
+        tentImage.sprite = miniGameSprite;
+
+        tentNumberText.text = currentPlaceHolder.number.ToString();
+
+        SetTentName();
     }
 
 
-    public void UpdateTentAtributes(MiniGameTent.MINI_GAMES miniGame, Sprite tentImage)
+    private void SetTentName()
     {   
         string tentName = "Tenda de ";
 
         switch (miniGame)
         {   
-            case MiniGameTent.MINI_GAMES.FISHING:
+            case MINI_GAMES.FISHING:
                 tentName += " pesca";
                 break;
 
-            case MiniGameTent.MINI_GAMES.ARCHERY:
+            case MINI_GAMES.ARCHERY:
                 tentName += " arco e flecha";
                 break;
 
-            case MiniGameTent.MINI_GAMES.FRISBEE:
+            case MINI_GAMES.FRISBEE:
                 tentName += "frisbee";
                 break;
 
-            case MiniGameTent.MINI_GAMES.DUCK:
+            case MINI_GAMES.DUCK:
                 tentName += "jogo do pato";
                 break;
 
@@ -65,9 +77,12 @@ public class TentPanel : MonoBehaviour
         }
 
         tentNameText.text = tentName;
+    }
 
-       this.tentImage.sprite = tentImage;
+     public override void SnapToCurrentPlaceHolder()
+    {
+        base.SnapToCurrentPlaceHolder();
 
-        Debug.Log("Boas");
+        tentNumberText.text = currentPlaceHolder.number.ToString();
     }
 }

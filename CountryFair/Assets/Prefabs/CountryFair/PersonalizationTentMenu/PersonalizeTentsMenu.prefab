@@ -43,6 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6120861548731670019}
   - component: {fileID: 609547259719142669}
+  - component: {fileID: 7295901922328504591}
   m_Layer: 0
   m_Name: PersonalizeTentsMenu
   m_TagString: Untagged
@@ -79,7 +80,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TentPersonalizationMenu
   menu: {fileID: 6164811303617022347}
-  tentPanels: {fileID: 4702036808029770243}
+--- !u!114 &7295901922328504591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103408568793569215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 665744dfab678ef4f8c76601304e8b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceHolderManager
+  updateTentsMenu:
+    m_PersistentCalls:
+      m_Calls: []
+  elementsTransform: {fileID: 4702036808029770243}
 --- !u!1 &1355028144821946509
 GameObject:
   m_ObjectHideFlags: 0
@@ -1095,8 +1111,40 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: miniGameSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d6889fff2822c044eb66a6d5d1d75d57, type: 3}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: placeHoldernumber
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: currentPlaceHolder
+      value: 
+      objectReference: {fileID: 1824670821160065494}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7295901922328504591}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleTentSelection
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlaceHolderManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1220,6 +1268,42 @@ PrefabInstance:
       propertyPath: m_text
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: miniGame
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: miniGameSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1a409fe1aa04aef43a42a6a12abcb548, type: 3}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: currentPlaceHolder
+      value: 
+      objectReference: {fileID: 50678296597417718}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7295901922328504591}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleTentSelection
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlaceHolderManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1322,6 +1406,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ThirdPlaceHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 9091585969429589370, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+      propertyPath: tentNumber
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1332,6 +1420,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1589122911957050386, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
   m_PrefabInstance: {fileID: 2858315112733972745}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6449448469779526771 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9091585969429589370, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+  m_PrefabInstance: {fileID: 2858315112733972745}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50f726861bd4ed479a2d5529a60e1d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceHolder
 --- !u!1001 &6583737141972159007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1424,11 +1523,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: FourthPlaceHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 9091585969429589370, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+      propertyPath: tentNumber
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+--- !u!114 &2699326650386835301 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9091585969429589370, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+  m_PrefabInstance: {fileID: 6583737141972159007}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50f726861bd4ed479a2d5529a60e1d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceHolder
 --- !u!224 &5571956395712556557 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1589122911957050386, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
@@ -1526,11 +1640,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: SecondPlaceHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 9091585969429589370, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+      propertyPath: tentNumber
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+--- !u!114 &1824670821160065494 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9091585969429589370, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+  m_PrefabInstance: {fileID: 7456066750539543724}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50f726861bd4ed479a2d5529a60e1d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceHolder
 --- !u!224 &8175431811336294590 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1589122911957050386, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
@@ -1653,12 +1782,48 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: miniGame
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: panelNumber
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: miniGameSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 101bf5c3f66466143b7129c373fc5b13, type: 3}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: placeHoldernumber
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: currentPlaceHolder
+      value: 
+      objectReference: {fileID: 6449448469779526771}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7295901922328504591}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleTentSelection
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlaceHolderManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1789,12 +1954,48 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: miniGame
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: panelNumber
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: miniGameSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: dac4b1b1690ebe94097998a4c2a7798d, type: 3}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: placeHoldernumber
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: currentPlaceHolder
+      value: 
+      objectReference: {fileID: 2699326650386835301}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7295901922328504591}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleTentSelection
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlaceHolderManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
+      propertyPath: OnElementSelectionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1903,6 +2104,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+--- !u!114 &50678296597417718 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9091585969429589370, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}
+  m_PrefabInstance: {fileID: 9124230041662940044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50f726861bd4ed479a2d5529a60e1d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceHolder
 --- !u!224 &7535212940977637278 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1589122911957050386, guid: dbaa0b039d4e8c04989669343df067c1, type: 3}

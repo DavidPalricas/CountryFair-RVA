@@ -399,9 +399,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4856c7a9bd6ef0c4e84683cb79279cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TentPanel
+  OnElementSelectionChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  currentPlaceHolder: {fileID: 0}
+  miniGame: 0
   tentNameText: {fileID: 8806585182422824568}
   tentNumberText: {fileID: 5430850834726961185}
   tentImage: {fileID: 4100329518284213720}
+  miniGameSprite: {fileID: 0}
   placeHoldernumber: 1
 --- !u!54 &578740938854728092
 Rigidbody:
@@ -559,6 +565,7 @@ GameObject:
   - component: {fileID: 5681644586152570082}
   - component: {fileID: 8493209824496212401}
   - component: {fileID: 1955969167354888738}
+  - component: {fileID: 8602577906711470137}
   m_Layer: 0
   m_Name: ISDK_HandGrabInteraction
   m_TagString: Untagged
@@ -645,3 +652,64 @@ MonoBehaviour:
   _releaseDistance: 0
   _resetGrabOnGrabsUpdated: 1
   _physicsGrabbable: {fileID: 0}
+--- !u!114 &8602577906711470137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7080461058991340841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1464721f2283eb14e94a33e812b47be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.InteractableUnityEventWrapper
+  _interactableView: {fileID: 1955969167354888738}
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7651973950674407146}
+        m_TargetAssemblyTypeName: TentPanel, Assembly-CSharp
+        m_MethodName: HandleGrab
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7651973950674407146}
+        m_TargetAssemblyTypeName: TentPanel, Assembly-CSharp
+        m_MethodName: HandleGrab
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _whenInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []

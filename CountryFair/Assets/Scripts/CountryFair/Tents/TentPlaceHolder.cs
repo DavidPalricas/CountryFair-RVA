@@ -6,7 +6,7 @@ using UnityEngine;
 /// squash-and-stretch bounce animation to make the empty slot visible to the player.
 /// Trigger collider callbacks inform the active tent which placeholder it is hovering over.
 /// </summary>
-public class TentPlaceHolder : MonoBehaviour
+public class TentPlaceHolder : PlaceHolder
 {
     /// <summary>Transform used to position the tent's play button when a tent snaps to this slot.</summary>
     public Transform miniGameButtonPlaceHolderTransform;
@@ -38,9 +38,6 @@ public class TentPlaceHolder : MonoBehaviour
     private Vector3 _originalScale;
     private Vector3 _originalLocalPosition;
     private Sequence _squashStretchSequence;
-
-    /// <summary>Slot number displayed on the tent ribbon when a tent occupies this placeholder.</summary>
-    public int tentNumber = 1;
 
     /// <summary>Caches the model's original scale and local position as the animation baseline.</summary>
     private void Awake()

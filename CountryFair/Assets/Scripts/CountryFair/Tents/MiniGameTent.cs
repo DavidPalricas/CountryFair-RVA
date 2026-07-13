@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Events;
 using System.Collections;
 
 /// <summary>
@@ -13,8 +12,8 @@ using System.Collections;
 /// - Handling transitions to mini-game scenes when the user selects a tent
 /// - Snapping the tent to a placeholder position when released after a Distance Grab
 /// </summary>
-[RequireComponent(typeof(Collider))]
-public class MiniGameTent : MonoBehaviour
+
+public class MiniGameTent : OrderableTentElement
 {
     [Header("Text elements")]
     /// <summary>Displays the tent's descriptive text label.</summary>
@@ -29,10 +28,7 @@ public class MiniGameTent : MonoBehaviour
     private GameObject dropdownItem;
 
     [Header("PlaceHolders")]
-    /// <summary>The placeholder slot this tent currently occupies; determines snap position and badge number.</summary>
-    [SerializeField]
-    private TentPlaceHolder currentTentPlaceHolder;
-
+    
     /// <summary>Anchor used when spawning <see cref="miniGamePropPrefab"/> above the tent.</summary>
     [SerializeField]
     private Transform miniGamePropPlaceHolderTransform;
@@ -55,42 +51,15 @@ public class MiniGameTent : MonoBehaviour
     [SerializeField]
     private string textToShow = string.Empty;
 
-
-    public Sprite image = null;
-
-    /// <summary>Which mini-game scene this tent leads to when <see cref="GoToMiniGame"/> is called.</summary>
-
-    public MINI_GAMES miniGame = MINI_GAMES.ARCHERY;
-
-    /// <summary>
-    /// Raised when the tent grab state changes.
-    /// Passes <c>true</c> when grabbed, <c>false</c> when released, along with this tent instance.
-    /// </summary>
-    [SerializeField]
-    private UnityEvent<bool, MiniGameTent> OnTentSelectionChanged;
-
-    /// <summary>Identifies the mini-game associated with each tent.</summary>
-    public enum MINI_GAMES
-    {
-        ARCHERY,
-        DUCK,
-        FISHING,
-        FRISBEE,
-    }
-
     private GameObject _miniGameProp;
-    private bool _isSelected = false;
-
-    private TentPlaceHolder _previousPlaceHolder;
-
-    private Collider _collider  = null;
 
     /// <summary>
     /// Initialises UI text, validates required references, snaps the tent to its starting placeholder,
     /// and hides the play button until the player aims at the tent.
     /// </summary>
-    private void Awake()
-    {
+    protected override void Awake()
+    {   
+        base.Awake();
         tentText.text = textToShow;
 
         if (buttonToPlayMiniGame == null)
@@ -113,26 +82,14 @@ public class MiniGameTent : MonoBehaviour
             return;
         }
 
-        if (currentTentPlaceHolder == null || miniGamePropPlaceHolderTransform == null)
+        if (miniGamePropPlaceHolderTransform == null)
         {
             Debug.LogError("One or more required transforms are not assigned in MiniGameTent script.");
 
             return;
         }
 
-        if (image == null)
-        {
-            Debug.LogError("Tent Image is not assigned in MiniGameTent script.");
-
-            return;
-        }
-
-        _collider = GetComponent<Collider>();
-
-        _previousPlaceHolder = currentTentPlaceHolder;
-
-
-        SetTentNumber(currentTentPlaceHolder.tentNumber);
+        SetTentNumber(currentPlaceHolder.number);
 
         SnapToCurrentPlaceHolder();
     }
@@ -203,7 +160,7 @@ public class MiniGameTent : MonoBehaviour
         tentNumber.text = number.ToString();
     }
 
-    /// <summary>Hides UI elements and notifies <see cref="TentsPlaceHolderManager"/> that this tent was picked up.</summary>
+    /// <summary>Hides UI elements and notifies <see cref="PlaceHolderManager"/> that this tent was picked up.</summary>
     private void TentSelected()
     {
         buttonToPlayMiniGame.SetActive(false);
@@ -214,7 +171,7 @@ public class MiniGameTent : MonoBehaviour
 
         ToggleRibbonStuff(false);
 
-        OnTentSelectionChanged.Invoke(true, this);
+        OnElementSelectionChanged.Invoke(true, this);
     }
 
     /// <summary>
@@ -242,7 +199,7 @@ public class MiniGameTent : MonoBehaviour
 
         SnapToCurrentPlaceHolder();
 
-        OnTentSelectionChanged.Invoke(false, this);
+        OnElementSelectionChanged.Invoke(false, this);
     }
 
     private void ToggleRibbonStuff(bool isActive)
@@ -251,33 +208,10 @@ public class MiniGameTent : MonoBehaviour
         tentText.gameObject.SetActive(isActive);
     }
 
-    /// <summary>
-    /// Teleports this tent and its play button to the current placeholder's position and rotation,
-    /// and refreshes the ribbon number.
-    /// </summary>
-    public void SnapToCurrentPlaceHolder()
-    {
-        Transform PlaceHolderTransform = currentTentPlaceHolder.transform;
-
-        transform.SetPositionAndRotation(PlaceHolderTransform.position, PlaceHolderTransform.rotation);
-
-        Transform buttonToPlayMiniGamePlaceHolderTransform = currentTentPlaceHolder.miniGameButtonPlaceHolderTransform;
-
-        buttonToPlayMiniGame.transform.SetPositionAndRotation(buttonToPlayMiniGamePlaceHolderTransform.position, buttonToPlayMiniGamePlaceHolderTransform.rotation);
-
-        SetTentNumber(currentTentPlaceHolder.tentNumber);
-        _previousPlaceHolder = currentTentPlaceHolder;
-    }
-
-    /// <summary>
-    /// Responds to a grab start or release event, toggling between selected and unselected states.
-    /// </summary>
-    /// <param name="isGrabbed">True when the grab begins; false when the player releases the tent.</param>
-    /// <remarks>Invocado via Inspector nos eventos OnSelectEntered/OnSelectExited do componente XR Grab Interactable.</remarks>
-    public void HandleGrab(bool isGrabbed)
-    {
-        _isSelected = isGrabbed;
-
+    public override void HandleGrab(bool isGrabbed)
+    {    
+        base.HandleGrab(isGrabbed);
+    
         if (isGrabbed)
         {
             TentSelected();
@@ -287,26 +221,27 @@ public class MiniGameTent : MonoBehaviour
         TentUnselected();
     }
 
-    /// <summary>
-    /// Sets the target placeholder for this tent.
-    /// If <paramref name="newPlaceHolder"/> is null, reverts to the last valid placeholder —
-    /// covers the case where the tent exits all trigger zones mid-drag.
-    /// Called by <see cref="TentPlaceHolder"/> trigger enter/exit callbacks.
+        /// <summary>
+    /// Teleports this tent and its play button to the current placeholder's position and rotation,
+    /// and refreshes the ribbon number.
     /// </summary>
-    public void UpdateTentPlaceHolder(TentPlaceHolder newPlaceHolder)
+    public override void SnapToCurrentPlaceHolder()
     {
-        if (newPlaceHolder == null){
-            currentTentPlaceHolder = _previousPlaceHolder;
+        base.SnapToCurrentPlaceHolder();
 
+        TentPlaceHolder currentTentPlaceHolder = currentPlaceHolder as TentPlaceHolder;
+
+        if (currentTentPlaceHolder == null)
+        {
+            Debug.LogError($"Current PlaceHolder '{currentPlaceHolder.name}' is not a TentPlaceHolder.");
             return;
         }
 
-        currentTentPlaceHolder = newPlaceHolder;
-    }
+        Transform buttonToPlayMiniGamePlaceHolderTransform = currentTentPlaceHolder.miniGameButtonPlaceHolderTransform;
 
-    /// <summary>Returns the placeholder slot this tent currently occupies.</summary>
-    public TentPlaceHolder GetCurrentPlaceHolder()
-    {
-        return currentTentPlaceHolder;
+        buttonToPlayMiniGame.transform.SetPositionAndRotation(buttonToPlayMiniGamePlaceHolderTransform.position, buttonToPlayMiniGamePlaceHolderTransform.rotation);
+
+        SetTentNumber(currentPlaceHolder.number);
+        _previousPlaceHolder = currentPlaceHolder;
     }
 }
