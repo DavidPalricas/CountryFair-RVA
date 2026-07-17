@@ -181,7 +181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1741734048619319785, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
       propertyPath: m_TagString
-      value: Tent
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 2107409826236812522, guid: 6fa02e7bac73a5541b9dce42c3f4c4b9, type: 3}
       propertyPath: m_Name

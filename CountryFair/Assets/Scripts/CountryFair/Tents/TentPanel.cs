@@ -87,7 +87,7 @@ public class TentPanel : OrderableTentElement
     }
 
     public override void HandleGrab(bool isGrabbed)
-    {
+    { 
        OnElementSelectionChanged.Invoke(isGrabbed, this);
   }
 }

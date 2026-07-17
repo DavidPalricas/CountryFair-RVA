@@ -2045,7 +2045,7 @@ GameObject:
   - component: {fileID: 2496805924366456887}
   m_Layer: 0
   m_Name: MiniGameTent
-  m_TagString: Tent
+  m_TagString: TentElement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2085,31 +2085,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4a250fe0b9a1b44aa7fe700e594b2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopText
+  OnElementSelectionChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  currentPlaceHolder: {fileID: 0}
+  miniGame: 0
   tentText: {fileID: 3596917416150404703}
   tentNumber: {fileID: 7352726266872265547}
   dropdownItem: {fileID: 1000200}
-  currentTentPlaceHolder: {fileID: 0}
   miniGamePropPlaceHolderTransform: {fileID: 6839398699251963092}
   miniGamePropPrefab: {fileID: 0}
   buttonToPlayMiniGame: {fileID: 3600738284315101235}
   ribbon: {fileID: 6632847624679459000}
   textToShow: Carregue no botao para jogar arco e flecha
-  miniGame: 0
-  OnTentSelectionChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TentsPlaceHolderManager, Assembly-CSharp
-        m_MethodName: HandleTentSelection
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!65 &7476629076389458384
 BoxCollider:
   m_ObjectHideFlags: 0

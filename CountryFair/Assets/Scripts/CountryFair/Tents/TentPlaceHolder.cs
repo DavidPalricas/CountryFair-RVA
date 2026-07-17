@@ -112,42 +112,4 @@ public class TentPlaceHolder : PlaceHolder
         _squashStretchSequence?.Kill();
         modelTransform.DOKill();
     }
-
-    /// <summary>
-    /// Notifies the entering tent that it is now hovering over this placeholder,
-    /// allowing it to snap here when released.
-    /// </summary>
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Tent")){
-            
-            if (!other.gameObject.TryGetComponent<MiniGameTent>(out var tent))
-            {
-                Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
-
-                return;
-            }
-
-            tent.UpdateTentPlaceHolder(this);
-        }
-    }
-
-    /// <summary>
-    /// Notifies the exiting tent that it has left this placeholder's zone,
-    /// causing it to revert to its previous valid placeholder.
-    /// </summary>
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Tent")){
-            
-            if (!other.gameObject.TryGetComponent<MiniGameTent>(out var tent))
-            {
-                Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
-
-                return;
-            }
-
-            tent.UpdateTentPlaceHolder(null);
-        }
-    }
 }

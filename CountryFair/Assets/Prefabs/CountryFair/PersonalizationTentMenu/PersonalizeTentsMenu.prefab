@@ -1967,7 +1967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: miniGame
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7651973950674407146, guid: 2fc8095224e63154cb7f5403e069f51e, type: 3}
       propertyPath: panelNumber

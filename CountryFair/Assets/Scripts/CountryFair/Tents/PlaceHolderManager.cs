@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using UnityEngine.Events;
 
 /// <summary>
@@ -25,15 +26,10 @@ public class PlaceHolderManager : MonoBehaviour
         if (elementsTransform == null)
         {
             Debug.LogError("Elements Transform reference is null in PlaceHolderManager");
-        }
-     }
 
-    /// <summary>
-    /// Discovers all scene tents by tag, seeds <see cref="_elementsMap"/> with their starting slots,
-    /// and hides all placeholders until a grab begins.
-    /// </summary>
-    private void Start()
-    {
+            return;
+        }
+
         OrderableTentElement[] elements = GetOrderableElements();
 
         if (elements.Length == 0){
@@ -47,9 +43,16 @@ public class PlaceHolderManager : MonoBehaviour
             _elementsMap.Add(element, element.GetCurrentPlaceHolder());
         }
 
-        updateOtherManagers.Invoke(_elementsMap.Keys.OrderBy(tent => _elementsMap[tent].number).ToArray());
-
         TogglePlaceHolders(false);
+     }
+
+    /// <summary>
+    /// Discovers all scene tents by tag, seeds <see cref="_elementsMap"/> with their starting slots,
+    /// and hides all placeholders until a grab begins.
+    /// </summary>
+    private void Start()
+    {
+        updateOtherManagers.Invoke(_elementsMap.Keys.OrderBy(tent => _elementsMap[tent].number).ToArray());
     }
 
 
@@ -78,7 +81,7 @@ public class PlaceHolderManager : MonoBehaviour
     {
         OrderableTentElement[] elements = _elementsMap.Keys.ToArray();
 
-        int tentIndex = System.Array.IndexOf(elements, selectedElement);
+        int tentIndex = Array.IndexOf(elements, selectedElement);
 
         if (tentIndex == -1){
             Debug.LogError($"Selected tent '{selectedElement.gameObject.name}' is not registered.");
@@ -106,7 +109,7 @@ public class PlaceHolderManager : MonoBehaviour
     {
         OrderableTentElement[] elements = _elementsMap.Keys.ToArray();
 
-        int elementIndex = System.Array.IndexOf(elements, unselectedElement);
+        int elementIndex = Array.IndexOf(elements, unselectedElement);
 
         if (elementIndex == -1){
             Debug.LogError($"Selected tent '{unselectedElement.gameObject.name}' is not registered.");
@@ -124,6 +127,8 @@ public class PlaceHolderManager : MonoBehaviour
         }
 
         TogglePlaceHolders(false);
+
+        updateOtherManagers.Invoke(_elementsMap.Keys.ToArray());
     }
 
     /// <summary>
@@ -145,10 +150,8 @@ public class PlaceHolderManager : MonoBehaviour
 
                 tent.UpdateTentPlaceHolder(previousUnselectedTentPlaceHolder);
 
+
                 tent.SnapToCurrentPlaceHolder();
-
-                updateOtherManagers.Invoke(_elementsMap.Keys.OrderBy(tent => _elementsMap[tent].number).ToArray());
-
                 return;
             }
        }
@@ -176,12 +179,30 @@ public class PlaceHolderManager : MonoBehaviour
 
     public void OnOtherManagerUpdate(OrderableTentElement[] otherElements)
     {   
+        OrderableTentElement[] elements = _elementsMap.Keys.ToArray();
+
+        PlaceHolder[] placeHolders = _elementsMap.Values.ToArray();
+
         foreach (OrderableTentElement other in otherElements)
-        {
-            if (_elementsMap.ContainsKey(other))
+        {  
+            Debug.Log($"Tent '{other.gameObject.name}' with miniGame '{other.miniGame}' is being updated from another manager.");
+            
+            OrderableTentElement element = elements.FirstOrDefault(e => e.miniGame == other.miniGame);
+
+            if (element == null)
             {
-                UpdateElementPosition(other);
+               Debug.LogError($"Element with miniGame '{other.miniGame}' not found in this manager.");
+
+                return;
             }
+
+            int otherPlaceHolderNumber = other.GetCurrentPlaceHolder().number;
+
+            PlaceHolder updatedPlaceHolder = placeHolders.FirstOrDefault(ph => ph.number == otherPlaceHolderNumber);
+
+            element.UpdateTentPlaceHolder(updatedPlaceHolder);
+
+            UpdateElementPosition(element);
         }
     }
 }

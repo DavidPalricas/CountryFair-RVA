@@ -15,14 +15,12 @@ public class OrderableTentElement : MonoBehaviour
     [SerializeField]
     protected PlaceHolder currentPlaceHolder;
 
-
     protected Collider _collider  = null;
 
 
     protected PlaceHolder _previousPlaceHolder;
 
-    [SerializeField]
-    protected MINI_GAMES miniGame = MINI_GAMES.ARCHERY;
+    public MINI_GAMES miniGame = MINI_GAMES.ARCHERY;
 
     public enum MINI_GAMES
     {
