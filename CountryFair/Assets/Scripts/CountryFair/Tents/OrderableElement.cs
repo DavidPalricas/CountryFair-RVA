@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 
 [RequireComponent(typeof(Collider))]
 public class OrderableTentElement : MonoBehaviour
@@ -46,8 +47,18 @@ public class OrderableTentElement : MonoBehaviour
     }
 
     
+    protected IEnumerator SnapToPlaceHolderNextFixedUpdate()
+    {
+        // Wait one fixed step so the Grabbable/Interactable finishes its release logic
+        // (which writes velocity to the Rigidbody for throw inertia).
+        yield return new WaitForFixedUpdate();
 
+        SnapToCurrentPlaceHolder();
 
+        OnElementSelectionChanged.Invoke(false, this);
+    }
+
+    
     /// <summary>Returns the placeholder slot this tent currently occupies.</summary>
     public PlaceHolder GetCurrentPlaceHolder()
     {

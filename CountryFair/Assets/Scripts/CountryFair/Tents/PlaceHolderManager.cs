@@ -52,7 +52,7 @@ public class PlaceHolderManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        updateOtherManagers.Invoke(_elementsMap.Keys.OrderBy(tent => _elementsMap[tent].number).ToArray());
+        updateOtherManagers.Invoke(_elementsMap.Keys.ToArray());
     }
 
 
@@ -120,9 +120,6 @@ public class PlaceHolderManager : MonoBehaviour
 
         for (int i = 0; i < elements.Length; i++)
         {
-          // Since the distance grab gameobject is the father of the tent gameobject,just need to it activate only
-          // tents[i].distanceGrabRb.gameObject.SetActive(true);
-
             elements[i].gameObject.SetActive(true);
         }
 
@@ -185,8 +182,6 @@ public class PlaceHolderManager : MonoBehaviour
 
         foreach (OrderableTentElement other in otherElements)
         {  
-            Debug.Log($"Tent '{other.gameObject.name}' with miniGame '{other.miniGame}' is being updated from another manager.");
-            
             OrderableTentElement element = elements.FirstOrDefault(e => e.miniGame == other.miniGame);
 
             if (element == null)
@@ -203,6 +198,8 @@ public class PlaceHolderManager : MonoBehaviour
             element.UpdateTentPlaceHolder(updatedPlaceHolder);
 
             UpdateElementPosition(element);
+
+            element.SnapToCurrentPlaceHolder();
         }
     }
 }

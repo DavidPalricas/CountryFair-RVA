@@ -88,6 +88,13 @@ public class TentPanel : OrderableTentElement
 
     public override void HandleGrab(bool isGrabbed)
     { 
-       OnElementSelectionChanged.Invoke(isGrabbed, this);
+        if (!isGrabbed)
+        {
+            StartCoroutine(SnapToPlaceHolderNextFixedUpdate());
+
+            return;
+        }
+
+       OnElementSelectionChanged.Invoke(true, this);
   }
 }

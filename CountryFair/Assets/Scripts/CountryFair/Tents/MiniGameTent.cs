@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 /// <summary>
 /// Manages the display and interaction of tent information in the Country Fair VR game.
@@ -94,12 +93,8 @@ public class MiniGameTent : OrderableTentElement
         SetTentNumber(currentPlaceHolder.number);
 
         SnapToCurrentPlaceHolder();
-    }
 
-    /// <summary>Spawns the mini-game decorative prop above <see cref="miniGamePropPlaceHolderTransform"/>.</summary>
-    private void Start()
-    {
-        AddMiniGameObject();
+         AddMiniGameObject();
     }
 
     /// <summary>
@@ -153,6 +148,7 @@ public class MiniGameTent : OrderableTentElement
                 return;
 
             default:
+                Debug.LogWarning($"MiniGame '{miniGame}' is not implemented yet.");
                 return;
         }
     }
@@ -191,17 +187,6 @@ public class MiniGameTent : OrderableTentElement
         ToggleRibbonStuff(true);
 
         StartCoroutine(SnapToPlaceHolderNextFixedUpdate());
-    }
-
-    private IEnumerator SnapToPlaceHolderNextFixedUpdate()
-    {
-        // Wait one fixed step so the Grabbable/Interactable finishes its release logic
-        // (which writes velocity to the Rigidbody for throw inertia).
-        yield return new WaitForFixedUpdate();
-
-        SnapToCurrentPlaceHolder();
-
-        OnElementSelectionChanged.Invoke(false, this);
     }
 
     private void ToggleRibbonStuff(bool isActive)
@@ -245,5 +230,7 @@ public class MiniGameTent : OrderableTentElement
 
         SetTentNumber(currentPlaceHolder.number);
         _previousPlaceHolder = currentPlaceHolder;
+
+        
     }
 }
