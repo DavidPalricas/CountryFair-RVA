@@ -3677,6 +3677,11 @@ Transform:
   - {fileID: 538966671}
   m_Father: {fileID: 1919292345}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &278979377 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2483171112402263010, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1871689546}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &279103473
 GameObject:
   m_ObjectHideFlags: 0
@@ -5616,6 +5621,82 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6856789205069589247, guid: 6cb9acbccf4dd53458d86697126f70f0, type: 3}
   m_PrefabInstance: {fileID: 410504685}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &414810837
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 414810838}
+  - component: {fileID: 414810839}
+  m_Layer: 0
+  m_Name: PlayerScale
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &414810838
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414810837}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.1887898, y: -1.6109002, z: -3.4269009}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 441063977}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &414810839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414810837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a876be9c3033943aafdd064264e2b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerScale
+  cameraRigTransform: {fileID: 278979377}
+  giantScaleFactor: 7
+  onScaleToGiant:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1412586094}
+        m_TargetAssemblyTypeName: CountryFairAudioManager, Assembly-CSharp
+        m_MethodName: PlaySoundEffect
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onScaleToNormal:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1412586094}
+        m_TargetAssemblyTypeName: CountryFairAudioManager, Assembly-CSharp
+        m_MethodName: PlaySoundEffect
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &424902215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6415,6 +6496,7 @@ Transform:
   m_Children:
   - {fileID: 1728798949}
   - {fileID: 1290506294}
+  - {fileID: 414810838}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &441213639
@@ -20199,6 +20281,20 @@ MonoBehaviour:
       Data3: -2130074490
       Data4: -1533081903
     Path: event:/CountryFair/CrowdNoise
+  scaleToGiantSound:
+    Guid:
+      Data1: 1912123297
+      Data2: 1208730113
+      Data3: -1825054302
+      Data4: 2143859148
+    Path: event:/CountryFair/ScaleToGiant
+  scaleToNormalSound:
+    Guid:
+      Data1: -1467014453
+      Data2: 1278789446
+      Data3: -865011325
+      Data4: 1096185882
+    Path: event:/CountryFair/ScaleToNormal
 --- !u!114 &1412586095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20228,6 +20324,7 @@ MonoBehaviour:
   archeryTent: {fileID: 687646833}
   frisbeeTent: {fileID: 1605437585}
   countryFairDialogue: {fileID: 1289485912}
+  playerScale: {fileID: 414810839}
 --- !u!1001 &1412849571
 PrefabInstance:
   m_ObjectHideFlags: 0

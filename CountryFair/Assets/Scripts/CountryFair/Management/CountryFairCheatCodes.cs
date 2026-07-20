@@ -21,6 +21,10 @@ public class CountryFairCheatCodes : CheatCodes
     [SerializeField]
     private CountryFairDialogue countryFairDialogue;
 
+
+    [SerializeField]
+    private PlayerScale playerScale;
+
     private bool _introCompleted = false;
 
     private void Awake()
@@ -46,6 +50,13 @@ public class CountryFairCheatCodes : CheatCodes
             return;
         }
 
+        if (playerScale == null)
+        {
+            Debug.LogError("Player Scale reference is not assigned in the inspector.");
+
+            return;
+        }
+
         _introCompleted = GameManager.GetInstance().IntroCompleted;
 
         RegisterBaseCheats();
@@ -59,6 +70,7 @@ public class CountryFairCheatCodes : CheatCodes
         RegisterCheat("intro", () => CompleteIntro());
         RegisterCheat("frisbee", () => GoToMiniGame(true));
         RegisterCheat("archery", () => GoToMiniGame(false));
+        RegisterCheat("giant", () => TogglePlayerScale());
     }
 
 
@@ -101,6 +113,17 @@ public class CountryFairCheatCodes : CheatCodes
         }
 
          archeryTent.GoToMiniGame();
+    }
+
+    private void TogglePlayerScale()
+    {  
+       if (!_introCompleted)
+        {  
+            Debug.LogWarning("Intro must be completed before accessing minigames. Finish the intro first");
+            return;
+        }
+
+        playerScale.ToggleScale();
     }
 }
    
