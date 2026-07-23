@@ -1,0 +1,34 @@
+.App {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.App canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.info {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.info h1 {
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  margin: 0;
+  color: #ff9700;
+}
+
+.info img {
+  width: clamp(120px, 30vw, 280px);
+  height: auto;
+}

@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Carnevalee Freakshow';
+  src: url('./assets/font/Carnevalee Freakshow.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Carnevalee Freakshow', system-ui, sans-serif;
+}

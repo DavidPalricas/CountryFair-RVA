@@ -24,7 +24,7 @@ unity-hub --open path/to/CountryFair
 - FMOD Unity integration - Audio (custom plugin in Assets/Plugins/FMOD)
 - DOTween - Animation tweening (Assets/Plugins/Demigiant/DOTween)
 - Newtonsoft.Json - JSON serialization for save data
-- Unity Netcode - Network synchronization (emojis)
+- Unity Netcode (+ UnityTransport) - Network synchronization of the emotion displays
 
 ---
 
@@ -37,40 +37,49 @@ CountryFair/
 ├── Assets/
 │   ├── Scripts/                      # ALL game scripts are in this folder
 │   │   ├── General/                  # Shared systems used across the game
-│   │   │   ├── GameManagment/        # GameManager, AudioManager, CheatCodes, FoveatedRendering
-│   │   │   ├── DataManagment/        # DataFileManager, SessionData, MiniGameData (JSON structure)
-│   │   │   ├── Animals/              # Animal AI system (AnimalUtility, AnimalState, AnimalWalk, AnimalEat, AnimalIdle)
-│   │   │   ├── Balloons/             # BalloonSpawner, PopBalloon
-│   │   │   ├── DisplayInPlayerFront/ # (folder kept, DisplayInPlayerFront.cs removed)
+│   │   │   ├── GameManagment/        # GameManager, AudioManager, CheatCodes, FoveatedRenderingController
+│   │   │   ├── DataManagment/        # DataFileManager + DataFileStructure/ (DataFileRoot, MiniGameData, SessionData)
+│   │   │   ├── Animals/              # Animal AI system (AnimalUtility + States/: AnimalState, AnimalWalk, AnimalEat, AnimalIdle)
+│   │   │   ├── Balloons/             # BalloonsSpawner, PopBalloon
 │   │   │   ├── Others/               # Utility behaviors (WanderingPerson, AnimatableState, TextAnim, ButtonPressed)
-│   │   │   └── UIDialog/             # JSON-driven dialogue system base class
+│   │   │   └── UIDialog/             # JSON-driven dialogue system base class (UIDialog, JSONData)
 │   │   ├── CountryFair/              # Hub world (central fair area)
 │   │   │   ├── Management/           # CountryFairAudioManager, CountryFairCheatCodes
-│   │   │   ├── Dialogue/             # CountryFairDialogue, JSONData (IntroData, SessionCompletedData)
-│   │   │   ├── Tents/                # Tent interaction (ShowTentData)
-│   │   │   └── Other/                # Ambient elements (CabinScript, RotateWheel, SheepAnim, CountryFairBalloonSpawner)
+│   │   │   ├── Dialogue/             # CountryFairDialogue, JSONData/ (IntroData, SessionCompletedData)
+│   │   │   ├── Tents/                # Tent personalization system (see section 11)
+│   │   │   └── Other/                # Ambient elements (CabinScript, RotateWheel, SheepAnim,
+│   │   │                             #   CountryFairBalloonSpawner) + PlayerScale (giant mode, section 12)
 │   │   ├── MiniGames/                # Mini-game modules
 │   │   │   ├── CommonElements/       # Shared between all mini-games
 │   │   │   │   ├── MiniGamesManagment/  # MiniGameManager, MiniGameAudioManager, MiniGameCheatCodes
-│   │   │   │   ├── DDASystem/           # CarnyWise (DDA logic), CarnyWiseDiffFeedback (UI feedback)
+│   │   │   │   ├── DDASystem/           # CarnyWise (DDA logic)
+│   │   │   │   │   └── ChangeDifficultyFeedback/  # CarnyWiseDiffFeedback, DiffcultyFeedBackData
 │   │   │   │   ├── Tutorial/            # Tutorial system, TutorialData (JSON)
-│   │   │   │   ├── UI/                  # ScoreAndStreakSystem, Emojis (ActivateEmoji, ConnectionManager, ServerListener)
-│   │   │   │   └── ReturnToFair/        # Scene transition back to hub
+│   │   │   │   ├── UI/                  # ScoreAndStreakSystem
+│   │   │   │   │   └── Emotions/        # Emotion display system (see section 9)
+│   │   │   │   │       ├── Display/         # EmotionDisplay (base), ExpressionDisplay, SliderDisplay
+│   │   │   │   │       └── ServerConections/ # ConnectionManager, ServerListener, MainThreadDispatcher
+│   │   │   │   └── ReturnToFair.cs      # Scene transition back to hub (single file, not a folder)
 │   │   │   ├── ArcheryGame/          # Archery mini-game module
 │   │   │   │   ├── GameManagment/    # ArcheryGameManager, ArcheryAudioManager, ArcheryCheatCodes
 │   │   │   │   ├── ArcheryStuff/     # BowHandTracking, Arrow, TrajectoryLine
-│   │   │   │   ├── Persons/          # Crowd behavior
+│   │   │   │   ├── Persons/          # Crowd, IdlePerson
 │   │   │   │   └── Balloons/         # BalloonArcheryGame (target logic)
-│   │   │   └── FrisbeeGame/          # Frisbee mini-game module
-│   │   │       ├── GameManagment/    # FrisbeeGameManager, FrisbeeAudioManager, FrisbeeCheatCodes
-│   │   │       ├── Dog/              # Dog AI (DogState base, GoToTarget, DogIdle, Jump, CatchFrisbee, GiveFrisbeeToPlayer)
-│   │   │       ├── Frisbee/          # Physics (FrisbeeTrajectory, FrisbeeState base, Landed, OnPlayerFront, OnMovement, FollowPlayerHead)
-│   │   │       └── ScoreArea/        # Scoring zones (ScoreAreaProperties, ScoreAreaAnimations)
+│   │   │   ├── FrisbeeGame/          # Frisbee mini-game module
+│   │   │   │   ├── GameManagment/    # FrisbeeGameManager, FrisbeeAudioManager, FrisbeeCheatCodes
+│   │   │   │   ├── Dog/              # DogFootSteps + States/ (DogState base, GoToTarget, DogIdle,
+│   │   │   │   │                     #   Jump, CatchFrisbee, GiveFrisbeeToPlayer)
+│   │   │   │   ├── Frisbee/          # FrisbeeTrajectory, FollowPlayerHead + States/ (FrisbeeState base,
+│   │   │   │   │                     #   Landed, OnPlayerFront, OnMovement)
+│   │   │   │   └── ScoreArea/        # Scoring zones (ScoreAreaProperties, ScoreAreaAnimations)
+│   │   │   └── DuckGame/             # Duck mini-game (WIP — only DuckSwim ambient AI so far)
 │   │   └── Utils/                    # Core utilities
-│   │       ├── FSM/                  # Finite State Machine (FSM, State, AnimatableState, Transition)
-│   │       └── Utils.cs              # Helper functions (RandomValueInRange, GetChildren)
+│   │       ├── FSM/                  # Finite State Machine (FSM, State, Transition)
+│   │       └── Utils.cs              # Helper functions (CastRayMetaQuest, RandomValueInRange, GetChildren)
 │   └── Plugins/                      # Third-party (FMOD, DOTween, Meta XR, Demigiant)
 ```
+
+**Note:** `AnimatableState.cs` lives in `General/Others/`, not in `Utils/FSM/`, even though it is part of the FSM hierarchy.
 
 ---
 
@@ -78,7 +87,7 @@ CountryFair/
 
 ### 1. Finite State Machine (FSM) Framework
 
-**Location:** `General/FSM/`
+**Location:** `Utils/FSM/` (plus `General/Others/AnimatableState.cs`)
 
 A custom serializable FSM system for behavior management:
 
@@ -103,7 +112,7 @@ State Hierarchy:
 |------|---------|
 | `FSM.cs` | Manages state list, transition list, `ChangeState(string)` method |
 | `State.cs` | Base class with `Enter()`, `Execute()`, `Exit()`, `LateStart()` lifecycle |
-| `AnimatableState.cs` | Adds Animator integration, `IsPlayingNewAnimation()` helper |
+| `AnimatableState.cs` | Adds Animator integration, `IsPlayingNewAnimation()` helper (in `General/Others/`) |
 | `Transition.cs` | Serializable transition with `from`, `to`, `name` fields |
 
 **Usage Pattern:**
@@ -184,6 +193,10 @@ enum DialogueState {
 }
 ```
 
+**Post-intro hand-off:** `CountryFairDialogue` no longer holds a direct `postIntroElements` GameObject reference.
+When the intro finishes it invokes the `playerFinishedIntro` UnityEvent (wired in the Inspector), which is what
+enables the wrist-menu button (`TentPersonalizationMenu.IntroCompleted()`) and the other post-intro elements.
+
 ---
 
 ### 4. Data Management System
@@ -244,7 +257,8 @@ MiniGameAudioManager (base)
 CarnyWise (in CommonElements/DDASystem/)
 ├── Tracks precision, time, consecutive attempts
 ├── Thresholds: precisionThresholdToIncreaseDiff (0.7), precisionThresholdToDecreaseDiff (0.3)
-├── Buffers: struggleCounter, excelCounter (threshold: 3 consecutive)
+├── Buffers: struggleCounter, excelCounter (thresholdToChangeDiff: 3 consecutive)
+├── Safety net: failingConsecutiveThreshold (4) — 4 misses on the same task drop difficulty immediately
 └── Invokes: changeDifficulty(bool) → MiniGameManager.ChangeDifficulty()
 ```
 
@@ -325,36 +339,61 @@ _shootForce = Mathf.Lerp(minForce (5f), maxForce (60f), _currentPull);
 
 ---
 
-### 9. Emoji Network System
+### 9. Emotion Display System (Networked)
 
-**Location:** `MiniGames/CommonElements/UI/Emojis/`
+**Location:** `MiniGames/CommonElements/UI/Emotions/`
 
-**Network Architecture:**
+The patient's emotional state is pushed from an external emotion-recognition server and rendered by one of
+**three interchangeable display modes**. Each mode is a `NetworkBehaviour` so the therapist's device sees the
+same state as the headset.
+
+**Class Hierarchy:**
 ```
-ActivateEmoji : NetworkBehaviour
-├── NetworkVariable<EmojiType> _netEmojiState
-├── ServerRpc: RequestEmojiChangeServerRpc()
-└── OnValueChanged callback → UpdateVisuals()
+EmotionDisplay : NetworkBehaviour       (abstract base — Display/EmotionDisplay.cs)
+├── _messageSeparator = ';'             Server message format: "EXPRESSION;CATEGORY"
+├── _isUpdatingFromNetwork              Re-entrancy guard: blocks echo back to the network
+├── ProcessServerString(string)         Validates exactly one ';' then delegates to the subclass
+├── ExpressionDisplay                   Shows one child GameObject per expression
+│   ├── NetworkVariable<EXPRESSION_TYPE> _netExpressionState (write: Server)
+│   ├── UpdateVisuals(EXPRESSION_TYPE) → SyncToNetwork() → RequestDisplayChangeServerRpc()
+│   └── Used TWICE in the scene: once as the emoji display, once as the face display
+└── SliderDisplay                       Cumulative mood bar (0 = negative, 1 = positive)
+    ├── NetworkVariable<EMOJI_CATEGORY> _netSliderState (write: Server)
+    ├── UpdateSlider(EMOJI_CATEGORY) nudges value by sliderChangeAmountThreshold (0.05)
+    └── Thresholds: positive >= 0.6, negative <= 0.4; recolors fill + swaps handle sprite
 ```
 
-**Emoji Types:** SAD, HAPPY, ANGRY, DISGUST, SURPRISE, FEAR, NEUTRAL
+**Enums:**
+| Enum | Values |
+|------|--------|
+| `ExpressionDisplay.EXPRESSION_TYPE` | SAD, HAPPY, ANGRY, DISGUST, SURPRISE, FEAR, NEUTRAL |
+| `SliderDisplay.EMOJI_CATEGORY` | NEUTRAL, POSITIVE, NEGATIVE |
+| `ServerListener.DISPLAYMODE` | EMOJI, FACE, SLIDER |
 
-**Cheat Integration:**
-```csharp
-// In MiniGameCheatCodes.cs
-RegisterCheat("happy", () => activateEmoji.UpdateVisuals(EmojiType.HAPPY));
-```
+**Server Connection (`ServerConections/`):**
+| Class | Purpose |
+|-------|---------|
+| `ServerListener` | Raw TCP client (default `172.20.10.2:50050`). Background thread writes into a `volatile` latest-value buffer; `InvokeRepeating(FlushLatestMessage, pollIntervalSeconds)` drains it on the main thread via `Interlocked.Exchange`. Older unprocessed messages are intentionally discarded. Connection failure is **non-fatal** (logs a warning). |
+| `ConnectionManager` | Configures `UnityTransport` IP/port and auto-starts as Netcode **client**; `StartHost()` is Inspector-wired for the therapist device. |
+| `MainThreadDispatcher` | Marshals work from the receive thread onto the Unity main thread. |
+
+**Display mode selection:** `ServerListener.Awake()` calls `SetCurrentDisplayMode()`, which picks one of the three
+modes **at random** (≈1/3 each) and deactivates the other two. `UpdateDisplayMode(DISPLAYMODE)` switches it at runtime
+and is what the cheat codes invoke through the `changeEmotionDisplay` UnityEvent.
 
 ---
 
 ### 10. Cheat Code System
 
-**Location:** `General/GameManagment/CheatCodes.cs`, `MiniGames/CommonElements/MiniGamesManagment/MiniGameCheatCodes.cs`
+**Location:** `General/GameManagment/CheatCodes.cs`, `MiniGames/CommonElements/MiniGamesManagment/MiniGameCheatCodes.cs`, `CountryFair/Management/CountryFairCheatCodes.cs`
 
 **Base System:**
 - Captures keyboard text input (`InputSystem.onTextInput`)
 - Buffer with rolling window (`_maxCheatLength`)
 - Dictionary-based command registration
+
+**Gating:** in mini-games every cheat except `return` and `tutorial` is ignored until the tutorial is completed.
+In the hub, every `CountryFairCheatCodes` cheat except `intro` requires the intro to be completed.
 
 **Registered Cheats (all mini-games):**
 | Code | Effect |
@@ -366,7 +405,102 @@ RegisterCheat("happy", () => activateEmoji.UpdateVisuals(EmojiType.HAPPY));
 | `score` | Trigger score event |
 | `complete` | Complete session goal |
 | `increase` / `decrease` | Manual difficulty change |
-| `happy`, `sad`, `angry`, etc. | Change emoji expression |
+| `e` + expression | Switch to EMOJI mode and show it — `ehappy`, `eneutral`, `esad`, `eangry`, `edisgust`, `esurprise`, `efear` |
+| `f` + expression | Switch to FACE mode and show it — `fhappy`, `fneutral`, `fsad`, `fangry`, `fdisgust`, `fsurprise`, `ffear` |
+| `positive` / `negative` | Switch to SLIDER mode and nudge the mood bar |
+
+**Registered Cheats (CountryFair hub):**
+| Code | Effect |
+|------|--------|
+| `intro` | Complete the intro dialogue |
+| `frisbee` / `archery` | Jump straight into the mini-game scene |
+| `giant` | Toggle giant mode (`PlayerScale.ToggleScale()`) |
+
+---
+
+### 11. Tent Personalization System
+
+**Location:** `CountryFair/Tents/`
+
+Lets the patient reorder the fair's mini-game tents, either by **distance-grabbing the tents in the world**
+or by **dragging panels inside a wrist menu**. Both surfaces are kept in sync.
+
+**Class Hierarchy:**
+```
+OrderableTentElement : MonoBehaviour        (OrderableElement.cs — [RequireComponent(typeof(Collider))])
+├── miniGame : MINI_GAMES { ARCHERY, DUCK, FISHING, FRISBEE }   ← identity used to pair world ↔ menu
+├── currentPlaceHolder / _previousPlaceHolder
+├── OnElementSelectionChanged : UnityEvent<bool, OrderableTentElement>
+├── HandleGrab(bool)                        abstract-in-spirit (base logs an error)
+├── SnapToCurrentPlaceHolder()              virtual
+├── SnapToPlaceHolderNextFixedUpdate()      coroutine: waits one FixedUpdate so the Grabbable
+│                                           finishes writing throw velocity, then snaps
+├── MiniGameTent                            the 3D tent in the hub world
+└── TentPanel                               the 2D card inside the wrist menu
+
+PlaceHolder : MonoBehaviour                 slot marker; `number` drives the ribbon badge
+├── OnTriggerEnter/Exit → element.UpdateTentPlaceHolder(this / null)   ← tag "TentElement"
+└── TentPlaceHolder                         world slot; adds miniGameButtonPlaceHolderTransform
+                                            + looping DOTween squash-and-stretch bounce
+```
+
+**PlaceHolderManager** (one per surface: one for the world tents, one for the menu panels)
+| Member | Purpose |
+|--------|---------|
+| `_elementsMap : Dictionary<OrderableTentElement, PlaceHolder>` | Which slot each element occupies |
+| `HandleTentSelection(bool, element)` | Inspector entry point for `OnElementSelectionChanged` |
+| `ElementSelected` | Hides every *other* element, shows all placeholders except the occupied one |
+| `ElementUnselected` | Swaps map entries if the drop slot was taken, restores visibility, hides placeholders |
+| `UpdateElementPosition` | Performs the actual swap and teleports the displaced element |
+| `updateOtherManagers : UnityEvent<OrderableTentElement[]>` | Broadcasts the new order to the twin manager |
+| `OnOtherManagerUpdate(elements[])` | Receives the twin's order and mirrors it, matching by `miniGame` and `PlaceHolder.number` |
+
+**Sync flow (menu ↔ world):**
+```
+Player drags a TentPanel in the wrist menu
+  → TentPanel.HandleGrab(false) → SnapToPlaceHolderNextFixedUpdate()
+  → OnElementSelectionChanged(false, panel) → PlaceHolderManager.HandleTentSelection
+  → ElementUnselected() → UpdateElementPosition() (swap)
+  → updateOtherManagers.Invoke(order)
+  → world PlaceHolderManager.OnOtherManagerUpdate() → MiniGameTent snaps to the matching slot
+```
+
+**Other tent scripts:**
+| Class | Purpose |
+|-------|---------|
+| `TentPersonalizationMenu` | Wrist-menu root. Starts disabled; `IntroCompleted()` enables it (wired to `playerFinishedIntro`), `ButtonClicked()` toggles the panel |
+| `MiniGameTent` | Raycasts every `LateUpdate` (`Utils.CastRayMetaQuest`) to show/hide the play button; `GoToMiniGame()` loads `ArcheryGame` / `FrisbeeGame` |
+| `TentPanel` | Sets the card sprite, slot number and Portuguese tent name from `miniGame` |
+| `TentFishAnim` | Decorative fish animation on the fishing tent |
+
+**Tag:** grabbable tent elements must carry the **`TentElement`** tag (renamed from `Tent`) and an
+`OrderableTentElement` component — `PlaceHolder` trigger callbacks log an error otherwise.
+
+**Mini-game availability:** `MINI_GAMES` already declares `DUCK` and `FISHING`, but `MiniGameTent.GoToMiniGame()`
+only loads scenes for `ARCHERY` and `FRISBEE`; the others log a "not implemented yet" warning.
+
+---
+
+### 12. Player Scale / Giant Mode
+
+**Location:** `CountryFair/Other/PlayerScale.cs`
+
+Toggles the camera rig between normal and giant scale (`giantScaleFactor`, default 4x) with a Mario-style
+grow/shrink animation. Comfort is the driving constraint — the implementation notes are worth preserving:
+
+| Technique | Reason |
+|-----------|--------|
+| Scale interpolated in **logarithmic space** (`Mathf.Log` → tween → `Mathf.Exp`) | A linear 1x→4x sweep rushes the world across the eyes at the start; log space keeps the *relative* growth rate constant |
+| Pivot anchored to the floor point under the head (`KeepPivotAnchored`) | Only eye height changes — no sideways swoop |
+| `Ease.InOutSine` (no overshoot/bounce) | Avoids direction changes at the end of the motion |
+| `OVRVignette` tunnel (170° → 60°, reopens 2x slower) | Narrowed FOV strongly reduces cybersickness |
+| Anticipation squash before growing only | Skipped when shrinking, where it reads as an unexpected extra drop |
+
+`ToggleScale()` ignores input while a sequence is still playing. Fires `onScaleToGiant` / `onScaleToNormal`
+(`UnityEvent<AudioManager.GameSoundEffects>`) plus `onScaleAnimationStarted` / `onScaleAnimationCompleted`.
+
+**Audio:** `AudioManager.GameSoundEffects` gained `SCALE_TO_GIANT` and `SCALE_TO_NORMAL`; `CountryFairAudioManager`
+overrides `PlaySoundEffect` to map them to FMOD events (`scale_to_giant.wav` / `scale_to_normal.wav`).
 
 ---
 
@@ -375,15 +509,18 @@ RegisterCheat("happy", () => activateEmoji.UpdateVisuals(EmojiType.HAPPY));
 ### Scene Flow
 ```
 CountryFair (Hub)
-├── CountryFairDialogue (intro)
+├── CountryFairDialogue (intro) ──playerFinishedIntro──> TentPersonalizationMenu + post-intro elements
 ├── Animal AI (wandering NPCs)
-└── Tents → Load mini-game scene
+├── PlayerScale (giant mode toggle)
+├── Tent personalization (world PlaceHolderManager <──> wrist-menu PlaceHolderManager)
+└── MiniGameTent.GoToMiniGame() → Load "ArcheryGame" / "FrisbeeGame"
 
-ArcheryScene / FrisbeeScene
+ArcheryGame / FrisbeeGame
 ├── Tutorial (if first time)
 ├── MiniGameManager
 ├── CarnyWise (DDA)
 ├── ScoreAndStreakSystem
+├── ServerListener → one of ExpressionDisplay (emoji) / ExpressionDisplay (face) / SliderDisplay
 └── ReturnToFair → CountryFair
 ```
 
@@ -424,8 +561,10 @@ Player Action → CarnyWise.PlayerScored() / PlayerMissed()
 | Component | Purpose |
 |-----------|---------|
 | `FoveatedRenderingController.cs` | Sets OVRManager.foveatedRenderingLevel |
-| `FollowPlayerHead.cs` | Dynamically tracks UI in front of player eyes every `LateUpdate` (replaces the deleted static `DisplayInPlayerFront.cs`). Located in `FrisbeeGame/Frisbee/`. |
+| `FollowPlayerHead.cs` | Dynamically tracks UI in front of player eyes every `LateUpdate`. Located in `FrisbeeGame/Frisbee/`. |
 | `BowHandTracking.cs` | Hand pinch detection, controller fallback |
+| `PlayerScale.cs` | Giant-mode toggle with log-space scaling + comfort vignette (section 12) |
+| `Utils.CastRayMetaQuest()` | Gaze ray from the object tagged `MainCamera`; used by `MiniGameTent` for the play button |
 
 ---
 
@@ -461,6 +600,8 @@ public static GameManager GetInstance() {
 ```
 
 ### PlayerPrefs for Persistent Settings
+Keys currently in use: `FrisbeeDifficultyLevel`, `ArcheryDifficultyLevel`, `DogDistance`,
+`BalloonColorToScore`, `SessionGoal`.
 ```csharp
 PlayerPrefs.GetInt("FrisbeeDifficultyLevel", 0);
 PlayerPrefs.SetFloat("DogDistance", 20f);
@@ -468,9 +609,17 @@ PlayerPrefs.SetString("BalloonColorToScore", "red");
 ```
 
 ### GameManager Session Defaults
-All session flags in `GameManager.cs` default to `false` (intro and both tutorials must be completed in order):
+All session flags in `GameManager.cs` default to `false` and live **in memory only** — they are never written to
+disk and reset when the process restarts:
 ```csharp
 public bool IntroCompleted { get; set; } = false;
 public bool FrisbeeTutorialCompleted { get; set; } = false;
 public bool ArcheryTutorialCompleted { get; set; } = false;
+public bool FrisbeeSessionCompleted { get; set; } = false;  // set on return from the mini-game,
+public bool ArcherySessionCompleted { get; set; } = false;  // triggers the hub's session-complete dialogue
 ```
+
+### Serializable Enum Naming
+Newer enums use `SCREAMING_SNAKE_CASE` for both the type and its members (`MINI_GAMES`, `EXPRESSION_TYPE`,
+`EMOJI_CATEGORY`, `DISPLAYMODE`). Older ones use PascalCase types (`GameSoundEffects`, `DialogueState`).
+Match whichever convention the surrounding file already uses.
