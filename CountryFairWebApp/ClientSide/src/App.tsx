@@ -1,8 +1,16 @@
 import {Canvas} from '@react-three/fiber'
 import './App.css'
 import zecaImg from './assets/imgs/Zeca.png'
+import { connect } from './network/client'
+import { useEffect } from 'react'
 
 function App() {
+   useEffect(() => {
+    const roomPromise = connect()
+    return () => {
+      roomPromise.then((room) => room.leave())
+    }
+  }, [])
 
   return (
    <div className="App">

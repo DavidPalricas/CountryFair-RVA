@@ -12,5 +12,7 @@ import { listen } from "@colyseus/tools";
 // Import Colyseus config
 import app from "./app.config.js";
 
-// Create and listen on 2567 (or PORT environment variable.)
-listen(app);
+// Carrega o .env partilhado pela WebApp (CountryFairWebApp/.env).
+process.loadEnvFile(new URL("../../.env", import.meta.url));
+
+listen(app, Number(process.env.SERVER_PORT) || 2567);
