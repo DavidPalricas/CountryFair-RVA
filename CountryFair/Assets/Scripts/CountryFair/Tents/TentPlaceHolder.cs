@@ -6,7 +6,7 @@ using UnityEngine;
 /// squash-and-stretch bounce animation to make the empty slot visible to the player.
 /// Trigger collider callbacks inform the active tent which placeholder it is hovering over.
 /// </summary>
-public class TentPlaceHolder : MonoBehaviour
+public class TentPlaceHolder : PlaceHolder
 {
     /// <summary>Transform used to position the tent's play button when a tent snaps to this slot.</summary>
     public Transform miniGameButtonPlaceHolderTransform;
@@ -39,9 +39,6 @@ public class TentPlaceHolder : MonoBehaviour
     private Vector3 _originalLocalPosition;
     private Sequence _squashStretchSequence;
 
-    /// <summary>Slot number displayed on the tent ribbon when a tent occupies this placeholder.</summary>
-    public int tentNumber = 1;
-
     /// <summary>Caches the model's original scale and local position as the animation baseline.</summary>
     private void Awake()
     {
@@ -71,12 +68,12 @@ public class TentPlaceHolder : MonoBehaviour
         float halfDuration = bounceDuration * HALF_DURATION_RATIO;
         float recoverDuration = bounceDuration * RECOVER_DURATION_RATIO;
 
-        Vector3 stretchScale = new Vector3(
+        Vector3 stretchScale = new (
             _originalScale.x * (1f - squashAmount * STRETCH_NARROW_FACTOR),
             _originalScale.y * (1f + squashAmount),
             _originalScale.z * (1f - squashAmount * STRETCH_NARROW_FACTOR));
 
-        Vector3 squashScale = new Vector3(
+        Vector3 squashScale = new(
             _originalScale.x * (1f + squashAmount),
             _originalScale.y * (1f - squashAmount * SQUASH_FLATTEN_FACTOR),
             _originalScale.z * (1f + squashAmount));
@@ -113,44 +110,6 @@ public class TentPlaceHolder : MonoBehaviour
     private void OnDestroy()
     {
         _squashStretchSequence?.Kill();
-        modelTransform?.DOKill();
-    }
-
-    /// <summary>
-    /// Notifies the entering tent that it is now hovering over this placeholder,
-    /// allowing it to snap here when released.
-    /// </summary>
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Tent")){
-            MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
-
-            if (tent == null){
-                Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
-
-                return;
-            }
-
-            tent.UpdateTentPlaceHolder(this);
-        }
-    }
-
-    /// <summary>
-    /// Notifies the exiting tent that it has left this placeholder's zone,
-    /// causing it to revert to its previous valid placeholder.
-    /// </summary>
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Tent")){
-            MiniGameTent tent = other.gameObject.GetComponent<MiniGameTent>();
-
-            if (tent == null){
-                Debug.LogError("GameObject with 'Tent' tag must have a MiniGameTent component.");
-
-                return;
-            }
-
-            tent.UpdateTentPlaceHolder(null);
-        }
+        modelTransform.DOKill();
     }
 }

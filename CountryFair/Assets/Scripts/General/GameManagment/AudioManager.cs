@@ -38,6 +38,12 @@ public class AudioManager: MonoBehaviour
     public enum GameSoundEffects {
         /* General Sound Effects */
         BUTTON_PRESSED,
+
+        /* Country Fair Sound Effects */
+
+        SCALE_TO_GIANT,
+
+        SCALE_TO_NORMAL,
         
         /* Carny Wise Sound Effects */
         CARNYWISE_INCREASE_DIFF,
