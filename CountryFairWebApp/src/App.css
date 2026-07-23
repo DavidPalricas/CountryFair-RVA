@@ -1,34 +1,375 @@
+/* ==================================================================
+   Country Fair VR - webapp theme
+   ------------------------------------------------------------------
+   Palette and motifs taken from the game art (Assets/UI): striped
+   circus tent canvas, wooden signboards in the style of
+   DialogueBox.png, and fairground bunting.
+
+   PROJECT CONSTRAINT: the text colour (#ff9700) and typeface
+   (Carnevalee Freakshow, declared in index.css) must not be changed.
+   All contrast comes from the background and from text-shadow, never
+   from touching the letter fill.
+
+   Stacking layers inside .App (which is the stacking context, since
+   it is position: relative):
+     z-index 0 -> react-three-fiber <canvas>
+     z-index 2 -> .App::before (bunting)
+     z-index 3 -> .info (signboard and text)
+   The canvas comes later in the DOM, so it needs an explicit z-index
+   to avoid covering the bunting.
+
+   File structure:
+     1. Scene (.App, bunting, canvas)
+     2. Content (.info, .signboard and children)
+     3. Typography and image
+     4. Waiting indicator + keyframes
+     5. Responsiveness
+================================================================== */
+
+/* ------------------------------------------------------------------
+   1. SCENE
+------------------------------------------------------------------- */
+
+/*
+  Application root: paints the circus tent and acts as the stacking
+  context for the canvas and the content overlay.
+  The custom properties live here (rather than in :root) to keep the
+  theme scoped to the component.
+*/
 .App {
+  --fair-red: #b8392e;
+  --fair-red-dark: #8e2a22;
+  --fair-cream: #f6e6c8;
+  --wood-light: #d59a63;
+  --wood-mid: #b3763f;
+  --wood-dark: #6f4420;
+  --wood-deep: #3a2413;
+
+  /*
+    ANGULAR width of each canvas stripe (not a width in px).
+    Because the stripes radiate from a point above the screen, the
+    number of visible stripes depends on the width/height ratio: in
+    portrait the visible fan is narrow, so the base value is small
+    (3deg) and rises to 5deg on wide screens (see section 5).
+  */
+  --stripe: 3deg;
+
   position: relative;
-  width: 100vw;
+  width: 100%;
+  /* 100vh is the fallback for browsers without dvh; dvh avoids the
+     clipping caused by the mobile address bar. */
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
+  /* Base colour in case repeating-conic-gradient is unsupported. */
+  background-color: var(--fair-red-dark);
+  background-image:
+    /* light pouring in from the top of the tent */
+    radial-gradient(120% 85% at 50% 0%, rgba(255, 244, 220, 0.38), rgba(255, 244, 220, 0) 55%),
+    /* shadow on the ground */
+    radial-gradient(140% 110% at 50% 118%, rgba(45, 24, 10, 0.62), rgba(45, 24, 10, 0) 62%),
+    /* Tent canvas: origin at 50% -10% (above the viewport) so the
+       stripes fan out downwards, like the inside of a circus tent.
+       The last stop defines the period of the pattern. */
+    repeating-conic-gradient(
+      from 0deg at 50% -10%,
+      var(--fair-cream) 0deg var(--stripe),
+      var(--fair-red) var(--stripe) calc(var(--stripe) * 2)
+    );
 }
 
+/*
+  Bunting strip pinned to the top.
+  Drawn as an SVG data URI (a rope plus 4 differently coloured flags)
+  repeated along x, so it stays crisp at any screen density and needs
+  no network request.
+  pointer-events: none so it never intercepts clicks meant for the canvas.
+*/
+.App::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(30px, 7vh, 58px);
+  z-index: 2;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='38' viewBox='0 0 160 38' preserveAspectRatio='none'%3E%3Crect width='160' height='5' fill='%233a2413'/%3E%3Cpath d='M2 5 H38 L20 33 Z' fill='%23f6e6c8'/%3E%3Cpath d='M42 5 H78 L60 33 Z' fill='%23f0b429'/%3E%3Cpath d='M82 5 H118 L100 33 Z' fill='%236f9e4c'/%3E%3Cpath d='M122 5 H158 L140 33 Z' fill='%23e0563f'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  /* The tile width controls the flag size; the height always follows
+     the element's own height (preserveAspectRatio='none'). */
+  background-size: clamp(130px, 26vw, 230px) 100%;
+  /* drop-shadow (not box-shadow) so the shadow follows the triangular
+     flag outline instead of the element box. */
+  filter: drop-shadow(0 4px 6px rgba(40, 20, 8, 0.45));
+}
+
+/*
+  react-three-fiber canvas: fills the scene behind everything else.
+  It stays transparent, so the .App background remains visible.
+*/
 .App canvas {
   position: absolute;
   inset: 0;
+  z-index: 0;
 }
 
+/* ------------------------------------------------------------------
+   2. CONTENT
+------------------------------------------------------------------- */
+
+/*
+  Overlay that centres the signboard over the scene.
+  padding-top reserves room for the bunting.
+  overflow-y: auto makes sure the content can still be scrolled on very
+  short screens, since .App has overflow: hidden and would clip it.
+*/
 .info {
   position: absolute;
   inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(3.2rem, 11vh, 5.5rem) clamp(0.9rem, 4vw, 2rem) clamp(1.2rem, 5vh, 2.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/*
+  Wooden signboard, in the spirit of the game's DialogueBox.
+  The frame does NOT use border: it is made of two spread box-shadows
+  (light wood inside, dark wood outside), which lets it scale with
+  clamp() without affecting the box model or the border-radius.
+
+  MIND the order of the background layers: the first four are the
+  corner nails, followed by the wood grain and the wood base.
+  background-position / -size / -repeat are aligned by index with that
+  order - changing one means changing all three.
+*/
+.signboard {
+  position: relative;
+  width: min(100%, 780px);
+  margin: auto;
+  padding: clamp(1.1rem, 4vw, 2.4rem) clamp(1.2rem, 5vw, 3rem);
+  border-radius: clamp(10px, 2vw, 20px);
+  background-color: var(--wood-deep);
+  background-image:
+    /* nails in the four corners (top-left, top-right, bottom-left, bottom-right) */
+    radial-gradient(circle, #f0d4a3 0 30%, #a5702f 34% 60%, rgba(0, 0, 0, 0) 64%),
+    radial-gradient(circle, #f0d4a3 0 30%, #a5702f 34% 60%, rgba(0, 0, 0, 0) 64%),
+    radial-gradient(circle, #f0d4a3 0 30%, #a5702f 34% 60%, rgba(0, 0, 0, 0) 64%),
+    radial-gradient(circle, #f0d4a3 0 30%, #a5702f 34% 60%, rgba(0, 0, 0, 0) 64%),
+    /* wood grain: 93deg (not 90deg) so the lines sit slightly askew
+       and read as less mechanical */
+    repeating-linear-gradient(
+      93deg,
+      rgba(255, 255, 255, 0.045) 0 2px,
+      rgba(0, 0, 0, 0) 2px 7px,
+      rgba(0, 0, 0, 0.09) 7px 9px,
+      rgba(0, 0, 0, 0) 9px 16px
+    ),
+    /* base: dark wood, lit more strongly towards the top */
+    linear-gradient(180deg, #5c3620 0%, #40230f 55%, #331c0c 100%);
+  background-position:
+    clamp(9px, 2vw, 16px) clamp(9px, 2vw, 16px),
+    right clamp(9px, 2vw, 16px) top clamp(9px, 2vw, 16px),
+    left clamp(9px, 2vw, 16px) bottom clamp(9px, 2vw, 16px),
+    right clamp(9px, 2vw, 16px) bottom clamp(9px, 2vw, 16px),
+    0 0,
+    0 0;
+  background-size:
+    clamp(11px, 2.2vw, 16px) clamp(11px, 2.2vw, 16px),
+    clamp(11px, 2.2vw, 16px) clamp(11px, 2.2vw, 16px),
+    clamp(11px, 2.2vw, 16px) clamp(11px, 2.2vw, 16px),
+    clamp(11px, 2.2vw, 16px) clamp(11px, 2.2vw, 16px),
+    auto,
+    auto;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, no-repeat;
+  box-shadow:
+    /* relief: light edge on top, inner shadow at the bottom */
+    inset 0 2px 0 rgba(255, 214, 165, 0.16),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.45),
+    /* two-layer wooden frame */
+    0 0 0 clamp(5px, 1.3vw, 10px) var(--wood-light),
+    0 0 0 clamp(7px, 1.9vw, 14px) var(--wood-dark),
+    /* shadow cast onto the tent canvas */
+    0 clamp(8px, 3vh, 22px) clamp(16px, 5vw, 42px) rgba(28, 13, 5, 0.55);
+}
+
+/* Signboard heading, separated from the body by a dashed rule in a
+   light wood tone. */
+.signboard__title {
+  margin: 0 0 clamp(0.8rem, 3vh, 1.6rem);
+  padding-bottom: clamp(0.6rem, 2vh, 1.1rem);
+  border-bottom: 2px dashed rgba(213, 154, 99, 0.4);
+}
+
+/* Zeca + status block. Stacked by default (mobile-first); they sit
+   side by side from 40rem upwards (section 5). */
+.signboard__body {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  gap: 1rem;
-  padding: 1rem;
+  gap: clamp(0.8rem, 3vw, 2rem);
 }
 
+/* Connection message + waiting dots. */
+.signboard__status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.6rem, 2vh, 1rem);
+}
+
+/* Spacing becomes the responsibility of the flex gap. */
+.signboard__status h1 {
+  margin: 0;
+}
+
+
+/*
+  Colour (#ff9700) and typeface kept exactly as in the original design.
+  The dark text-shadow only lifts the orange off the wood - it does not
+  alter the letter fill.
+*/
 .info h1 {
   font-size: clamp(1.2rem, 4vw, 2rem);
+  line-height: 1.25;
   margin: 0;
   color: #ff9700;
+  letter-spacing: 0.02em;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.55),
+    0 3px 6px rgba(0, 0, 0, 0.45);
 }
 
+/*
+  Zeca Bigodes. drop-shadow follows the PNG cutout (transparent
+  background), unlike box-shadow. The bobbing brings the waiting
+  screen to life.
+*/
 .info img {
   width: clamp(120px, 30vw, 280px);
   height: auto;
+  filter: drop-shadow(0 clamp(6px, 1.5vh, 14px) clamp(8px, 2vw, 18px) rgba(0, 0, 0, 0.5));
+  animation: zeca-bob 3.6s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------
+   4. WAITING INDICATOR
+------------------------------------------------------------------- */
+
+/*
+  Three pulsing dots shown while the game has not connected.
+  Purely decorative - marked aria-hidden in App.tsx.
+*/
+.waiting-dots {
+  display: flex;
+  gap: clamp(6px, 1.4vw, 10px);
+}
+
+.waiting-dots span {
+  width: clamp(8px, 1.8vw, 13px);
+  height: clamp(8px, 1.8vw, 13px);
+  border-radius: 50%;
+  background: #ff9700;
+  /* dark outline so the dots read against the wood */
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35);
+  animation: dot-pulse 1.4s ease-in-out infinite;
+}
+
+/* Offsets that create the left-to-right wave. */
+.waiting-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.waiting-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Gentle vertical bobbing for Zeca. */
+@keyframes zeca-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Pulse of the waiting dots (scale + opacity). */
+@keyframes dot-pulse {
+  0%,
+  100% {
+    transform: scale(0.7);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------
+   5. RESPONSIVENESS
+   The base layout is mobile-first; the media queries below only widen it.
+------------------------------------------------------------------- */
+
+/*
+  Wide screens (>= 640px): there is enough angular fan for wider
+  stripes, and Zeca fits beside the text.
+*/
+@media (min-width: 40rem) {
+  .App {
+    --stripe: 5deg;
+  }
+
+  .signboard__body {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .signboard__status {
+    align-items: flex-start;
+    flex: 1;
+  }
+}
+
+/*
+  Phone in landscape: very little usable height. Shrinks the bunting,
+  the paddings and Zeca so the signboard fits without forcing a scroll.
+*/
+@media (max-height: 30rem) and (orientation: landscape) {
+  .App::before {
+    height: clamp(22px, 9vh, 38px);
+  }
+
+  .info {
+    padding-top: clamp(2.4rem, 12vh, 3.4rem);
+  }
+
+  .signboard {
+    padding: clamp(0.7rem, 2.5vh, 1.2rem) clamp(1rem, 4vw, 2rem);
+  }
+
+  .signboard__title {
+    margin-bottom: clamp(0.5rem, 2vh, 0.9rem);
+    padding-bottom: clamp(0.4rem, 1.5vh, 0.7rem);
+  }
+
+  .info img {
+    width: clamp(80px, 16vw, 150px);
+  }
+}
+
+/* Accessibility: honour users who asked for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .info img,
+  .waiting-dots span {
+    animation: none;
+  }
 }
