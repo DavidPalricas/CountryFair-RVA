@@ -3113,6 +3113,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4673847769149175721, guid: b3144db7d8f36114b99463bbd18ab8ed, type: 3}
   m_PrefabInstance: {fileID: 241459157}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &241917811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 241917813}
+  - component: {fileID: 241917812}
+  m_Layer: 0
+  m_Name: ConnectToWebApp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &241917812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241917811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f562ac86a2078bd4183531fe9bc4b84e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConnectToWebApp
+  serverPort: 2567
+--- !u!4 &241917813
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241917811}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.91439, y: 3.29724, z: 13.71521}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &244532658
 GameObject:
   m_ObjectHideFlags: 0
@@ -5666,7 +5711,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerScale
   cameraRigTransform: {fileID: 278979377}
+  headTransform: {fileID: 0}
   giantScaleFactor: 7
+  scaleUpDuration: 1
+  scaleDownDuration: 0.8
+  anticipationAmount: 0.04
+  anticipationDuration: 0.12
+  comfortVignette: {fileID: 0}
+  vignetteOpenFieldOfView: 170
+  vignetteTunnelFieldOfView: 60
+  vignetteCloseDuration: 0.25
   onScaleToGiant:
     m_PersistentCalls:
       m_Calls:
@@ -5697,6 +5751,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onScaleAnimationStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  onScaleAnimationCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &424902215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32117,3 +32177,4 @@ SceneRoots:
   - {fileID: 1447463002}
   - {fileID: 441063977}
   - {fileID: 861099402}
+  - {fileID: 241917813}

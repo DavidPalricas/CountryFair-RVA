@@ -12,7 +12,9 @@ const server = defineServer({
 
     rooms: {
         my_room: defineRoom(FairSceneRoom)
-    }
-});
+
+}});
+
+server.define("fairsceneroom", FairSceneRoom);
 
 export default server;
