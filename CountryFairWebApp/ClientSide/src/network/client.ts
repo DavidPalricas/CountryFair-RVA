@@ -1,15 +1,21 @@
 import { Client } from "@colyseus/sdk";
+import type { Room } from "@colyseus/sdk/Room";
 
-// Vem do .env partilhado (CountryFairWebApp/.env), exposto pelo Vite (ver vite.config.ts).
-const SERVER_PORT = import.meta.env.SERVER_PORT ?? "2567";
+const SERVER_PORT = import.meta.env.VITE_SERVER_PORT ?? "2567";
 
-export async function connect() {
-    const client = new Client(`http://localhost:${SERVER_PORT}`);
-    const room = await client.joinOrCreate('my_room', {
-        /* custom join options */
-    });
-    
-    return room;
+let roomPromise: Promise<Room> | null = null;
+
+async function connect(): Promise<Room> {
+  const client = new Client(`http://localhost:${SERVER_PORT}`);
+  return client.joinOrCreate("fairsceneroom", { platform: "web" });
 }
- 
-connect();
+
+export function getRoom(): Promise<Room> {
+  if (!roomPromise) {
+    roomPromise = connect().catch((err) => {
+      roomPromise = null;
+      throw err;
+    });
+  }
+  return roomPromise;
+}

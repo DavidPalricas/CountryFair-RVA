@@ -1,44 +1,31 @@
-import {Canvas} from '@react-three/fiber'
-import './App.css'
-import zecaImg from './assets/imgs/Zeca.png'
-import { connect } from './network/client'
-import { useEffect } from 'react'
+import { useEffect, useState } from "react";
+import { getRoom } from "./network/client";
+import { WaitingScreen } from "./screens/WatingScreen";
+import { GameScreen } from "./screens/GameScreen";
 
 function App() {
-   useEffect(() => {
-    const roomPromise = connect()
-    return () => {
-      roomPromise.then((room) => room.leave())
-    }
-  }, [])
+  const [phase, setPhase] = useState<"waiting" | "game">("waiting");
 
-  return (
-   <div className="App">
-      <Canvas>
-       {/* Game Stuff */}
-      </Canvas>
+  useEffect(() => {
+    let cancelled = false;
 
-      <div className="info">
-        <div className="signboard">
-          <h1 className="signboard__title">Bem vindo ao Country Fair VR</h1>
+    getRoom()
+      .then((room) => {
+        if (cancelled) return;
+        console.log("Connected to room:", room.name);
+        room.onMessage("gamejoined", () => {
+          console.log("Received gamejoined message");
+          setPhase("game");
+        });
+      })
+      .catch((err) => {
+        if (!cancelled) console.error("Falha no matchmaking:", err);
+      });
 
-          <div className="signboard__body">
-            <img src={zecaImg} alt="ZecaBigodes" />
+    return () => { cancelled = true }; // sem leave: a ligação é singleton, sobrevive a re-montagens
+  }, []);
 
-            <div className="signboard__status">
-              <h1>Esperando que ligue ao jogo</h1>
-
-              <div className="waiting-dots" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+  return phase === "waiting" ? <WaitingScreen /> : <GameScreen />;
 }
 
-export default App
+export default App;

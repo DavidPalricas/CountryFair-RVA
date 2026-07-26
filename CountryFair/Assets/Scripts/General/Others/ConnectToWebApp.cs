@@ -1,23 +1,22 @@
 using UnityEngine;
 using Colyseus;
+using System.Collections.Generic;
 
 public class ConnectToWebApp : MonoBehaviour
 {   
     [SerializeField]
     private int serverPort = 2567;
-    private static ConnectToWebApp _instance = null;
+    private static ConnectToWebApp instance = null;
 
-
-   private Room<FairState> _room;
-
+   private Room<FairState> room;
 
     private Client _client;
     
     private void Awake()
     {
-        if (_instance == null)
+        if (instance == null)
         {
-            _instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
 
             return;
@@ -31,10 +30,12 @@ public class ConnectToWebApp : MonoBehaviour
     {   
         string serverHost = "localhost";
         string endpoint = $"ws://{serverHost}:{serverPort}";
+
+        string plataform = "game";
         
         _client = new Client(endpoint);
 
-        _room = await _client.JoinOrCreate<FairState>("fairsceneroom");
+        room = await _client.JoinOrCreate<FairState>("fairsceneroom", new Dictionary<string, object> { { "platform", plataform } });
     
     } 
 }
