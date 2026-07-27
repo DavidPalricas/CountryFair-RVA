@@ -1,0 +1,11 @@
+/*
+  A skybox vive no body em vez de ser uma textura da cena: o canvas do R3F e
+  transparente por defeito, por isso o fundo aparece por tras do plano 3D.
+*/
+body {
+  background-image: url("../assets/imgs/skybox.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}

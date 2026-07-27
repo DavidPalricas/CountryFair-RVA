@@ -25,7 +25,9 @@ function App() {
     return () => { cancelled = true }; // sem leave: a ligação é singleton, sobrevive a re-montagens
   }, []);
 
-  return phase === "waiting" ? <WaitingScreen /> : <GameScreen />;
+  // return phase === "waiting" ? <WaitingScreen /> : <GameScreen />;
+  
+  return <GameScreen />
 }
 
 export default App;
