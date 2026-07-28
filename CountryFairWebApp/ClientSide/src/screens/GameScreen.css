@@ -9,3 +9,49 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+
+/*
+  Stacking context for the canvas and the 2D text on top of it.
+*/
+.game-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/*
+  Instruction pinned to the top of the scene and centred on the horizontal
+  axis: left: 50% moves the box's left edge to the middle, translateX(-50%)
+  pulls it back by half its OWN width, so it stays centred at any size
+  without needing to know how wide the text renders.
+
+  It is taken out of the flow (position: absolute) so it does not shorten
+  the canvas, and pointer-events: none keeps the drag on the tents working
+  underneath it.
+*/
+.game-screen__title {
+  position: absolute;
+  top: clamp(0.8rem, 4vh, 2.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none;
+  margin: 0;
+  /* Shrinks to the text, but wraps (centred) instead of overflowing on
+     narrow screens. */
+  width: max-content;
+  max-width: min(92%, 46rem);
+  text-align: center;
+  /* Scales with the viewport, bounded so it never gets illegible or huge. */
+  font-size: clamp(1rem, 3.2vw, 2rem);
+  line-height: 1.25;
+  /* Colour and typeface as in the rest of the app; the dark shadow only
+     lifts the orange off the sky. */
+  color: #ff9700;
+  letter-spacing: 0.02em;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.55),
+    0 3px 6px rgba(0, 0, 0, 0.45);
+}
+

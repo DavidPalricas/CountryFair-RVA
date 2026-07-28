@@ -1,6 +1,8 @@
 import {Tent} from "./Tent";
 import {ArcheryProps} from "../MiniGamesProps/ArcheryProps";
 import { FrisbeeProps } from "../MiniGamesProps/FrisbeeProps";
+import { FishingProps } from "../MiniGamesProps/FishingProps";
+import { DuckProps } from "../MiniGamesProps/DuckProps";
 
 
 type MiniGameType = "fishing" | "archery" | "frisbee" | "duckgame";
@@ -19,8 +21,11 @@ export function MiniGameTent({ position, rotation = [0, 0, 0], scale = 1, type }
     return (
         <group position={position} rotation={rotation} scale={scale}>
             <Tent position={[0, 0, 0]} rotation={[0, 0, 0]} scale={1} />
-            {type === "frisbee" && <FrisbeeProps position={miniGamePropsPos} />}
+            {type === "fishing" && <FishingProps position={miniGamePropsPos} />}
             {type === "archery" && <ArcheryProps position={miniGamePropsPos} />}
+            {type === "frisbee" && <FrisbeeProps position={miniGamePropsPos} />}
+            {type === "duckgame" && <DuckProps position={miniGamePropsPos} />}
+           
         </group>
     );
 }

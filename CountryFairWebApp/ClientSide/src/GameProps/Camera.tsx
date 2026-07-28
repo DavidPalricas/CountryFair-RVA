@@ -11,7 +11,7 @@ type CameraProps = {
 };
 
 
-export function Camera({ position, lookAt = [0, 0, 0], fov = 75, near = 0.1, far = 1000 }: CameraProps) {
+export function Camera({ position, lookAt = [0, 0, 0], fov = 120, near = 0.1, far = 1000 }: CameraProps) {
     const ref = useRef<PerspectiveCameraImpl>(null!);
     const set = useThree((state) => state.set);
 
