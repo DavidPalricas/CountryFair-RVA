@@ -15,7 +15,7 @@ type TentProps = {
     scale?: number;
 };
 
-export function Tent({ position, rotation = [0, 0, 0], scale = 1 }: TentProps) {
+export function Tent({ position = [0, 0, 0], rotation = [0, 0, 0], scale = 1 }: TentProps) {
     const { scene } = useGLTF(TENT_MODEL);
 
     const model = useMemo(() => scene.clone(), [scene]);
