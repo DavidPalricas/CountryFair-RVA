@@ -21,6 +21,14 @@ body {
 }
 
 /*
+  Sem isto, em tablet/telemovel o gesto de arrastar uma tenda e interpretado pelo
+  browser como scroll/zoom da pagina e o pointermove deixa de chegar ao canvas.
+*/
+.game-screen canvas {
+  touch-action: none;
+}
+
+/*
   Instruction pinned to the top of the scene and centred on the horizontal
   axis: left: 50% moves the box's left edge to the middle, translateX(-50%)
   pulls it back by half its OWN width, so it stays centred at any size

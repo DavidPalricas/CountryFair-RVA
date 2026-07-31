@@ -25,11 +25,13 @@ const TEXT_Y = 0.99;
 
 type TentRibbon = {
     position: [number, number, number];
+    /* Numero do slot que a tenda ocupa; muda quando as tendas trocam de ordem. */
+    number: number;
     rotation?: [number, number, number];
     scale?: number;
 };
 
-export function TentRibbon({ position, rotation = [0, 0, 0], scale = 1 }: TentRibbon) {
+export function TentRibbon({ position, number, rotation = [0, 0, 0], scale = 1 }: TentRibbon) {
     const { scene: scene } = useGLTF(RIBBON__MODEL);
 
 
@@ -43,7 +45,7 @@ export function TentRibbon({ position, rotation = [0, 0, 0], scale = 1 }: TentRi
 
             {/* x = 0 porque o modelo ja esta centrado na sua origem (bounding box em X: -0.5196 a +0.5196). */}
             <Text3D position={[0, TEXT_Y, TEXT_Z]} fontSize={0.3} maxWidth={1.5} anchorX="center" anchorY="middle">
-                1
+                {String(number)}
             </Text3D>
         </group>
     );
