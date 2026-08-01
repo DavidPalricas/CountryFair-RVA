@@ -1,27 +1,26 @@
-/*
-  Logica de ordenacao pura: sem React e sem Three, para poder ser testada sem montar
-  cena nenhuma e para ser ligada ao Colyseus mais tarde sem mexer nos componentes.
-  E o equivalente ao PlaceHolderManager.UpdateElementPosition() do Unity.
-*/
+/**
+ * Pure ordering logic: no React and no Three, so it can be tested without mounting a scene
+ * and wired to Colyseus later without touching the components. It is the equivalent of
+ * Unity's `PlaceHolderManager.UpdateElementPosition()`.
+ */
 
 import { DROP_RADIUS, TENT_SLOTS, type MiniGameType } from "./tentSlots";
 
-/* O indice do array e o indice do slot: order[2] e a tenda que ocupa o slot 3. */
+/** The array index is the slot index: `order[2]` is the tent occupying slot 3. */
 export type TentOrder = MiniGameType[];
 
-/*
-  Devolve o indice do slot cujo centro esta a menos de DROP_RADIUS do ponto, ou null
-  se a largada caiu na zona morta entre slots. Substitui os OnTriggerEnter/Exit dos
-  colliders do Unity, que aqui nao existem porque o R3F nao traz fisica.
-*/
-export function slotIndexAtPoint(x: number, z: number): number | null {
+/**
+ * Returns the index of the slot whose centre is within DROP_RADIUS in X of the point, or
+ * null when the drop landed in the dead zone between slots. This replaces the Unity
+ * collider `OnTriggerEnter`/`Exit` pair, which does not exist here because R3F brings no
+ * physics.
+ *
+ * Only X is considered because the drag is locked to the row line (see `useTentDrag`): all
+ * slots share the same Z, so the Z distance is always zero.
+ */
+export function slotIndexAtX(x: number): number | null {
     for (let slot = 0; slot < TENT_SLOTS.length; slot++) {
-        const [slotX, , slotZ] = TENT_SLOTS[slot].position;
-        const deltaX = x - slotX;
-        const deltaZ = z - slotZ;
-
-        /* Comparacao ao quadrado para evitar a raiz quadrada. */
-        if (deltaX * deltaX + deltaZ * deltaZ <= DROP_RADIUS * DROP_RADIUS) {
+        if (Math.abs(x - TENT_SLOTS[slot].position[0]) <= DROP_RADIUS) {
             return slot;
         }
     }
@@ -29,10 +28,12 @@ export function slotIndexAtPoint(x: number, z: number): number | null {
     return null;
 }
 
-/*
-  Troca a tenda com quem ocupa targetSlot. Devolve a MESMA referencia quando nao ha
-  mudanca, para o setState do React nao disparar um render desnecessario.
-*/
+/**
+ * Swaps `tent` with whoever occupies `targetSlot`.
+ *
+ * Returns the SAME reference when nothing changes, so React's setState does not trigger a
+ * needless render. An unknown tent or an out-of-range slot is a no-op for the same reason.
+ */
 export function swapIntoSlot(order: TentOrder, tent: MiniGameType, targetSlot: number): TentOrder {
     const currentSlot = order.indexOf(tent);
 

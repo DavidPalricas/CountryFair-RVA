@@ -3,47 +3,51 @@ import { useGLTF } from "@react-three/drei";
 import {Text3D} from "../Text3D";
 
 
+/** Expects public/models/FairRibbon.glb. */
 const RIBBON__MODEL = "/models/FairRibbon.glb";
 
-// O modelo vem grande do Blender; este factor poe-o a escala da tenda.
+// The model comes out of Blender oversized; this factor brings it to tent scale.
 const MODEL_SCALE = 0.8;
 
-// O ribbon e quase plano: a bounding box do .glb vai de z = -0.030 a z = +0.0246.
-// A rotacao de 180 graus poe a face -Z virada a camara, logo a frente fica a
-// 0.030 * MODEL_SCALE = 0.024. O texto assenta logo a seguir, so com folga para
-// evitar z-fighting. Manter o texto no plano do ribbon e o que garante que ele
-// nunca se desalinha: como as tendas tem rotacoes diferentes e a camara e muito
-// grande-angular (fov 120), qualquer offset em Z produzia paralaxe distinta em
-// cada tenda, e o numero sairia do centro do disco umas vezes para a esquerda,
-// outras para a direita.
+// The ribbon is almost flat: the .glb bounding box runs from z = -0.030 to z = +0.0246.
+// The 180 degree rotation turns the -Z face towards the camera, so the front lands at
+// 0.030 * MODEL_SCALE = 0.024. The text sits just beyond it, with only enough clearance to
+// avoid z-fighting. Keeping the text in the ribbon's plane is what guarantees it never drifts
+// out of alignment: because the tents carry different rotations and the camera is very wide
+// angle (fov 120), any Z offset produced different parallax per tent, and the number would
+// slide off the centre of the disc — sometimes left, sometimes right.
 const TEXT_Z = 0.03;
 
-// Centro do disco: o topo do modelo esta em y = 0.5113 e o raio (metade da largura
-// em X) e 0.5196, logo o centro cai em y ~ -0.008. Com o primitive em y = 1 da isto.
+// Centre of the disc: the top of the model is at y = 0.5113 and the radius (half the width in
+// X) is 0.5196, so the centre falls at y ~ -0.008. With the primitive at y = 1 that gives this.
 const TEXT_Y = 0.99;
 
 
 type TentRibbon = {
+    /** Position in the parent tent's local space. */
     position: [number, number, number];
-    /* Numero do slot que a tenda ocupa; muda quando as tendas trocam de ordem. */
+    /** Number of the slot the tent occupies; changes when the tents swap order. */
     number: number;
+    /** Euler rotation in radians. */
     rotation?: [number, number, number];
+    /** Uniform multiplier applied on top of MODEL_SCALE. */
     scale?: number;
 };
 
+/** Ribbon badge hanging on a tent, showing the number of the slot the tent currently occupies. */
 export function TentRibbon({ position, number, rotation = [0, 0, 0], scale = 1 }: TentRibbon) {
     const { scene: scene } = useGLTF(RIBBON__MODEL);
 
-
+    // Cloning shares geometry and materials with the cached original: one ribbon per tent
+    // costs a draw call, not another mesh upload.
     const model = useMemo(() => scene.clone(), [scene]);
-
 
     return (
         <group position={position} rotation={rotation} scale={scale}>
-      
+
             <primitive object={model} position={[0, 1, 0]} scale={MODEL_SCALE} rotation={[0, Math.PI, 0]} />
 
-            {/* x = 0 porque o modelo ja esta centrado na sua origem (bounding box em X: -0.5196 a +0.5196). */}
+            {/* x = 0 because the model is already centred on its origin (X bounding box: -0.5196 to +0.5196). */}
             <Text3D position={[0, TEXT_Y, TEXT_Z]} fontSize={0.3} maxWidth={1.5} anchorX="center" anchorY="middle">
                 {String(number)}
             </Text3D>

@@ -87,10 +87,29 @@ Before writing, **read a couple of already-documented files in the same target**
 - Keep the language of comments consistent with the file being edited (existing comments in this project are in English; leave any Portuguese user-facing strings untouched)
 - Never change behaviour, formatting of code, or imports — only add/adjust comments
 
+### Portuguese comments — remove or translate
+
+The codebase's documentation language is **English**. Every Portuguese comment found in a file in scope must be resolved, never left as-is:
+
+- **Delete it** — the default. If the comment restates what the code already says (`// contador de balões`, `// aqui verificamos se o jogador acertou`, section separators, leftovers from development, commented-out code), remove it entirely instead of translating it. A redundant comment does not become useful by being in English.
+- **Translate it to English** — only when it carries knowledge that is **not** derivable from reading the code, i.e. something niche, non-obvious or unusual that a reader would need in order to understand the code and that helps the documentation. Typical cases:
+  - the **reason** behind a magic number, threshold, offset or tuning value
+  - a workaround for an engine/library/hardware quirk (Unity execution order, Meta XR SDK behaviour, Netcode timing, R3F render loop, Colyseus patch semantics)
+  - a domain/clinical rule of the rehabilitation context, or a VR comfort constraint
+  - an invariant, ordering requirement or assumption that, if broken, silently breaks the feature
+  - a deliberate deviation from the obvious implementation, and why the obvious one fails
+
+  When translating, promote the content into the file's proper documentation convention where it belongs (`///` XML doc / JSDoc block for a member; keep it as an inline `//` when it explains one specific line).
+
+**Never touch** Portuguese text that is not a comment: UI strings, dialogue text, JSON dialog files, tent names, enum values, log messages shown to the user, or any string literal — these are part of the product and stay in Portuguese.
+
+When in doubt between deleting and translating, translate — losing real context is worse than keeping one extra line.
+
 ## Output
 
 - State at the top which argument was resolved and which codebase(s) were documented
 - Return the changed files with complete documentation
+- Report the Portuguese-comment pass: how many comments were **deleted** as redundant, and list the ones that were **translated** (file + what knowledge they carried), so the decision can be reviewed
 - Then list, grouped by target (omitting any group outside the selected scope):
   - **Unity/C#** — public methods that appear to be Inspector-driven and need confirmation
   - **ClientSide** — components whose props or asset paths could not be inferred with confidence

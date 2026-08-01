@@ -11,7 +11,7 @@ body {
 }
 
 /*
-  Stacking context for the canvas and the 2D text on top of it.
+  Stacking context for the canvas and the copyright text on top of it.
 */
 .game-screen {
   position: relative;
@@ -29,37 +29,36 @@ body {
 }
 
 /*
-  Instruction pinned to the top of the scene and centred on the horizontal
-  axis: left: 50% moves the box's left edge to the middle, translateX(-50%)
-  pulls it back by half its OWN width, so it stays centred at any size
-  without needing to know how wide the text renders.
+  Aviso de copyright encostado ao canto inferior direito. Fora do fluxo
+  (position: absolute) para nao encolher o canvas, pointer-events: none para
+  nao roubar o arrasto das tendas.
 
-  It is taken out of the flow (position: absolute) so it does not shorten
-  the canvas, and pointer-events: none keeps the drag on the tents working
-  underneath it.
+  O safe-area-inset entra na conta por causa da barra de gestos do iOS, que de
+  outra forma passaria por cima do texto em telemovel.
 */
-.game-screen__title {
+.game-screen__copyright {
   position: absolute;
-  top: clamp(0.8rem, 4vh, 2.5rem);
-  left: 50%;
-  transform: translateX(-50%);
+  right: calc(clamp(0.6rem, 2vw, 1.5rem) + env(safe-area-inset-right, 0px));
+  bottom: calc(clamp(0.6rem, 2vh, 1.5rem) + env(safe-area-inset-bottom, 0px));
   z-index: 1;
   pointer-events: none;
   margin: 0;
-  /* Shrinks to the text, but wraps (centred) instead of overflowing on
-     narrow screens. */
-  width: max-content;
-  max-width: min(92%, 46rem);
-  text-align: center;
-  /* Scales with the viewport, bounded so it never gets illegible or huge. */
-  font-size: clamp(1rem, 3.2vw, 2rem);
-  line-height: 1.25;
-  /* Colour and typeface as in the rest of the app; the dark shadow only
-     lifts the orange off the sky. */
+  max-width: min(60%, 24rem);
+  text-align: right;
+  /*
+    Sobrepoe a Carnevalee Freakshow que vem do body: a fonte decorativa da feira e para
+    o conteudo do jogo, e num aviso legal deste tamanho perde-se a legibilidade. A fonte
+    do sistema tambem marca o rodape como algo fora do jogo.
+  */
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(0.72rem, 1.1vw, 0.9rem);
+  line-height: 1.2;
+  /* A mesma cor do titulo e do texto 3D; a sombra escura descola o laranja do ceu. */
   color: #ff9700;
-  letter-spacing: 0.02em;
+  opacity: 0.85;
+  letter-spacing: 0.01em;
   text-shadow:
     0 1px 0 rgba(0, 0, 0, 0.55),
-    0 3px 6px rgba(0, 0, 0, 0.45);
+    0 2px 4px rgba(0, 0, 0, 0.45);
 }
 

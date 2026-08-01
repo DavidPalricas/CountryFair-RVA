@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  /** Porta do servidor Colyseus, lida de CountryFairWebApp/.env */
+  /** Colyseus server port, read from the shared CountryFairWebApp/.env */
   readonly SERVER_PORT: string
 }
 

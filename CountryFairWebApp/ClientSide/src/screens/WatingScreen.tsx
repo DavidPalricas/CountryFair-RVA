@@ -1,6 +1,13 @@
 import zecaImg from '../assets/imgs/Zeca.png'
 import '../App.css'
 
+/**
+ * Screen shown while the headset has not joined the room yet.
+ *
+ * Purely presentational — the transition out of it is driven by the `"gamejoined"` message
+ * handled in `App`. Zeca Bigodes is the same host character that gives the intro dialogue
+ * inside the VR game, so the patient and therapist see a consistent guide on both devices.
+ */
 export function WaitingScreen() {
    return (
      <div className="App">

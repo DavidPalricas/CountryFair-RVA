@@ -12,7 +12,8 @@ import { listen } from "@colyseus/tools";
 // Import Colyseus config
 import app from "./app.config.js";
 
-// Carrega o .env partilhado pela WebApp (CountryFairWebApp/.env).
+// The .env lives at the WebApp root (CountryFairWebApp/.env) and is shared with the Vite
+// client, so both sides agree on SERVER_PORT. It is two levels above this module.
 process.loadEnvFile(new URL("../../.env", import.meta.url));
 
 listen(app, Number(process.env.SERVER_PORT) || 2567);

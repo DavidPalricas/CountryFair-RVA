@@ -5,40 +5,46 @@ import { Text3D } from "../Text3D";
 import { DROP_RADIUS } from "./tentSlots";
 
 type TentPlaceHolderProps = {
+    /** World-space centre of the slot this ring marks. */
     position: readonly [number, number, number];
+    /** Slot label, 1-based, shown floating above the ring. */
     number: number;
-    /* O ponto de arrasto partilhado; e daqui que sai o destaque do anel sob o ponteiro. */
+    /** The shared drag point; the highlight of the ring under the pointer comes from here. */
     dragPoint: RefObject<Vector3>;
 };
 
-/* Levanta o anel do chao o suficiente para nao haver z-fighting com o plano da relva. */
+/** Lifts the ring off the ground just enough to avoid z-fighting with the grass plane. */
 const GROUND_OFFSET = 0.02;
 
-/*
-  Altura a que o numero flutua acima do anel. Deitado no chao ficava quase ilegivel:
-  a camara esta a 1.8 de altura a olhar para 1.5, ou seja quase na horizontal, por isso
-  via o texto de esguelha. Fica de pe (sem rotacao, virado para +Z, que e o lado da
-  camara) e acima do anel, mas abaixo do topo das tendas (1.58) para nao competir com elas.
-*/
+/**
+ * Height the number floats at above the ring. Lying flat on the ground it was nearly
+ * illegible: the camera sits at 1.8 looking at 1.5, i.e. almost horizontally, so it saw the
+ * text edge-on. It stands upright instead (no rotation, facing +Z, which is the camera side)
+ * and above the ring, but below the tent tops (1.58) so it does not compete with them.
+ */
 const NUMBER_HEIGHT = 0.8;
 
+/**
+ * Drop target shown for each slot while a tent is being dragged — the R3F counterpart of
+ * Unity's `TentPlaceHolder`. Highlights itself when the drag point falls inside its radius.
+ */
 export function TentPlaceHolder({ position, number, dragPoint }: TentPlaceHolderProps) {
     const [highlighted, setHighlighted] = useState(false);
 
     useFrame(() => {
-        const deltaX = dragPoint.current.x - position[0];
-        const deltaZ = dragPoint.current.z - position[2];
-        const inside = deltaX * deltaX + deltaZ * deltaZ <= DROP_RADIUS * DROP_RADIUS;
+        /* Same criterion as slotIndexAtX: only X counts, because the drag is pinned to the
+           row line and every slot shares the same Z. */
+        const inside = Math.abs(dragPoint.current.x - position[0]) <= DROP_RADIUS;
 
-        /* O updater devolve o mesmo valor quando nada muda e o React sai sem renderizar,
-           por isso isto nao custa um render por frame. */
+        /* The updater returns the same value when nothing changes and React bails out without
+           rendering, so this does not cost a render per frame. */
         setHighlighted((current) => (current === inside ? current : inside));
     });
 
     return (
         <group position={[position[0], position[1] + GROUND_OFFSET, position[2]]}>
-            {/* O ringGeometry nasce no plano XY, por isso e deitado para ficar no chao.
-                depthWrite a false evita que o anel tape o numero desenhado por cima. */}
+            {/* ringGeometry is born in the XY plane, hence it is laid down flat onto the
+                ground. depthWrite false keeps the ring from occluding the number drawn above it. */}
             <mesh rotation={[-Math.PI / 2, 0, 0]}>
                 <ringGeometry args={[DROP_RADIUS * 0.72, DROP_RADIUS, 48]} />
                 <meshBasicMaterial

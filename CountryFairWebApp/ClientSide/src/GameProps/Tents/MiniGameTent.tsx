@@ -11,33 +11,43 @@ import {TentRibbon} from "./TentRibbon";
 import { DRAG_LIFT, TENT_NAMES, TENT_SLOTS, TENT_Y, type MiniGameType } from "./tentSlots";
 import { useTentDrag } from "./useTentDrag";
 
-/* Multiplicador da escala base enquanto o ponteiro esta em cima da tenda. */
+/** Multiplier on the base scale while the pointer is over the tent. */
 const HOVER_SCALE = 1.2;
 
-/* Amortecimento exponencial das animacoes: mais alto = chega mais depressa ao alvo. */
+/** Exponential damping of the animations: higher reaches the target sooner. */
 const DAMPING = 12;
 
-/*
-  Temporarios ao nivel do modulo em vez de alocados dentro do useFrame. O JavaScript
-  e single-threaded e nenhum deles e guardado depois de usado, por isso partilha-los
-  entre as tendas e seguro e evita lixo a cada frame.
-*/
+/**
+ * Module-level temporaries instead of allocating inside useFrame. JavaScript is
+ * single-threaded and neither of these is kept after use, so sharing them between the tents
+ * is safe and avoids per-frame garbage.
+ */
 const targetEuler = new Euler();
 const targetQuaternion = new Quaternion();
 
 type MiniGameTentProps = {
+    /** Which mini-game this tent advertises; also selects the props displayed in front of it. */
     type: MiniGameType;
+    /** Index into TENT_SLOTS the tent animates towards while it is not being dragged. */
     slot: number;
     isDragging: boolean;
-    /* ElementSelected() do Unity: as tendas que nao estao a ser arrastadas escondem-se. */
+    /** Unity's `ElementSelected()`: tents that are not being dragged hide themselves. */
     hidden: boolean;
-    /* Partilhado com os TentPlaceHolder, que o leem para saber qual esta sob o ponteiro. */
+    /** Shared with the TentPlaceHolders, which read it to know which one is under the pointer. */
     dragPoint: RefObject<Vector3>;
     onDragStart: (type: MiniGameType) => void;
-    onDragEnd: (type: MiniGameType, x: number, z: number) => void;
+    /** Reports the drop position in X; the screen turns it into a slot. */
+    onDragEnd: (type: MiniGameType, x: number) => void;
 };
 
 
+/**
+ * One playable mini-game tent: the model, its signboard and slot ribbon, the mini-game props
+ * in front of it, and the drag behaviour that lets it be moved along the row.
+ *
+ * Its transform is animated every frame rather than driven by props, so both a slot change
+ * and the hover scale read as a motion instead of a jump.
+ */
 export function MiniGameTent({ type, slot, isDragging, hidden, dragPoint, onDragStart, onDragEnd }: MiniGameTentProps) {
     const miniGamePropsPos: [number, number, number] = [0.6, 0, 2];
     const groupRef = useRef<Group>(null);
@@ -47,16 +57,16 @@ export function MiniGameTent({ type, slot, isDragging, hidden, dragPoint, onDrag
         objectRef: groupRef,
         dragPoint,
         onDragStart: () => onDragStart(type),
-        onDragEnd: (x, z) => onDragEnd(type, x, z),
+        onDragEnd: (x) => onDragEnd(type, x),
     });
 
     const slotTransform = TENT_SLOTS[slot];
 
     /*
-      Posicao e rotacao passam a ser escritas no useFrame, por isso nao vem por prop no
-      <group>: o transform inicial e posto uma vez no mount e a animacao toma conta dele
-      a partir dai. As dependencias sao deliberadamente vazias — quando o slot muda
-      queremos a transicao animada, nao um salto.
+      Position and rotation are written in useFrame, so they are not passed as props on the
+      <group>: the initial transform is set once on mount and the animation takes over from
+      there. The dependency list is deliberately empty — when the slot changes we want the
+      animated transition, not a jump.
     */
     useLayoutEffect(() => {
         const group = groupRef.current;
@@ -70,18 +80,16 @@ export function MiniGameTent({ type, slot, isDragging, hidden, dragPoint, onDrag
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    /*
-      Uma tenda escondida sai do raycast do three, por isso nunca chega a receber o
-      onPointerOut e ficaria presa em hover (com o cursor agarrado) ate voltar a aparecer.
-    */
+    // A tent that goes invisible or gets grabbed never receives a pointerout, so the hover
+    // state has to be cleared by hand or it would stay stuck on.
     useEffect(() => {
         if (hidden || isDragging) {
             setHovered(false);
         }
     }, [hidden, isDragging]);
 
-    /* O cursor e reposto na limpeza do efeito e nao no onPointerOut, senao ficaria
-       preso caso a tenda desmonte ou se esconda enquanto esta em hover. */
+    // The cursor is a document-level property, so it is restored on cleanup — otherwise a
+    // tent unmounting while hovered would leave the grab cursor behind.
     useEffect(() => {
         if (!hovered) {
             return;
@@ -91,6 +99,8 @@ export function MiniGameTent({ type, slot, isDragging, hidden, dragPoint, onDrag
         return () => { document.body.style.cursor = "auto"; };
     }, [hovered]);
 
+    // Drives position, rotation and scale towards their targets. `step` is a frame-rate
+    // independent damping factor, so the motion looks the same regardless of refresh rate.
     useFrame((_, delta) => {
         const group = groupRef.current;
 
@@ -101,17 +111,17 @@ export function MiniGameTent({ type, slot, isDragging, hidden, dragPoint, onDrag
         const step = 1 - Math.exp(-DAMPING * delta);
 
         if (isDragging) {
-            /* Segue o ponteiro em XZ, com uma elevacao fixa em Y para a tenda ler como
-               "levantada" em vez de raspar o chao. */
+            // Follows the pointer directly, lifted off the ground; no damping here or the
+            // tent would lag behind the cursor.
             group.position.set(dragPoint.current.x, TENT_Y + DRAG_LIFT, dragPoint.current.z);
         } else {
-            /* SnapToCurrentPlaceHolder(), mas interpolado em vez de instantaneo. */
+            /* SnapToCurrentPlaceHolder(), but interpolated instead of instantaneous. */
             group.position.x = MathUtils.lerp(group.position.x, slotTransform.position[0], step);
             group.position.y = MathUtils.lerp(group.position.y, slotTransform.position[1], step);
             group.position.z = MathUtils.lerp(group.position.z, slotTransform.position[2], step);
 
-            /* Slerp de quaternioes em vez de interpolar angulos de Euler: evita a tenda
-               dar a volta pelo lado errado quando a diferenca passa os 180 graus. */
+            /* Quaternion slerp instead of interpolating Euler angles: stops the tent turning
+               the wrong way round when the difference passes 180 degrees. */
             targetEuler.set(...slotTransform.rotation);
             targetQuaternion.setFromEuler(targetEuler);
             group.quaternion.slerp(targetQuaternion, step);
@@ -125,26 +135,29 @@ export function MiniGameTent({ type, slot, isDragging, hidden, dragPoint, onDrag
         <group
             ref={groupRef}
             name="MiniGameTent"
-            /* O three ignora objectos invisiveis no raycast, por isso isto reproduz o
-               SetActive(false) do Unity, incluindo deixarem de receber eventos. */
+            /* three ignores invisible objects in the raycast, so this reproduces Unity's
+               SetActive(false), including no longer receiving events. */
             visible={!hidden}
             onPointerDown={onPointerDown}
-            /* O R3F entrega o evento a todas as interseccoes ao longo do raio, por isso sem
-               o stopPropagation as tendas que ficam atras desta tambem entravam em hover. */
+            /* R3F delivers the event to every intersection along the ray, so without the
+               stopPropagation the tents behind this one would go into hover too. */
             onPointerOver={(event) => { event.stopPropagation(); setHovered(true); }}
             onPointerOut={() => setHovered(false)}
         >
-            {/* Letreiro e fita escondem-se durante o arrasto, como o Unity esconde o
-                tentText/tentNumber/ribbon enquanto a tenda esta agarrada. */}
+            {/* Signboard and ribbon hide during the drag, the same way Unity hides
+                tentText/tentNumber/ribbon while the tent is grabbed. */}
             <group visible={!isDragging}>
-                {/* A tenda tem 1.58 de altura, por isso o letreiro assenta em 1.7.
-                    maxWidth mantem o texto dentro da largura da tenda (1.63). */}
-                <Text3D position={[0, 1.7, 0]}>
+                {/* The tent is 1.58 tall, so the signboard sits at 1.7. maxWidth fits the
+                    longest name ("Tenda do Jogo dos Patos") on a single line: with the default
+                    of 1.5 only that one wrapped onto two lines and ended up taller than the
+                    other three, which made the last tent stand out from the row. */}
+                <Text3D position={[0,2, 0]} maxWidth={1.9} fontSize={0.4} >
                     {TENT_NAMES[type]}
                 </Text3D>
 
-                {/* O numero vem do slot e nao da tenda, tal como o SetTentNumber() do Unity
-                    o le do currentPlaceHolder: ao trocar de slot a tenda adopta o numero de la. */}
+                {/* The number comes from the slot and not from the tent, just as Unity's
+                    SetTentNumber() reads it from currentPlaceHolder: on swapping slots the
+                    tent adopts the number of its new one. */}
                 <TentRibbon position={[-1.2, 1.7, 0]} number={slotTransform.number}/>
             </group>
 

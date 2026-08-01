@@ -1,21 +1,33 @@
 import { Text } from "@react-three/drei";
-// A mesma fonte do 2D (declarada em index.css); o troika aceita o .ttf directamente.
+// Same font as the 2D UI (declared in index.css); troika takes the .ttf directly.
 import fontUrl from "../assets/font/Carnevalee Freakshow.ttf";
 
 type Text3DProps = {
     children: string;
+    /** Position in the parent's local space. */
     position: [number, number, number];
+    /** Euler rotation in radians; the default faces +Z, which is the camera side. */
     rotation?: [number, number, number];
+    /** Cap height in world units, not pixels. */
     fontSize?: number;
+    /** Width in world units at which the text wraps. */
     maxWidth?: number;
     textAlign?: "left" | "right" | "center" | "justify";
     anchorX?: "left" | "center" | "right" | number;
     anchorY?: "top" | "top-baseline" | "middle" | "bottom-baseline" | "bottom" | number;
     color?: string;
+    /** Outline thickness in world units; the default is tuned for the fair orange on grass. */
     outlineWidth?: number;
     outlineColor?: string;
 };
 
+/**
+ * Shared 3D label used by every sign in the fair (tent names, ribbon numbers, placeholder
+ * numbers, the on-screen instruction).
+ *
+ * Centralising it is what keeps the fairground font and the orange-on-dark-brown colour
+ * scheme identical across all of them; callers normally override only position and size.
+ */
 export function Text3D({
     children,
     position,
