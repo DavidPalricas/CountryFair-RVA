@@ -12,7 +12,7 @@ using UnityEngine.Events;
 public class PlaceHolderManager : MonoBehaviour
 {
     [SerializeField]
-    private UnityEvent<OrderableTentElement[]> updateOtherManagers;
+    private UnityEvent<Dictionary<string, string>> updateOtherManagers;
 
     [SerializeField]
     private Transform elementsTransform = null;
@@ -51,8 +51,10 @@ public class PlaceHolderManager : MonoBehaviour
     /// and hides all placeholders until a grab begins.
     /// </summary>
     private void Start()
-    {
-        updateOtherManagers.Invoke(_elementsMap.Keys.ToArray());
+    {   
+        Dictionary<string, string> fairState = GetFairState();
+
+        updateOtherManagers.Invoke(fairState);
     }
 
 
@@ -125,7 +127,25 @@ public class PlaceHolderManager : MonoBehaviour
 
         TogglePlaceHolders(false);
 
-        updateOtherManagers.Invoke(_elementsMap.Keys.ToArray());
+        Dictionary<string, string> fairState = GetFairState();
+
+        updateOtherManagers.Invoke(fairState);
+    }
+
+
+    private Dictionary<string, string> GetFairState()
+    {
+        Dictionary<string, string> fairState = new();
+
+        foreach (var kvp in _elementsMap)
+        {
+            OrderableTentElement element = kvp.Key;
+            PlaceHolder placeHolder = kvp.Value;
+
+            fairState[element.miniGame.ToString()] = placeHolder.number.ToString();
+        }
+
+        return fairState;
     }
 
     /// <summary>
@@ -154,6 +174,7 @@ public class PlaceHolderManager : MonoBehaviour
        }
     }
 
+
     /// <summary>
     /// Entry point called by <see cref="OrderableElement.OnElementSelectionChanged"/>.
     /// Routes to <see cref="ElementSelected"/> or <see cref="ElementUnselected"/> based on <paramref name="isTentSelected"/>.
@@ -174,8 +195,31 @@ public class PlaceHolderManager : MonoBehaviour
     }
 
 
-    public void OnOtherManagerUpdate(OrderableTentElement[] otherElements)
+    public void OnOtherManagerUpdate(Dictionary<string, string> fairState)
     {   
+        foreach(var miniGame in fairState.Keys)
+        {
+            OrderableTentElement element = _elementsMap.Keys.FirstOrDefault(e => e.miniGame.ToString().ToLower() == miniGame.ToLower());
+
+            if (element == null)
+            {
+                Debug.LogError($"Element with miniGame '{miniGame}' not found in this manager.");
+
+                return;
+            }
+
+            int placeHolderNumber = int.Parse(fairState[miniGame]);
+
+            PlaceHolder updatedPlaceHolder = _elementsMap.Values.FirstOrDefault(ph => ph.number == placeHolderNumber);
+
+            element.UpdateTentPlaceHolder(updatedPlaceHolder);
+
+            UpdateElementPosition(element);
+
+            element.SnapToCurrentPlaceHolder();
+        }
+
+        /*
         OrderableTentElement[] elements = _elementsMap.Keys.ToArray();
 
         PlaceHolder[] placeHolders = _elementsMap.Values.ToArray();
@@ -201,5 +245,6 @@ public class PlaceHolderManager : MonoBehaviour
 
             element.SnapToCurrentPlaceHolder();
         }
+        */
     }
 }

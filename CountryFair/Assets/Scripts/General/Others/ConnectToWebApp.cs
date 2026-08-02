@@ -36,6 +36,17 @@ public class ConnectToWebApp : MonoBehaviour
         _client = new Client(endpoint);
 
         room = await _client.JoinOrCreate<FairState>("fairsceneroom", new Dictionary<string, object> { { "platform", plataform } });
-    
+       
+
+       if (room == null)
+        {
+            Debug.LogError("Failed to join or create the room.");
+        }
     } 
+
+
+    public async void UpdateFairState(Dictionary<string, string> fairState)
+    {
+        await room.Send("updateFairState", fairState);
+    }
 }
