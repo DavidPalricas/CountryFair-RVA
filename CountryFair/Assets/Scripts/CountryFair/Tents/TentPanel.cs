@@ -67,7 +67,7 @@ public class TentPanel : OrderableTentElement
                 tentName += "frisbee";
                 break;
 
-            case MINI_GAMES.DUCK:
+            case MINI_GAMES.DUCKGAME:
                 tentName += "jogo do pato";
                 break;
 

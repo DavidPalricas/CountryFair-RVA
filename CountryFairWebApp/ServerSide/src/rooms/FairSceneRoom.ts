@@ -11,6 +11,15 @@ import {FairState } from "../schemas/FairSchema.js";
  * Its synced state is a {@link FairState}.
  */
 export class FairSceneRoom extends CountryFairRoom {
+
+
+  onCreate() {
+      this.state = new FairState();
+
+      this.onMessage("updateFairState", (client, data) => {
+            this.broadcast("updateFairState", data, { except: client })
+      });
+    }
  /**
   * Admits a client and, once both platforms are present, hands the fair state to the web side.
   *

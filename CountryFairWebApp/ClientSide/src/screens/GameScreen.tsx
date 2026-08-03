@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { Plane } from "../GameProps/Plane";
@@ -7,6 +7,7 @@ import { MiniGameTent } from "../GameProps/Tents/MiniGameTent";
 import { TentPlaceHolder } from "../GameProps/Tents/TentPlaceHolder";
 import { TENT_ROW_Z, TENT_SLOTS, TENT_Y, VIEWER_POSITION, type MiniGameType } from "../GameProps/Tents/tentSlots";
 import { slotIndexAtX, swapIntoSlot, type TentOrder } from "../GameProps/Tents/tentOrder";
+import { getRoom } from "../network/client";
 import{BigTop} from "../GameProps/BigTop";
 import {FerrisWheel} from "../GameProps/FerrisWheel";
 import{Camera} from "../GameProps/Camera";
@@ -49,7 +50,9 @@ const COPYRIGHT = "© 2026 David Palricas";
  *
  * This screen plays the role of Unity's `PlaceHolderManager` — it owns the tent order and
  * knows which tent is being dragged. Unity's `Dictionary<element, placeholder>` is just the
- * `order` array here, where the array index *is* the slot index.
+ * `order` array here, where the array index *is* the slot index. It also plays the role of
+ * `ConnectToWebApp.UpdateFairState()`: every time the order changes (and once on mount, like
+ * `PlaceHolderManager.Start()`), it sends the same `"updateFairState"` message to the room.
  */
 export function GameScreen() {
     const [order, setOrder] = useState<TentOrder>(INITIAL_ORDER);
@@ -59,17 +62,45 @@ export function GameScreen() {
     // pointermove, so it lives in a ref rather than in state.
     const dragPoint = useRef(new Vector3());
 
+    // Equivalent of Unity's `PlaceHolderManager.GetFairState()`: tent id -> 1-based slot
+    // number, matching `TentSlot.number` and the shape the game sends via `ConnectToWebApp`.
+    const sendFairState = useCallback((currentOrder: TentOrder) => {
+        const fairState: Record<string, string> = {};
+
+        currentOrder.forEach((type, slot) => {
+            fairState[type] = String(slot + 1);
+        });
+
+        getRoom()
+            .then((room) => room.send("updateFairState", fairState))
+            .catch((err) => console.error("Falha ao enviar a ordem das tendas:", err));
+    }, []);
+
+    // Mirrors Unity's `PlaceHolderManager.Start()`, which reports the opening order too.
+    useEffect(() => {
+        sendFairState(order);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleDragEnd = useCallback((type: MiniGameType, x: number) => {
         const targetSlot = slotIndexAtX(x);
 
         // null = dropped in the dead zone between slots; the tent's useFrame walks it back to
         // its original slot on its own, because the order did not change.
         if (targetSlot !== null) {
-            setOrder((current) => swapIntoSlot(current, type, targetSlot));
+            setOrder((current) => {
+                const next = swapIntoSlot(current, type, targetSlot);
+
+                if (next !== current) {
+                    sendFairState(next);
+                }
+
+                return next;
+            });
         }
 
         setDragging(null);
-    }, []);
+    }, [sendFairState]);
 
     return (
         <div className="game-screen">

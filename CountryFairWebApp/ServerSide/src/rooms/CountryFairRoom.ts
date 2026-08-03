@@ -1,5 +1,4 @@
 import { Room } from "colyseus";
-import { FairState } from "../schemas/FairSchema.js";
 
 /**
  * Base room for every Country Fair scene.
@@ -43,13 +42,5 @@ export class CountryFairRoom extends Room {
     protected isPlatformValid(platform: string) : boolean {
         platform = platform.trim().toLowerCase()
          return CountryFairRoom.platforms.includes(platform);
-    }
-
-    onCreate() {
-        this.state = new FairState();
-
-        this.onMessage("updateFairState", (client, data) => {
-            console.log("Received updated fair state from", client.sessionId, data);
-        });
     }
 }

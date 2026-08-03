@@ -198,9 +198,9 @@ public class PlaceHolderManager : MonoBehaviour
     public void OnOtherManagerUpdate(Dictionary<string, string> fairState)
     {   
         foreach(var miniGame in fairState.Keys)
-        {
+        {  
             OrderableTentElement element = _elementsMap.Keys.FirstOrDefault(e => e.miniGame.ToString().ToLower() == miniGame.ToLower());
-
+            
             if (element == null)
             {
                 Debug.LogError($"Element with miniGame '{miniGame}' not found in this manager.");

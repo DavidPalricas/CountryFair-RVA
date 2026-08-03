@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using Colyseus;
 using System.Collections.Generic;
 
@@ -6,6 +7,10 @@ public class ConnectToWebApp : MonoBehaviour
 {   
     [SerializeField]
     private int serverPort = 2567;
+
+    [SerializeField]
+    private UnityEvent<Dictionary<string, string>> updateGameFairState;
+
     private static ConnectToWebApp instance = null;
 
    private Room<FairState> room;
@@ -38,15 +43,20 @@ public class ConnectToWebApp : MonoBehaviour
         room = await _client.JoinOrCreate<FairState>("fairsceneroom", new Dictionary<string, object> { { "platform", plataform } });
        
 
-       if (room == null)
-        {
-            Debug.LogError("Failed to join or create the room.");
-        }
+        room.OnMessage<Dictionary<string, string>>("updateFairState", (fairState) => {
+            if (GameManager.GetInstance().IntroCompleted)
+            {
+                updateGameFairState.Invoke(fairState);
+            }
+        });
     } 
 
 
     public async void UpdateFairState(Dictionary<string, string> fairState)
-    {
-        await room.Send("updateFairState", fairState);
+    {  
+        if (room!= null)
+        {
+             await room.Send("updateFairState", fairState);
+        }
     }
 }

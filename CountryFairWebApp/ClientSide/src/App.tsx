@@ -39,9 +39,7 @@ function App() {
     return () => { cancelled = true };
   }, []);
 
-  // return phase === "waiting" ? <WaitingScreen /> : <GameScreen />;
-
-  return <GameScreen />
+  return phase === "waiting" ? <WaitingScreen /> : <GameScreen />;
 }
 
 export default App;

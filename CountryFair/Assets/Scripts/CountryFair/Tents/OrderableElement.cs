@@ -26,7 +26,7 @@ public class OrderableTentElement : MonoBehaviour
     public enum MINI_GAMES
     {
         ARCHERY,
-        DUCK,
+        DUCKGAME,
         FISHING,
         FRISBEE,
     }
