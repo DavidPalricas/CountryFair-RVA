@@ -53,10 +53,23 @@ public class ConnectToWebApp : MonoBehaviour
 
 
     public async void UpdateFairState(Dictionary<string, string> fairState)
-    {  
+    {
         if (room!= null)
         {
              await room.Send("updateFairState", fairState);
+        }
+    }
+
+
+    // Without this, stopping Play Mode (or quitting the build) tears down this object
+    // without ever closing the socket, so the server only notices the game is gone after
+    // the ping/pong heartbeat times out — the web client's switch back to the waiting
+    // screen (CountryFairRoom.onLeave -> "gameDisconnected") is delayed by that same amount.
+    private async void OnDestroy()
+    {
+        if (room != null)
+        {
+            await room.Leave();
         }
     }
 }

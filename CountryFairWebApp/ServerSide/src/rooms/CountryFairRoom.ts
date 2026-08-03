@@ -43,4 +43,17 @@ export class CountryFairRoom extends Room {
         platform = platform.trim().toLowerCase()
          return CountryFairRoom.platforms.includes(platform);
     }
+
+
+    async onLeave(client: any, _code?: number) {
+        if (client.sessionId === this.gameClientId) {
+            this.gameClientId = '';
+
+            this.clientsEntered['game'] = false;
+
+            this.allPlatformsentered = false;
+
+            this.broadcast("gameDisconnected", { message: "The game has disconnected." }, { except: client });
+        }
+    }
 }

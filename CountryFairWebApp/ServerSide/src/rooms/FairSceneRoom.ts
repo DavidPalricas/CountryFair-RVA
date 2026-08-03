@@ -60,7 +60,7 @@ export class FairSceneRoom extends CountryFairRoom {
     this.state = new FairState();
     this.message = "Seleciona a ordem das tendas";
 
-     console.log(`Client ${client.sessionId} joined with options:`, options);
+    console.log(`Client ${client.sessionId} joined with options:`, options);
 
     if (Object.values(this.clientsEntered).every(client => client === true)) {
       this.allPlatformsentered = true;

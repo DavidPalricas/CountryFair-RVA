@@ -8,10 +8,9 @@ import { GameScreen } from "./screens/GameScreen";
  *
  * Joins the Colyseus `fairsceneroom` on mount and waits for the server's `"gamejoined"`
  * message, which the room only sends once the Unity headset has joined too — that is the
- * signal to swap the waiting screen for the fair scene.
- *
- * The scene is currently rendered unconditionally so the tent ordering can be worked on
- * without a headset attached; the commented-out return is the paired behaviour.
+ * signal to swap the waiting screen for the fair scene. If the headset later drops
+ * (`CountryFairRoom.onLeave` broadcasts `"gameDisconnected"`), the client falls back to the
+ * waiting screen until the game rejoins and sends `"gamejoined"` again.
  */
 function App() {
   const [phase, setPhase] = useState<"waiting" | "game">("waiting");
@@ -28,6 +27,10 @@ function App() {
         room.onMessage("gamejoined", () => {
           console.log("Received gamejoined message");
           setPhase("game");
+        });
+        room.onMessage("gameDisconnected", () => {
+          console.log("Received gameDisconnected message");
+          setPhase("waiting");
         });
       })
       .catch((err) => {
