@@ -51,3 +51,26 @@ export function swapIntoSlot(order: TentOrder, tent: MiniGameType, targetSlot: n
 
     return swapped;
 }
+
+/**
+ * Inverse of the tent id -> 1-based slot map `GameScreen.sendFairState` builds: rebuilds a
+ * `TentOrder` from the `"updateFairState"` payload Unity's `PlaceHolderManager.GetFairState()`
+ * broadcasts. Slots absent from `fairState` keep whatever tent `current` already has there.
+ *
+ * Unity's `MINI_GAMES` enum serialises as SCREAMING_SNAKE_CASE (`element.miniGame.ToString()`),
+ * while `MiniGameType` is lowercase, so the key is lower-cased here the same way
+ * `PlaceHolderManager.OnOtherManagerUpdate()` lower-cases both sides before comparing.
+ */
+export function orderFromFairState(fairState: Record<string, string>, current: TentOrder): TentOrder {
+    const next = [...current];
+
+    Object.entries(fairState).forEach(([type, slot]) => {
+        const index = Number(slot) - 1;
+
+        if (index >= 0 && index < next.length) {
+            next[index] = type.toLowerCase() as MiniGameType;
+        }
+    });
+
+    return next;
+}

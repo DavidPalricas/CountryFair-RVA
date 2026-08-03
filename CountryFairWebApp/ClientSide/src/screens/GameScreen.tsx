@@ -6,7 +6,7 @@ import {GameLight} from "../GameProps/GameLight";
 import { MiniGameTent } from "../GameProps/Tents/MiniGameTent";
 import { TentPlaceHolder } from "../GameProps/Tents/TentPlaceHolder";
 import { TENT_ROW_Z, TENT_SLOTS, TENT_Y, VIEWER_POSITION, type MiniGameType } from "../GameProps/Tents/tentSlots";
-import { slotIndexAtX, swapIntoSlot, type TentOrder } from "../GameProps/Tents/tentOrder";
+import { orderFromFairState, slotIndexAtX, swapIntoSlot, type TentOrder } from "../GameProps/Tents/tentOrder";
 import { getRoom } from "../network/client";
 import{BigTop} from "../GameProps/BigTop";
 import {FerrisWheel} from "../GameProps/FerrisWheel";
@@ -53,6 +53,10 @@ const COPYRIGHT = "© 2026 David Palricas";
  * `order` array here, where the array index *is* the slot index. It also plays the role of
  * `ConnectToWebApp.UpdateFairState()`: every time the order changes (and once on mount, like
  * `PlaceHolderManager.Start()`), it sends the same `"updateFairState"` message to the room.
+ *
+ * The reverse direction mirrors `PlaceHolderManager.OnOtherManagerUpdate()`: the same
+ * `"updateFairState"` message, broadcast by the server when the patient reorders the tents in
+ * the headset, is applied here to keep this screen's `order` in sync.
  */
 export function GameScreen() {
     const [order, setOrder] = useState<TentOrder>(INITIAL_ORDER);
@@ -80,6 +84,26 @@ export function GameScreen() {
     useEffect(() => {
         sendFairState(order);
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Mirrors Unity's `PlaceHolderManager.OnOtherManagerUpdate()`: applies the order the
+    // headset reports whenever the patient drags a tent in the world instead of the menu.
+    // This message is never our own `sendFairState` echoing back — the room broadcasts with
+    // `{ except: client }`, so the sender never receives its own update.
+    useEffect(() => {
+        let cancelled = false;
+
+        getRoom()
+            .then((room) => {
+                if (cancelled) return;
+
+                room.onMessage("updateFairState", (fairState: Record<string, string>) => {
+                    setOrder((current) => orderFromFairState(fairState, current));
+                });
+            })
+            .catch((err) => console.error("Falha ao receber a ordem das tendas:", err));
+
+        return () => { cancelled = true };
     }, []);
 
     const handleDragEnd = useCallback((type: MiniGameType, x: number) => {
